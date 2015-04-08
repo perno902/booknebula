@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<!-- Define Angular app -->
+<html ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Loading Angular-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+
+    <!-- Loading Bootstrap-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <!--- Loading additional CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+
+    <!-- Loading Google sign in button-->
+    <script src="https://apis.google.com/js/client:platform.js" async defer></script>
+
+    <!-- Loading script files -->
+    <script src="static/js/script.js"></script>
+
+</head>
+
+<body>
+    <div id="mainSpace">
+        <a href="/#/"><img class="img-responsive" src="/static/logo1.gif" alt="Book Nebula"></a>
+        <img class="img-responsive" src="/static/bookshelf.gif">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="/#/home">Home</a></li>
+                        <li><a href="/#/toplist">Toplists</a></li>
+                    </ul>
+
+                    <div class="col-sm-5">
+                        <form class="navbar-form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Find book, author or reviewer", id="navSearch">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn default">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                            </div>
+                        </form>
+                    </div>
+
+                        <span id="signinButton" class="pull-right">
+                            <span
+                                class="g-signin"
+                                data-callback="signinCallback"
+                                data-clientid="205573445883-9dl8ahcka67d4m7e21anb692do487odk.apps.googleusercontent.com"
+                                data-cookiepolicy="single_host_origin"
+                                data-requestvisibleactions="http://schema.org/AddAction"
+                                data-scope="https://www.googleapis.com/auth/plus.login">
+                            </span>
+                        </span>
+
+                </div>
+            </div>
+        </nav>
+
+        <!--INJECTED CONTENT -->
+
+        <div ng-view class="view-frame"></div>
+
+    </div>
+
+</body>
+</html>
