@@ -1,0 +1,42 @@
+<h3>
+    {{userName}}  <small>({{grade}})</small>
+    <a href="/#/editProfile" class="pull-right">Edit profile <span class="glyphicon glyphicon-edit"></span></a>
+</h3><br>
+<div>
+    <div class="panel panel-default col-sm-5">
+        <div class="panel-body">
+            <p>Number of reviews: {{noOfReviews}}</p>
+            <p>Number of upvotes: {{upvotes}}</p>
+            <p>Joined Book Nebula: {{joinedDate}}</p>
+            <p>Country: {{country}}</p>
+        </div>
+    </div>
+    <div class="panel panel-default col-sm-6 pull-right">
+        <div class="panel-body">{{presentation}}</div>
+    </div>
+    <div class="col-sm-12">
+        <h4>Reviews</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Score</th>
+                    <th>Upvotes</th>
+                    <th>Date</th>
+                    </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="r in reviews">
+                    <td>{{r.title}}</td>
+                    <td>{{r.author}}</td>
+                    <td>{{r.score}}</td>
+                    <td>{{r.upvotes}}</td>
+                    <td>{{r.date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>

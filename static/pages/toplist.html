@@ -1,2 +1,41 @@
-<p> TOPLIST </p>
-<p> Highscores... </p>
+<!-- Select list to view -->
+<select ng-options="l for l in toplists"
+        ng-model="currentList" ng-change="toplistUpdate()" class="form-control">
+</select>
+
+<!-- Top books table -->
+<table class="table" ng-show="isCurrentList(toplists[0])">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Avg. score</th>
+            </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="b in topBooks">
+            <td>{{b.title}}</td>
+            <td>{{b.author}}</td>
+            <td>{{b.year}}</td>
+            <td>{{b.score}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Top reviewers table -->
+<table class="table" ng-show="isCurrentList(toplists[1])">
+    <thead>
+        <tr>
+            <th>Reviewer</th>
+            <th>Upvotes</th>
+            </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="r in topReviewers">
+            <td>{{r.name}}</td>
+            <td>{{r.upvotes}}</td>
+        </tr>
+    </tbody>
+</table>
+

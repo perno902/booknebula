@@ -31,11 +31,12 @@
         <a href="/#/"><img class="img-responsive" src="/static/logo1.gif" alt="Book Nebula"></a>
         <img class="img-responsive" src="/static/bookshelf.gif">
         <nav class="navbar navbar-default">
-            <div class="container-fluid">
+            <div class="container-fluid" ng-controller="signInCtrl">
                 <div>
                     <ul class="nav navbar-nav">
-                        <li><a href="/#/home">Home</a></li>
+                        <li><a href="/#/">Home</a></li>
                         <li><a href="/#/toplist">Toplists</a></li>
+                        <li ng-show="isSignedIn()"><a href="/#/profile">Profile</a></li>
                     </ul>
 
                     <div class="col-sm-5">
@@ -50,7 +51,9 @@
                             </div>
                         </form>
                     </div>
-
+                    <div>
+                        <button type="button" ng-hide="isSignedIn()" ng-click="signIn()" class="btn btn-default">Sign in</button>
+                        <button type="button" ng-show="isSignedIn()" ng-click="signOut()" class="btn btn-default">Sign out</button>
                         <span id="signinButton" class="pull-right">
                             <span
                                 class="g-signin"
@@ -61,7 +64,7 @@
                                 data-scope="https://www.googleapis.com/auth/plus.login">
                             </span>
                         </span>
-
+                    </div>
                 </div>
             </div>
         </nav>
