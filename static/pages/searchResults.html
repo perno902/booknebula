@@ -2,16 +2,22 @@
 
 <h4>Books:</h4>
     <div ng-repeat="b in books">
-        <button type="button" class="btn btn-link">{{b.title}} ({{b.year}})</button>
+        <a href="/#/title">
+            <button type="button" class="btn btn-link">{{b.title}} ({{b.year}})</button>
+        </a>
     </div>
 <br>
 
 <h4>Authors:</h4>
     <div ng-repeat="a in authors">
-        <button type="button" class="btn btn-link">{{a.Name}}</button>
+        <a href="/#/author">
+            <button type="button" class="btn btn-link">{{a.Name}}</button>
+        </a>
     </div>
 
 <h4>Reviewers:</h4>
     <div ng-repeat="r in reviewers">
-        <button type="button" class="btn btn-link">{{r.userName}}</button>
+        <a href="/#/profile">
+            <button type="button" class="btn btn-link">{{r.userName}}</button>
+        </a>
     </div>

@@ -1,0 +1,39 @@
+<h3>{{title}}  <small>({{year}})</small></h3><br>
+
+<div>
+    <div class="panel panel-default col-sm-5">
+        <div class="panel-body">
+            <p>Author: {{author}}</p>
+            <p>Original language: {{origLang}}</p>
+            <br>
+            <p>Average score: {{avgScore}}</p>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default col-sm-6 pull-right">
+        <div class="panel-body">{{plot}}</div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Upvotes</th>
+            <th>Reviewer</th>
+            <th>Review title</th>
+            <th>Score</th>
+            <th>Date</th>
+            </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="r in reviews">
+            <td>{{r.upvotes}}</td>
+            <td>{{r.reviewer}}</td>
+            <td><a href="/#/">
+                <button type="button" class="btn btn-link">{{r.revTitle}}</button>
+            </a></td>
+            <td>{{r.score}}</td>
+            <td>{{r.date}}</td>
+        </tr>
+    </tbody>
+</table>

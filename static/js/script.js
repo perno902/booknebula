@@ -50,6 +50,11 @@ myApp.config(['$routeProvider',
             templateUrl: '../static/pages/searchResults.html',
             controller: 'searchResultsCtrl'
         })
+    // Title page
+        .when('/title', {
+            templateUrl: '../static/pages/title.html',
+            controller: 'titleCtrl'
+        })
 }]);
 
 // Create the controllers
@@ -194,4 +199,40 @@ myApp.factory('search', function($rootScope) {
     };
 
     return service;
+});
+
+myApp.controller('titleCtrl', ['$scope', 'title', function($scope, title) {
+    $scope.title = title.title;
+    $scope.year = title.year;
+    $scope.author = title.author;
+    $scope.origLang = title.origLang;
+    $scope.avgScore = title.origLang;
+    $scope.plot = title.origLang;
+    $scope.reviews = title.reviews;
+}]);
+
+myApp.factory('title', function() {
+    var title = 'Lolita';
+    var year = 1955;
+    var author = 'Vladimir Nabokov';
+    var origLang = 'English';
+    var avgScore = 8.7;
+    var plot = 'A man marries his landlady so he can take advantage of her daughter.' +
+                    ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras arcu eros, ' +
+                    'eleifend vitae urna et tristique dapibus eros. Praesent at posuere ipsum, eu blandit dui. '
+    var reviews = [
+        {id: 23, upvotes: 46, reviewer: 'n0rp3r_the_critic', revTitle: 'A great book!', score: 10, date: '2015-02-11',
+        language: 'Swedish', content: 'Even though some of the wit probably got lost in translation, this is a great book! 10/10!'},
+        {id: 24, upvotes: 2, reviewer: 'frau_blucher', revTitle: 'This book is filth!', score: 1, date: '2012-06-29',
+        language: 'Pig latin', content: 'Some books are too... Too!'}
+        ];
+    return {
+        title: title,
+        year: year,
+        author: author,
+        origLang: origLang,
+        avgScore: avgScore,
+        plot: plot,
+        reviews: reviews
+    };
 });
