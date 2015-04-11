@@ -1,0 +1,17 @@
+<h3>Search results for "{{query}}":</h3><br>
+
+<h4>Books:</h4>
+    <div ng-repeat="b in books">
+        <button type="button" class="btn btn-link">{{b.title}} ({{b.year}})</button>
+    </div>
+<br>
+
+<h4>Authors:</h4>
+    <div ng-repeat="a in authors">
+        <button type="button" class="btn btn-link">{{a.Name}}</button>
+    </div>
+
+<h4>Reviewers:</h4>
+    <div ng-repeat="r in reviewers">
+        <button type="button" class="btn btn-link">{{r.userName}}</button>
+    </div>

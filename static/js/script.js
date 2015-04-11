@@ -45,6 +45,11 @@ myApp.config(['$routeProvider',
             templateUrl: '../static/pages/editProfile.html',
             controller: 'editProfileCtrl'
         })
+    // Search results page
+        .when('/searchResults', {
+            templateUrl: '../static/pages/searchResults.html',
+            controller: 'searchResultsCtrl'
+        })
 }]);
 
 // Create the controllers
@@ -143,4 +148,50 @@ myApp.factory('userData', function() {
         presentation: presentation,
         reviews: reviews
     };
+});
+
+myApp.controller('searchCtrl', ['$scope', 'search', function($scope, search) {
+    $scope.query = '';
+    $scope.searchfn = function searchfn() {
+
+    };
+
+    $scope.$watch('query', function() {
+       search.updateQuery($scope.query);
+    });
+    $scope.$on('query', function () {
+       $scope.query = search.query;
+    });
+}]);
+
+
+myApp.controller('searchResultsCtrl', ['$scope', 'search', function($scope, search) {
+    $scope.query = search.query;
+    $scope.books = search.books;
+    $scope.authors = search.authors;
+    $scope.reviewers = search.reviewers;
+}]);
+
+myApp.factory('search', function($rootScope) {
+    var service = {};
+    service.query = '';
+    service.books = [
+        { id: 14302, title: 'Lolita', year: 1955},
+        { id: 9992, title: 'Wicked', year: 1995},
+        { id: 20445, title: 'It', year: 1986}
+    ];
+    service.authors = [
+        { id: 99, Name: 'Vladimir Nabokov'},
+        { id: 102, title: 'Gregory Maguire'}
+    ];
+    service.reviewers = [
+        { id: 14302, userName: 'Pelle Nordfors'}
+    ];
+
+    service.updateQuery = function(query){
+    this.query = query;
+    $rootScope.$broadcast("valuesUpdated");
+    };
+
+    return service;
 });
