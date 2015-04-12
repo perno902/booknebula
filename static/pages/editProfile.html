@@ -1,0 +1,30 @@
+<h3>Editing profile</h3><br>
+
+<form name="profileForm">
+    <div class="row">
+        <div class="col-xs-4">
+            <label for="userName">Username:</label>
+            <input type="text" ng-model="userName" class="form-control" id="userName" required>
+        </div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-xs-3">
+            <label for="country">Country:</label>
+            <select ng-options="c for c in countries" ng-model="country" class="form-control" id="country" required></select>
+        </div>
+    </div><br>
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <label for="presentation">Presentation:</label>
+            <textarea rows="8" ng-model="presentation" class="form-control" id="presentation" required></textarea>
+        </div>
+    </div><br>
+
+</form>
+
+<a href="/#/profile"><button type="button" class="btn btn-default" ng-disabled="!profileForm.$valid">Submit</button></a>
+<a href="/#/profile"><button type="button" class="btn btn-default">Cancel</button></a>
+

@@ -323,3 +323,12 @@ myApp.controller('writeReviewCtrl', ['$scope', 'title', function($scope, title) 
     $scope.language = '';
     $scope.languages = ['English', 'French', 'German', 'Russian', 'Spanish', 'Swedish'];
 }]);
+
+myApp.controller('editProfileCtrl', ['$scope', 'userData', function($scope, userData) {
+    $scope.userName = userData.userName;
+    $scope.country = userData.country;
+    $scope.countries = [ "Sweden", "England", "USA", "France", "Spain", "Germany", "Norway",
+        "Denmark", "India", "China"
+    ];
+    $scope.presentation = userData.presentation;
+}]);
