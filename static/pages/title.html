@@ -1,19 +1,27 @@
 <h3>{{title}}  <small>({{year}})</small></h3><br>
 
-<div>
-    <div class="panel panel-default col-sm-5">
-        <div class="panel-body">
-            <p>Author: {{author}}</p>
-            <p>Original language: {{origLang}}</p>
-            <br>
-            <p>Average score: {{avgScore}}</p>
+<div class="row">
+    <div>
+        <div class="panel panel-default col-sm-5">
+            <div class="panel-body">
+                <p>Author: {{author}}</p>
+                <p>Original language: {{origLang}}</p>
+                <br>
+                <p>Average score: {{avgScore}}</p>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="panel panel-default col-sm-6 pull-right">
-        <div class="panel-body">{{plot}}</div>
-</div>
+    <div class="panel panel-default col-sm-6 pull-right">
+            <div class="panel-body">{{plot}}</div>
+    </div>
+</div><br>
+
+<div class="row">
+    <a href="/#/writeReview">
+    <div class="col-md-4"><button type="button" class="btn btn-primary">Review this book!</button></div></a>
+</div><br><br>
+
 
     <table class="table">
         <thead>

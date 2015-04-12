@@ -1,0 +1,32 @@
+<h3>Review of {{bookTitle}} ({{year}})</h3><br>
+
+<form name="reviewForm">
+    <div class="row">
+        <div class="col-xs-3">
+            <label for="language">Language:</label>
+            <select ng-options="l for l in languages" ng-model="language" class="form-control" id="language" required></select>
+        </div>
+    </div><br>
+
+
+    <div class="form-group row">
+        <div class="col-xs-5">
+            <label for="revTitle">Review title:</label>
+            <input type="text" ng-model="revTitle" class="form-control" id="revTitle" required>
+        </div>
+        <div class="col-xs-3"></div>
+        <div class="col-xs-2">
+            <label for="score">Score:</label>
+            <select ng-options="l for l in points" ng-model="score" class="form-control" id="score" required></select>
+        </div>
+
+    </div><br>
+
+    <div class="form-group row">
+            <label for="content">Review content:</label>
+            <textarea rows="5" ng-model="content" class="form-control" id="content" required></textarea>
+    </div>
+</form>
+
+<a href="/#/review"><button type="button" class="btn btn-default" ng-disabled="!reviewForm.$valid">Submit</button></a>
+<a href="/#/title"><button type="button" class="btn btn-default">Cancel</button></a>

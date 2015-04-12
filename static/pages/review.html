@@ -11,8 +11,9 @@
     <div class="panel-body">{{content}}</div>
     <div class="panel-footer">
         <div class="row">
-            <div class="col-md-6">Score: {{score}}/10</div>
-            <div class="col-md-5"><button type="button" ng-click="upvote()" class="btn btn-default btn-xs pull-right">Upvote</button></div>
+            <div class="col-md-5">Score: {{score}}/10</div>
+            <div class="col-md-5"><p>Read in: {{language}}</p></div>
+            <div class="col-md-1"><button type="button" ng-click="upvote()" class="btn btn-default btn-xs pull-right">Upvote</button></div>
             <div class="col-md-1"><span class="glyphicon glyphicon-thumbs-up pull-right">{{upvotes}}</span></div>
         </div>
     </div>
