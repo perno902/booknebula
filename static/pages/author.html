@@ -1,0 +1,18 @@
+<h3>{{name}} <small>(Author)</small></h3><br>
+
+<h4>Works:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Average score</th>
+            </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="b in books">
+            <td><a href="/#/title"><button type="button" class="btn btn-link">{{b.title}}</button></a> ({{b.year}})</td>
+            <td>{{b.avgScore}}</td>
+        </tr>
+    </tbody>
+</table>

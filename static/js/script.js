@@ -55,6 +55,16 @@ myApp.config(['$routeProvider',
             templateUrl: '../static/pages/title.html',
             controller: 'titleCtrl'
         })
+    // Author page
+        .when('/author', {
+            templateUrl: '../static/pages/author.html',
+            controller: 'authorCtrl'
+        })
+    // Review page
+        .when('/review', {
+            templateUrl: '../static/pages/review.html',
+            controller: 'reviewCtrl'
+        })
 }]);
 
 // Create the controllers
@@ -211,6 +221,9 @@ myApp.controller('titleCtrl', ['$scope', 'title', function($scope, title) {
     $scope.reviews = title.reviews;
 }]);
 
+
+
+
 myApp.factory('title', function() {
     var title = 'Lolita';
     var year = 1955;
@@ -221,10 +234,8 @@ myApp.factory('title', function() {
                     ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras arcu eros, ' +
                     'eleifend vitae urna et tristique dapibus eros. Praesent at posuere ipsum, eu blandit dui. '
     var reviews = [
-        {id: 23, upvotes: 46, reviewer: 'n0rp3r_the_critic', revTitle: 'A great book!', score: 10, date: '2015-02-11',
-        language: 'Swedish', content: 'Even though some of the wit probably got lost in translation, this is a great book! 10/10!'},
-        {id: 24, upvotes: 2, reviewer: 'frau_blucher', revTitle: 'This book is filth!', score: 1, date: '2012-06-29',
-        language: 'Pig latin', content: 'Some books are too... Too!'}
+        {id: 23, upvotes: 46, reviewer: 'n0rp3r_the_critic', revTitle: 'A great book!', score: 10, date: '2015-02-11'},
+        {id: 24, upvotes: 2, reviewer: 'frau_blucher', revTitle: 'This book is filth!', score: 1, date: '2012-06-29'}
         ];
     return {
         title: title,
@@ -234,5 +245,64 @@ myApp.factory('title', function() {
         avgScore: avgScore,
         plot: plot,
         reviews: reviews
+    };
+});
+
+myApp.controller('reviewCtrl', ['$scope', 'review', function($scope, review) {
+    $scope.id = review.id;
+    $scope.bookTitle = review.bookTitle;
+    $scope.year = review.year;
+    $scope.reviewer = review.reviewer;
+    $scope.revTitle = review.revTitle;
+    $scope.score = review.score;
+    $scope.date = review.date;
+    $scope.language = review.language;
+    $scope.content = review.content;
+    $scope.upvotes = review.upvotes;
+    $scope.upvote = function() {
+        $scope.upvotes = $scope.upvotes + 1;
+    };
+}]);
+
+
+myApp.factory('review', function() {
+    var service = {};
+    service.id = 23;
+    service.bookTitle = "Lolita";
+    service.year = 1955;
+    service.reviewer = 'n0rp3r_the_critic';
+    service.revTitle = 'A great book!';
+    service.score= 10;
+    service.date = '2015-02-11';
+    service.language = 'Swedish';
+    service.content = 'Even though some of the wit probably got lost in translation, this is a great book! 10/10! ' +
+                    'consectetur adipiscing elit. Cras arcu eros, eleifend vitae urna et, ' +
+                    ' tristique dapibus eros. Praesent at posuere ipsum, eu blandit dui. ' +
+                    ' Etiam venenatis odio quis auctor ultricies. Quisque pretium vitae ' +
+                    'orci sit amet tempor. Vestibulum vehicula blandit tortor, venenatis ' +
+                    ' tempus nisi tempor ac. Vestibulum ante ipsum primis in faucibus orci luctus ' +
+                    'et ultrices posuere cubilia Curae; Fusce ac tempor eros, sit amet varius ex.'
+    service.upvotes = 46;
+
+    return service;
+});
+
+
+
+myApp.controller('authorCtrl', ['$scope', 'author', function($scope, author) {
+    $scope.name = author.name;
+    $scope.books = author.books;
+}]);
+
+myApp.factory('author', function() {
+    var name = 'Stephen King';
+    var books = [
+        { id: 35, title: 'It', year: 1986, avgScore: 8.3},
+        { id: 201, title: 'The Shining', year: 1977, avgScore: 8.0},
+        { id: 20, title: 'Carrie', year: 1976, avgScore: 7.4}
+        ];
+    return {
+        name: name,
+        books: books
     };
 });
