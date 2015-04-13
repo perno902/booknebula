@@ -4,7 +4,10 @@
     <div>
         <div class="panel panel-default col-sm-5">
             <div class="panel-body">
-                <p>Author: {{author}}</p>
+                <p>Author:
+                    <a href="/#/author">
+                    <button type="button" class="btn btn-link">{{author}}</button></a>
+                </p>
                 <p>Original language: {{origLang}}</p>
                 <br>
                 <p>Average score: {{avgScore}}</p>
@@ -36,7 +39,9 @@
         <tbody>
             <tr ng-repeat="r in reviews">
                 <td>{{r.upvotes}}</td>
-                <td>{{r.reviewer}}</td>
+                <td><a href="/#/profile">
+                    <button type="button" class="btn btn-link">{{r.reviewer}}</button>
+                </a></td>
                 <td><a href="/#/review">
                     <button type="button" class="btn btn-link">{{r.revTitle}}</button>
                 </a></td>

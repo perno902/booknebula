@@ -13,9 +13,9 @@ myApp.factory('userData', function() {
     '               tempus nisi tempor ac. Vestibulum ante ipsum primis in faucibus orci luctus ' +
                     'et ultrices posuere cubilia Curae; Fusce ac tempor eros, sit amet varius ex.';
     var reviews = [
-        { id: 14302, title: 'Lolita', year: 1955 , author: 'Vladimir Nabokov', score: 7, date: '2015-04-03', upvotes: 57},
-        { id: 9992, title: 'Wicked', year: 1995 , author: 'Gregory Maguire', score: 8, date: '2015-04-04', upvotes: 22},
-        { id: 20445, title: 'It', year: 1986 , author: 'Stephen King', score: 5, date: '2015-04-09', upvotes: 10}
+        { id: 14302, bookTitle: 'Lolita', year: 1955 , revTitle: 'A great book!!', score: 7, date: '2015-04-03', upvotes: 57},
+        { id: 9992, bookTitle: 'Wicked', year: 1995 , revTitle: 'Best book ever!', score: 8, date: '2015-04-04', upvotes: 22},
+        { id: 20445, bookTitle: 'It', year: 1986 , revTitle: 'King does it again!', score: 5, date: '2015-04-09', upvotes: 10}
     ];
     return {
         userName: userName,

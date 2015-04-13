@@ -14,8 +14,12 @@
     </thead>
     <tbody>
         <tr ng-repeat="b in topBooks">
-            <td>{{b.title}} ({{b.year}})</td>
-            <td>{{b.author}}</td>
+            <td><a href="/#/title">
+                    <button type="button" class="btn btn-link">{{b.title}} ({{b.year}})</button></a>
+            </td>
+            <td><a href="/#/author">
+                    <button type="button" class="btn btn-link">{{b.author}}</button></a>
+            </td>
             <td>{{b.score}}</td>
         </tr>
     </tbody>
@@ -31,7 +35,9 @@
     </thead>
     <tbody>
         <tr ng-repeat="r in topReviewers">
-            <td>{{r.name}}</td>
+            <td><a href="/#/profile">
+                    <button type="button" class="btn btn-link">{{r.name}}</button></a>
+            </td>
             <td>{{r.upvotes}}</td>
         </tr>
     </tbody>
