@@ -12,7 +12,7 @@ myApp.factory('search', function($rootScope) {
         { id: 102, title: 'Gregory Maguire'}
     ];
     service.reviewers = [
-        { id: 14302, userName: 'Pelle Nordfors'}
+        { id: 14302, userName: 'n0rp3r_the_critic'}
     ];
 
     service.updateQuery = function(query){
