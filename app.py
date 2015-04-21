@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, session, abort
-from flask_login import UserMixin, login_user, logout_user, current_user
+from flask_login import UserMixin, login_user, logout_user, current_user, LoginManager, login_required
 import urllib
 from uuid import uuid4
 import requests
@@ -12,19 +12,29 @@ user = None
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = "Vverysecret8238923787"
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 CLIENT_ID = "205573445883-9dl8ahcka67d4m7e21anb692do487odk.apps.googleusercontent.com"
 CLIENT_SECRET = "uaidYPHuy99kGHDwoz_CNd63"
 REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
 
+# Storing user objects
+users = {}
+
+@login_manager.user_loader
+def load_user(userid):
+    return users.get(userid)
+
+
 class User(UserMixin):
-    def __init__(self, userinfo):
-        self.id = userinfo['id']
-        self.name = userinfo['name']
+    def __init__(self, id_token):
+        self.id = id_token['email']
+        self.name = "n0rp3r_the_critic"
 
 @app.route("/")
 def init():
     url_auth = make_authorization_url()
-    print url_auth
     return render_template("index.html", URL_AUTH=url_auth)
 
 def make_authorization_url():
@@ -49,11 +59,15 @@ def login():
         abort(403)
 
     code = request.args.get('code', '')
-    print "Code:" + code
-
     id_token, access_token = get_tokens(code)
 
-    return json.dumps(id_token)
+    user = User(id_token)
+    users[id_token['email']] = user
+    login_user(user)
+
+    print user.id + " is now signed in"
+
+    return redirect('/')
 
 
 def get_tokens(code):
@@ -68,6 +82,16 @@ def get_tokens(code):
     ascii_str = token_json['id_token'].split('.')[1].encode('ascii')
     padded = ascii_str + '=' * (4 - len(ascii_str) % 4)
     return json.loads(base64.urlsafe_b64decode(padded)), token_json['access_token']
+
+@app.route('/logout')
+@login_required
+def logout():
+    print current_user.id + " has signed out"
+
+    logout_user()
+    session.clear()
+    return redirect('/')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
