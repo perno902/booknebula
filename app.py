@@ -10,7 +10,7 @@ import base64
 user = None
 
 app = Flask(__name__, static_url_path='/static')
-app.secret_key = "Vverysecret8238923787"
+app.config['SECRET_KEY'] = "Vverysecret8238923787"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -18,6 +18,8 @@ login_manager.init_app(app)
 CLIENT_ID = "205573445883-9dl8ahcka67d4m7e21anb692do487odk.apps.googleusercontent.com"
 CLIENT_SECRET = "uaidYPHuy99kGHDwoz_CNd63"
 REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
+
+valid_states = set()
 
 # Storing user objects
 users = {}
@@ -39,7 +41,8 @@ def init():
 
 def make_authorization_url():
     state = str(uuid4())
-    session['state'] = state
+    add_valid_state(state)
+
     params = {"client_id": CLIENT_ID,
               "response_type": "code",
               "state": state,
@@ -55,9 +58,9 @@ def login():
         return "Error:" + error
 
     state = request.args.get('state', '')
-    if state != session['state']:
+    if not is_valid_state(state):
         abort(403)
-
+    delete_state(state)
     code = request.args.get('code', '')
     id_token, access_token = get_tokens(code)
 
@@ -86,11 +89,23 @@ def get_tokens(code):
 @app.route('/logout')
 @login_required
 def logout():
+
     print current_user.id + " has signed out"
 
     logout_user()
-    session.clear()
+
     return redirect('/')
+
+def add_valid_state(state):
+    valid_states.add(state)
+
+def is_valid_state(state):
+    if state in valid_states:
+        return True
+    return False
+
+def delete_state(state):
+    valid_states.remove(state)
 
 
 if __name__ == "__main__":
