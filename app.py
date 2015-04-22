@@ -1,16 +1,20 @@
 from flask import Flask, render_template, redirect, request, session, abort
 from flask_login import UserMixin, login_user, logout_user, current_user, LoginManager, login_required
+from flask_sqlalchemy import SQLAlchemy
 import urllib
 from uuid import uuid4
 import requests
 import requests.auth
 import json
 import base64
+import database_helper
 
 user = None
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = "Vverysecret8238923787"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DATABASE.db'
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -36,8 +40,17 @@ class User(UserMixin):
 
 @app.route("/")
 def init():
+    database_helper.init_db()
     url_auth = make_authorization_url()
     return render_template("index.html", URL_AUTH=url_auth)
+
+
+@app.route("/dbtest")
+def dbtest():
+    print database_helper.test()
+    return ''
+
+
 
 def make_authorization_url():
     state = str(uuid4())
