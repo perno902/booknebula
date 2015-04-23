@@ -9,8 +9,6 @@ import json
 import base64
 import database_helper
 
-user = None
-
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = "Vverysecret8238923787"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DATABASE.db'
@@ -25,25 +23,31 @@ REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
 
 valid_states = set()
 
-# Storing user objects
+# Storing signed in users
 users = {}
 
 @login_manager.user_loader
 def load_user(userid):
-    return users.get(userid)
+    #return users.get(userid)
+    return database_helper.get_user_by_id(userid)
 
 
+'''
 class User(UserMixin):
     def __init__(self, id_token):
         self.id = id_token['email']
         self.name = "n0rp3r_the_critic"
+'''
 
 @app.route("/")
 def init():
-    database_helper.init_db()
     url_auth = make_authorization_url()
     return render_template("index.html", URL_AUTH=url_auth)
 
+@app.route("/dbinit")
+def dbinit():
+    database_helper.init_db()
+    return ''
 
 @app.route("/dbtest")
 def dbtest():
@@ -77,11 +81,20 @@ def login():
     code = request.args.get('code', '')
     id_token, access_token = get_tokens(code)
 
+    '''
     user = User(id_token)
     users[id_token['email']] = user
     login_user(user)
-
     print user.id + " is now signed in"
+    '''
+
+    email = id_token['email']
+    print email
+    user = database_helper.get_user(email)
+    if user is None:
+        user = database_helper.User('a', email, 'a', 'a', 'a')
+        database_helper.add_user(user)
+    login_user(user)
 
     return redirect('/')
 
@@ -102,12 +115,20 @@ def get_tokens(code):
 @app.route('/logout')
 @login_required
 def logout():
-
-    print current_user.id + " has signed out"
-
+    print current_user.email + " has signed out"
     logout_user()
-
     return redirect('/')
+
+@app.route('/getUserData')
+def get_user_data():
+    #id = request.args.get('userid, ''')
+    #print current_user.id
+    id = 1
+    data = database_helper.get_user_data(id)
+    print data
+    return json.dumps({'success': True, 'message': 'User data retrieved', 'data': data})
+
+
 
 def add_valid_state(state):
     valid_states.add(state)

@@ -8,20 +8,20 @@ db = SQLAlchemy(app.app)
 Base = declarative_base()
 
 upvotes = db.Table('upvotes',
-                   db.Column('reviewer_id', db.Integer, db.ForeignKey('reviewer.id')),
+                   db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                    db.Column('review_id', db.Integer, db.ForeignKey('review.id'))
 )
 
 
-class Reviewer(db.Model):
-    __tablename__ = 'reviewer'
+class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     username = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(80), unique=True)
     country = db.Column(db.String(50))
     presentation = db.Column(db.Text)
-    joined_date = db.Column(db.Date)
-    reviews = db.relationship('Review', backref='reviewer', lazy='dynamic')
+    joined_date = db.Column(db.String(20))
+    reviews = db.relationship('Review', backref='user', lazy='dynamic')
     upvotes = db.relationship('Review', secondary=upvotes, backref=db.backref('upvoter', lazy='dynamic'))
 
     def __init__(self, username, email, country, presentation, joined_date):
@@ -31,8 +31,20 @@ class Reviewer(db.Model):
         self.presentation = presentation
         self.joined_date = joined_date
 
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+
     def __repr__(self):
-        return '<Reviewer %r>' % self.joined_date
+        return '<User %r>' % self.id
 
 
 class Review(db.Model):
@@ -41,7 +53,7 @@ class Review(db.Model):
     content = db.Column(db.Text)
     score = db.Column(db.Integer)
     language = db.Column(db.String(50))
-    reviewer_id = db.Column(db.Integer, db.ForeignKey('reviewer.id'))
+    reviewer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
 
 
@@ -53,8 +65,7 @@ class Review(db.Model):
         self.reviewer_id = reviewer.id
         self.book_id = book.id
 
-    def __repr__(self):
-        return '<Review %r>' % self.title
+
 
 
 written_by = db.Table('written_by',
@@ -76,8 +87,6 @@ class Book(db.Model):
         self.year = year
         self.language = language
 
-    def __repr__(self):
-        return '<Book %r>' % self.id
 
 
 class Author(db.Model):
@@ -87,12 +96,11 @@ class Author(db.Model):
     def __init__(self, name):
         self.name = name
 
-    def __repr__(self):
-        return '<Author %r>' % self.id
+
 
 def test():
-    reviewer = Reviewer('n0rp3r_the_critic', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', datetime.date.today())
-    db.session.add(reviewer)
+    user = User('n0rp3r_the_critic', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', str(datetime.date.today()))
+    db.session.add(user)
     db.session.commit()
 
     author = Author('Vladimir Nabokov')
@@ -104,20 +112,49 @@ def test():
     db.session.add(book)
     db.session.commit()
 
-    review = Review('Awesome!', 'blabla', 9, 'Swedish', reviewer, book)
+    review = Review('Awesome!', 'blabla', 9, 'Swedish', user, book)
     db.session.add(review)
     db.session.commit()
 
 
-    print Reviewer.query.all()
+    print User.query.all()
     print Author.query.all()
     print Book.query.all()
     print Review.query.all()
 
     return ''
 
+def get_user(email):
+    user = User.query.filter_by(email=email).first()
+    return user
 
+def get_user_by_id(id):
+    user = User.query.filter_by(id=id).first()
+    return user
 
+def add_user(user):
+    db.session.add(user)
+    db.session.commit()
+
+def get_user_data(id):
+    profile_data = User.query.filter_by(id=id).first()
+    return row_to_dict(profile_data)
+
+def get_user_reviews(id):
+    reviews = Review.query.filter_by(reviewer_id=id).all()
+    list_to_dict(reviews)
+
+def list_to_dict(list):
+    res = []
+    for e in list:
+        res.append(row_to_dict(e))
+    return res
+
+def row_to_dict(obj):
+    if not (obj is None):
+        d = dict(obj.__dict__)
+        d.pop('_sa_instance_state')
+        return d
 
 def init_db():
     print "Initializing database"
