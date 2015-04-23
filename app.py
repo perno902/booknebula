@@ -23,37 +23,14 @@ REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
 
 valid_states = set()
 
-# Storing signed in users
-users = {}
-
 @login_manager.user_loader
 def load_user(userid):
-    #return users.get(userid)
     return database_helper.get_user_by_id(userid)
-
-
-'''
-class User(UserMixin):
-    def __init__(self, id_token):
-        self.id = id_token['email']
-        self.name = "n0rp3r_the_critic"
-'''
 
 @app.route("/")
 def init():
     url_auth = make_authorization_url()
     return render_template("index.html", URL_AUTH=url_auth)
-
-@app.route("/dbinit")
-def dbinit():
-    database_helper.init_db()
-    return ''
-
-@app.route("/dbtest")
-def dbtest():
-    print database_helper.test()
-    return ''
-
 
 
 def make_authorization_url():
@@ -81,18 +58,11 @@ def login():
     code = request.args.get('code', '')
     id_token, access_token = get_tokens(code)
 
-    '''
-    user = User(id_token)
-    users[id_token['email']] = user
-    login_user(user)
-    print user.id + " is now signed in"
-    '''
-
     email = id_token['email']
     print email
     user = database_helper.get_user(email)
     if user is None:
-        user = database_helper.User('a', email, 'a', 'a', 'a')
+        user = database_helper.User('', email, '', '', '')
         database_helper.add_user(user)
     login_user(user)
 
@@ -119,24 +89,28 @@ def logout():
     logout_user()
     return redirect('/')
 
-@app.route('/getUserData')
+@app.route('/userData', methods=["GET"])
 def get_user_data():
-    #id = request.args.get('userid, ''')
-    #print current_user.id
-    id = 1
+    id = request.args.get('userid, ''')
+    if id is None:
+        if current_user.id is None:
+            return json.dumps({'success': False, 'message': 'No user'})
+        else:
+            id = current_user.id
     data = database_helper.get_user_data(id)
     print data
     return json.dumps({'success': True, 'message': 'User data retrieved', 'data': data})
 
 
-
 def add_valid_state(state):
     valid_states.add(state)
+
 
 def is_valid_state(state):
     if state in valid_states:
         return True
     return False
+
 
 def delete_state(state):
     valid_states.remove(state)
@@ -145,3 +119,15 @@ def delete_state(state):
 if __name__ == "__main__":
     app.run(debug=True)
 
+
+# ---- Test routes ----
+
+@app.route("/dbinit")
+def dbinit():
+    database_helper.init_db()
+    return ''
+
+@app.route("/dbtest")
+def dbtest():
+    print database_helper.test()
+    return ''

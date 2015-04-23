@@ -16,20 +16,22 @@ upvotes = db.Table('upvotes',
 class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    username = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(80), unique=True)
+    userName = db.Column(db.String(50), unique=True)
+    email = db.Column(db.String(80))
     country = db.Column(db.String(50))
     presentation = db.Column(db.Text)
-    joined_date = db.Column(db.String(20))
+    joinedDate = db.Column(db.String(20))
     reviews = db.relationship('Review', backref='user', lazy='dynamic')
     upvotes = db.relationship('Review', secondary=upvotes, backref=db.backref('upvoter', lazy='dynamic'))
 
     def __init__(self, username, email, country, presentation, joined_date):
-        self.username = username
+        self.userName = username
         self.email = email
         self.country = country
         self.presentation = presentation
-        self.joined_date = joined_date
+        self.joinedDate = joined_date
+        print "userName: " + self.userName
+        print "date: " + self.joinedDate
 
     def is_authenticated(self):
         return True
@@ -96,16 +98,15 @@ class Author(db.Model):
     def __init__(self, name):
         self.name = name
 
-
+# ----- Test -----
 
 def test():
+    User.query.delete()
     user = User('n0rp3r_the_critic', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', str(datetime.date.today()))
     db.session.add(user)
     db.session.commit()
 
     author = Author('Vladimir Nabokov')
-    #db.session.add(author)
-    #db.session.commit()
 
     book = Book('Lolita', '1955', 'English')
     book.authors.append(author)
@@ -124,6 +125,8 @@ def test():
 
     return ''
 
+# ----- Help functions -----
+
 def get_user(email):
     user = User.query.filter_by(email=email).first()
     return user
@@ -138,11 +141,35 @@ def add_user(user):
 
 def get_user_data(id):
     profile_data = User.query.filter_by(id=id).first()
-    return row_to_dict(profile_data)
+    data_dict = row_to_dict(profile_data)
 
-def get_user_reviews(id):
+    noOfReviews = get_review_count(id)
+    data_dict['noOfReviews'] = noOfReviews
+    data_dict['grade'] = get_grade(noOfReviews)
+    data_dict['upvotes'] = get_upvotes_count(id)
+
     reviews = Review.query.filter_by(reviewer_id=id).all()
-    list_to_dict(reviews)
+    data_dict['reviews'] = list_to_dict(reviews)
+
+    return data_dict
+
+def get_review_count(id):
+    count = Review.query.filter_by(reviewer_id=id).count()
+    return count
+
+def get_grade(count):
+    if (count <= 10):
+        return "Beginning reader"
+    elif (count <= 20):
+        return "Intermediate reader"
+    elif (count <= 40):
+        return "Avid reader"
+    else:
+        return "Senior bookworm"
+
+def get_upvotes_count(id):
+    count = Review.query.filter(Review.upvoter.any(id=id)).count()
+    return count
 
 def list_to_dict(list):
     res = []
@@ -155,6 +182,8 @@ def row_to_dict(obj):
         d = dict(obj.__dict__)
         d.pop('_sa_instance_state')
         return d
+
+# ----- Init function -----
 
 def init_db():
     print "Initializing database"
