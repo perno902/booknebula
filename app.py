@@ -101,6 +101,16 @@ def get_user_data():
     print data
     return json.dumps({'success': True, 'message': 'User data retrieved', 'data': data})
 
+@app.route('/search', methods=["GET"])
+def get_search_results():
+    query = request.args.get('query')
+    if query is None:
+        return json.dumps({'status': 400, 'statusText': 'Query string missing.'})
+    data = database_helper.get_search_results(query)
+    print data
+    return json.dumps({'status': 200, 'statusText': 'Search results retrieved', 'data': data})
+
+
 
 def add_valid_state(state):
     valid_states.add(state)

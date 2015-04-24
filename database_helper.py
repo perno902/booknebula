@@ -183,6 +183,19 @@ def row_to_dict(obj):
         d.pop('_sa_instance_state')
         return d
 
+def get_search_results(query):
+    books = Book.query.filter(Book.title.contains(query))
+    authors = Author.query.filter(Author.name.contains(query))
+    users = User.query.filter(User.userName.contains(query))
+
+    data = {}
+    data['query'] = query
+    data['books'] = list_to_dict(books)
+    data['authors'] = list_to_dict(authors)
+    data['reviewers'] = list_to_dict(users)
+
+    return data
+
 # ----- Init function -----
 
 def init_db():
