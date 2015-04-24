@@ -1,0 +1,98 @@
+import app
+from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import declarative_base
+
+
+db = SQLAlchemy(app.app)
+Base = declarative_base()
+
+upvotes = db.Table('upvotes',
+                   db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                   db.Column('review_id', db.Integer, db.ForeignKey('review.id'))
+)
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    userName = db.Column(db.String(50), unique=True)
+    email = db.Column(db.String(80))
+    country = db.Column(db.String(50))
+    presentation = db.Column(db.Text)
+    joinedDate = db.Column(db.String(20))
+    reviews = db.relationship('Review', backref='user', lazy='dynamic')
+    upvotes = db.relationship('Review', secondary=upvotes, backref=db.backref('upvoter', lazy='dynamic'))
+
+    def __init__(self, username, email, country, presentation, joined_date):
+        self.userName = username
+        self.email = email
+        self.country = country
+        self.presentation = presentation
+        self.joinedDate = joined_date
+        print "userName: " + self.userName
+        print "date: " + self.joinedDate
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+
+    def __repr__(self):
+        return '<User %r>' % self.id
+
+
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80))
+    content = db.Column(db.Text)
+    score = db.Column(db.Integer)
+    language = db.Column(db.String(50))
+    reviewer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+
+
+    def __init__(self, title, content, score, language, reviewer, book):
+        self.title = title
+        self.content = content
+        self.score = score
+        self.language = language
+        self.reviewer_id = reviewer.id
+        self.book_id = book.id
+
+
+
+
+written_by = db.Table('written_by',
+                   db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
+                   db.Column('author_id', db.Integer, db.ForeignKey('author.id'))
+)
+
+
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    title = db.Column(db.String(80))
+    year = db.Column(db.String(4))
+    language = db.Column(db.String(50))
+    reviews = db.relationship('Review', backref='book', lazy='dynamic')
+    authors = db.relationship('Author', secondary=written_by, backref=db.backref('books', lazy='dynamic'))
+
+    def __init__(self, title, year, language):
+        self.title = title
+        self.year = year
+        self.language = language
+
+
+
+class Author(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+
+    def __init__(self, name):
+        self.name = name
