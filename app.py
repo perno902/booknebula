@@ -92,36 +92,35 @@ def logout():
 @app.route('/userData', methods=["GET"])
 def get_user_data():
     id = request.args.get('id')
-    if id is None:
-        if current_user.id is None:
-            return json.dumps({'success': False, 'message': 'No user'})
-        else:
+    if id == "signedIn":
+        try:
             id = current_user.id
+        except:
+            abort(403)
     data = database_helper.get_user_data(id)
-    return json.dumps({'success': True, 'data': data})
+    return json.dumps({'data': data})
 
 @app.route('/search', methods=["GET"])
 def get_search_results():
     query = request.args.get('query')
     if query is None:
-        return json.dumps({'status': 400, 'statusText': 'Query string missing.'})
+        abort(400)
     data = database_helper.get_search_results(query)
     print data
-    return json.dumps({'status': 200, 'statusText': 'Search results retrieved', 'data': data})
+    return json.dumps({'data': data})
 
 @app.route('/title', methods=["GET"])
 def get_title_data():
     id = request.args.get('id')
     data = database_helper.get_title_data(id)
     print data
-    return json.dumps({'status': 200, 'data': data})
+    return json.dumps({'data': data})
 
 @app.route('/author', methods=["GET"])
 def get_author_data():
     id = request.args.get('id')
     data = database_helper.get_author_data(id)
-    return json.dumps({'status': 200, 'data': data})
-
+    return json.dumps({'data': data})
 
 def add_valid_state(state):
     valid_states.add(state)

@@ -10,7 +10,7 @@ myApp.factory('userData', [ '$http', '$q', function($http, $q) {
             method: "get",
             url: "/userData",
             params: {
-                id: 1
+                id: userId
             }
         });
         return (request.then(handleSuccess, handleError));

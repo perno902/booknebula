@@ -4,6 +4,7 @@ myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function(
     setUserId();
     loadRemoteData();
 
+
     function setUserId() {
         userData.setUserId($scope.userId);
     };
