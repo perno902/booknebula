@@ -1,43 +1,5 @@
-import app
-from flask_sqlalchemy import SQLAlchemy
-from flask_sqlalchemy import declarative_base
 import models
-import datetime
 
-
-
-
-# ----- Test -----
-
-def test():
-    models.User.query.delete()
-    models.Book.query.delete()
-    models.Review.query.delete()
-    models.Author.query.delete()
-
-
-    user = models.User('n0rp3r_the_critic', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', str(datetime.date.today()))
-    models.db.session.add(user)
-    models.db.session.commit()
-
-    author = models.Author('Vladimir Nabokov')
-
-    book = models.Book('Lolita', '1955', 'A man marries his landlady so he can take advantage of her daughter.', 'English')
-    book.written_by.append(author)
-    models.db.session.add(author)
-    models.db.session.commit()
-
-    review = models.Review('Awesome!', 'blabla', 9, 'Swedish', str(datetime.date.today()), user, book)
-    models.db.session.add(review)
-    models.db.session.commit()
-
-
-    print list_to_dict(models.User.query.all())
-    print list_to_dict(models.Author.query.all())
-    print list_to_dict(models.Book.query.all())
-    print list_to_dict(models.Review.query.all())
-
-    return ''
 
 # ----- Help functions -----
 
@@ -147,12 +109,4 @@ def row_to_dict(obj):
         except:
             pass
         return d
-
-# ----- Init function -----
-
-def init_db():
-    print "Initializing database"
-    models.db.drop_all()
-    models.db.create_all()
-
 

@@ -8,6 +8,7 @@ import requests.auth
 import json
 import base64
 import database_helper
+import database_testdata
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = "Vverysecret8238923787"
@@ -143,15 +144,9 @@ def delete_state(state):
 
 @app.route("/dbinit")
 def dbinit():
-    database_helper.init_db()
+    database_testdata.init_db()
+    database_testdata.test()
     return ''
-
-@app.route("/dbtest")
-def dbtest():
-    print database_helper.test()
-    return ''
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)

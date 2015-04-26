@@ -8,8 +8,7 @@ Base = declarative_base()
 
 upvotes = db.Table('upvotes',
                    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                   db.Column('review_id', db.Integer, db.ForeignKey('review.id'))
-)
+                   db.Column('review_id', db.Integer, db.ForeignKey('review.id')))
 
 
 class User(db.Model):
@@ -29,8 +28,6 @@ class User(db.Model):
         self.country = country
         self.presentation = presentation
         self.joinedDate = joined_date
-        print "userName: " + self.userName
-        print "date: " + self.joinedDate
 
     def is_authenticated(self):
         return True
