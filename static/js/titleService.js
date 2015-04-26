@@ -1,5 +1,38 @@
-myApp.factory('title', function() {
-    var title = 'Lolita';
+myApp.factory('title', [ '$http', function($http) {
+    var bookId = '';
+    console.log('inside service');
+
+    function setBookId(id) {
+        bookId = id;
+    };
+
+
+    function getBookData() {
+        var request = $http({
+            method: "get",
+            url: "/title",
+            params: {
+                id: bookId
+            }
+        });
+        return (request.then(handleSuccess, handleError));
+    }
+
+    function handleError(response) {
+        console.log('error');
+    }
+
+    function handleSuccess(response) {
+        console.log('success');
+        return response.data.data;
+    }
+
+    return {
+        setBookId: setBookId,
+        getBookData: getBookData
+    };
+
+    /*var title = 'Lolita';
     var year = 1955;
     var author = 'Vladimir Nabokov';
     var origLang = 'English';
@@ -12,6 +45,7 @@ myApp.factory('title', function() {
         {id: 24, upvotes: 2, reviewer: 'frau_blucher', revTitle: 'This book is filth!', score: 1, date: '2012-06-29'}
         ];
     return {
+        setBookId: setBookId,
         title: title,
         year: year,
         author: author,
@@ -19,5 +53,5 @@ myApp.factory('title', function() {
         avgScore: avgScore,
         plot: plot,
         reviews: reviews
-    };
-});
+    };*/
+}]);

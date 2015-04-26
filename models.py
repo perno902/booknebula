@@ -50,26 +50,29 @@ class User(db.Model):
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80))
+    revTitle = db.Column(db.String(80))
     content = db.Column(db.Text)
     score = db.Column(db.Integer)
     language = db.Column(db.String(50))
+    date = db.Column(db.String(20))
     reviewer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    upvoters = db.relationship('User', secondary=upvotes, backref=db.backref('upvoted_review', lazy='dynamic'))
 
 
-    def __init__(self, title, content, score, language, reviewer, book):
-        self.title = title
+    def __init__(self, title, content, score, language, date, reviewer, book):
+        self.revTitle = title
         self.content = content
         self.score = score
         self.language = language
+        self.date = date
         self.reviewer_id = reviewer.id
         self.book_id = book.id
 
 
 
 
-written_by = db.Table('written_by',
+has_written = db.Table('has_written',
                    db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
                    db.Column('author_id', db.Integer, db.ForeignKey('author.id'))
 )
@@ -79,13 +82,15 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String(80))
     year = db.Column(db.String(4))
+    plot = db.Column(db.Text)
     language = db.Column(db.String(50))
     reviews = db.relationship('Review', backref='book', lazy='dynamic')
-    authors = db.relationship('Author', secondary=written_by, backref=db.backref('books', lazy='dynamic'))
+    has_written = db.relationship('Author', secondary=has_written, backref=db.backref('books', lazy='dynamic'))
 
-    def __init__(self, title, year, language):
+    def __init__(self, title, year, plot, language):
         self.title = title
         self.year = year
+        self.plot = plot
         self.language = language
 
 
@@ -93,6 +98,8 @@ class Book(db.Model):
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
+
+
 
     def __init__(self, name):
         self.name = name

@@ -11,26 +11,31 @@ import datetime
 
 def test():
     models.User.query.delete()
+    models.Book.query.delete()
+    models.Review.query.delete()
+    models.Author.query.delete()
+
+
     user = models.User('n0rp3r_the_critic', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', str(datetime.date.today()))
     models.db.session.add(user)
     models.db.session.commit()
 
     author = models.Author('Vladimir Nabokov')
 
-    book = models.Book('Lolita', '1955', 'English')
-    book.authors.append(author)
-    models.db.session.add(book)
+    book = models.Book('Lolita', '1955', 'A man marries his landlady so he can take advantage of her daughter.', 'English')
+    book.has_written.append(author)
+    models.db.session.add(author)
     models.db.session.commit()
 
-    review = models.Review('Awesome!', 'blabla', 9, 'Swedish', user, book)
+    review = models.Review('Awesome!', 'blabla', 9, 'Swedish', str(datetime.date.today()), user, book)
     models.db.session.add(review)
     models.db.session.commit()
 
 
-    print models.User.query.all()
-    print models.Author.query.all()
-    print models.Book.query.all()
-    print models.Review.query.all()
+    print list_to_dict(models.User.query.all())
+    print list_to_dict(models.Author.query.all())
+    print list_to_dict(models.Book.query.all())
+    print list_to_dict(models.Review.query.all())
 
     return ''
 
@@ -89,7 +94,10 @@ def list_to_dict(list):
 def row_to_dict(obj):
     if not (obj is None):
         d = dict(obj.__dict__)
-        d.pop('_sa_instance_state')
+        try:
+            d.pop('_sa_instance_state')
+        except:
+            pass
         return d
 
 def get_search_results(query):
@@ -104,6 +112,23 @@ def get_search_results(query):
     data['reviewers'] = list_to_dict(users)
 
     return data
+
+def get_title_data(id):
+    data = row_to_dict(models.Book.query.filter_by(id=id).first())
+    data['authors'] = list_to_dict(models.Author.query.filter(models.Author.books.any(id=id)).all())
+    reviews = list_to_dict(models.Review.query.filter_by(book_id=id).all())
+    data['reviews'] = get_reviews_data(reviews)
+    print "data:"
+    print data
+
+    return data
+
+def get_reviews_data(reviews):
+    for review in reviews:
+        id = review['reviewer_id']
+        review['reviewer'] = row_to_dict(models.User.query.filter_by(id=id).first())['userName']
+        review['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=id)).count()
+    return reviews
 
 # ----- Init function -----
 

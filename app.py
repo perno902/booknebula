@@ -110,7 +110,12 @@ def get_search_results():
     print data
     return json.dumps({'status': 200, 'statusText': 'Search results retrieved', 'data': data})
 
-
+@app.route('/title', methods=["GET"])
+def get_title_data():
+    id = request.args.get('id')
+    data = database_helper.get_title_data(id)
+    print "Getting title..."
+    return json.dumps({'status': 200, 'data': data})
 
 def add_valid_state(state):
     valid_states.add(state)
@@ -125,12 +130,7 @@ def is_valid_state(state):
 def delete_state(state):
     valid_states.remove(state)
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
-# ---- Test routes ----
+    # ---- Test routes ----
 
 @app.route("/dbinit")
 def dbinit():
@@ -141,3 +141,10 @@ def dbinit():
 def dbtest():
     print database_helper.test()
     return ''
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+

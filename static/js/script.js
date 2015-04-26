@@ -46,7 +46,7 @@ myApp.config(['$routeProvider',
             controller: 'searchResultsCtrl'
         })
     // Title page
-        .when('/title', {
+        .when('/title/:titleId', {
             templateUrl: '../static/pages/title.html',
             controller: 'titleCtrl'
         })

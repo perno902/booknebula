@@ -4,11 +4,14 @@
     <div>
         <div class="panel panel-default col-sm-5">
             <div class="panel-body">
-                <p>Author:
-                    <a href="/#/author">
-                    <button type="button" class="btn btn-link">{{author}}</button></a>
-                </p>
-                <p>Original language: {{origLang}}</p>
+                <p ng-hide="multipleAuthors">Author:</p>
+                <p ng-show="multipleAuthors">Authors:</p>
+                    <a href="/#/author/{{a.id}}" ng-repeat="a in authors">
+                        <p><button type="button" class="btn btn-link">{{a.name}}</button>
+                    </a></p>
+
+
+                <p>Original language: {{language}}</p>
                 <br>
                 <p>Average score: {{avgScore}}</p>
             </div>
@@ -39,10 +42,10 @@
         <tbody>
             <tr ng-repeat="r in reviews">
                 <td>{{r.upvotes}}</td>
-                <td><a href="/#/profile">
+                <td><a href="/#/profile/{{r.reviewer_id}}">
                     <button type="button" class="btn btn-link">{{r.reviewer}}</button>
                 </a></td>
-                <td><a href="/#/review">
+                <td><a href="/#/review/{{r.id}}">
                     <button type="button" class="btn btn-link">{{r.revTitle}}</button>
                 </a></td>
                 <td>{{r.score}}</td>
