@@ -95,6 +95,7 @@ class Book(db.Model):
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
+    wrote = db.relationship('Book', secondary=has_written, backref=db.backref('author', lazy='dynamic'))
 
 
 

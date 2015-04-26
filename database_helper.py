@@ -91,8 +91,9 @@ def get_review_data(id):
 
 def get_author_data(id):
     data = row_to_dict(models.Author.query.filter_by(id=id).first())
-    books = models.Book.query.filter_by(id=models.Author.books)
-    data['books'] = list_to_dict(books)
+
+    # Denna rad buggar:
+    data['books'] = list_to_dict(models.Book.query.filter(models.Book.author.any(id=id)).all())
     return data
 
 def list_to_dict(list):
