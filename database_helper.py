@@ -108,15 +108,24 @@ def get_title_data(id):
 
 def get_reviews_data(reviews):
     for review in reviews:
-        id = review['reviewerId']
-        reviewer = row_to_dict(models.User.query.filter_by(id=id).first())
-        review['reviewer'] = reviewer['userName']
-        review['reviewerId'] = reviewer['id']
-        review['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=id)).count()
-        book = row_to_dict(models.Book.query.filter_by(id=review['bookId']).first())
-        review['bookTitle'] = book['title']
-        review['year'] = book['year']
+        add_review_data(review)
     return reviews
+
+def add_review_data(review):
+    id = review['reviewerId']
+    reviewer = row_to_dict(models.User.query.filter_by(id=id).first())
+    review['reviewer'] = reviewer['userName']
+    review['reviewerId'] = reviewer['id']
+    review['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=id)).count()
+    book = row_to_dict(models.Book.query.filter_by(id=review['bookId']).first())
+    review['bookTitle'] = book['title']
+    review['year'] = book['year']
+
+def get_review_data(id):
+    review = row_to_dict(models.Review.query.filter_by(id=id).first())
+    add_review_data(review)
+    return review
+
 
 def get_author_data(id):
     data = row_to_dict(models.Author.query.filter_by(id=id).first())

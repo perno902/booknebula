@@ -106,20 +106,24 @@ def get_search_results():
     if query is None:
         abort(400)
     data = database_helper.get_search_results(query)
-    print data
     return json.dumps({'data': data})
 
 @app.route('/title', methods=["GET"])
 def get_title_data():
     id = request.args.get('id')
     data = database_helper.get_title_data(id)
-    print data
     return json.dumps({'data': data})
 
 @app.route('/author', methods=["GET"])
 def get_author_data():
     id = request.args.get('id')
     data = database_helper.get_author_data(id)
+    return json.dumps({'data': data})
+
+@app.route('/review', methods=["GET"])
+def get_review_data():
+    id = request.args.get('id')
+    data = database_helper.get_review_data(id)
     return json.dumps({'data': data})
 
 def add_valid_state(state):
