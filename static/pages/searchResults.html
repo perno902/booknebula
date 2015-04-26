@@ -22,7 +22,7 @@
 <div ng-hide="isEmpty(reviewers())">
     <h4>Reviewers:</h4>
     <div ng-repeat="r in reviewers()">
-        <a href="/#/profile">
+        <a href="/#/profile/{{r.id}}">
             <button type="button" class="btn btn-link">{{r.userName}}</button>
         </a>
     </div>

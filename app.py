@@ -91,15 +91,14 @@ def logout():
 
 @app.route('/userData', methods=["GET"])
 def get_user_data():
-    id = request.args.get('userid, ''')
+    id = request.args.get('id')
     if id is None:
         if current_user.id is None:
             return json.dumps({'success': False, 'message': 'No user'})
         else:
             id = current_user.id
     data = database_helper.get_user_data(id)
-    print data
-    return json.dumps({'success': True, 'message': 'User data retrieved', 'data': data})
+    return json.dumps({'success': True, 'data': data})
 
 @app.route('/search', methods=["GET"])
 def get_search_results():
@@ -114,6 +113,7 @@ def get_search_results():
 def get_title_data():
     id = request.args.get('id')
     data = database_helper.get_title_data(id)
+    print data
     return json.dumps({'status': 200, 'data': data})
 
 @app.route('/author', methods=["GET"])

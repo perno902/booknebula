@@ -1,5 +1,9 @@
 myApp.factory('userData', [ '$http', '$q', function($http, $q) {
-    return ({getUserData: getUserData});
+    var userId = '';
+
+    function setUserId(id) {
+        userId = id;
+    };
 
     function getUserData() {
         var request = $http({
@@ -25,6 +29,9 @@ myApp.factory('userData', [ '$http', '$q', function($http, $q) {
         return response.data.data
     }
 
-
+    return ({
+        getUserData: getUserData,
+        setUserId: setUserId
+    });
 
 }]);

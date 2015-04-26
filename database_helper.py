@@ -62,13 +62,13 @@ def get_user_data(id):
     data_dict['grade'] = get_grade(noOfReviews)
     data_dict['upvotes'] = get_upvotes_count(id)
 
-    reviews = models.Review.query.filter_by(reviewer_id=id).all()
-    data_dict['reviews'] = list_to_dict(reviews)
+    reviews = list_to_dict(models.Review.query.filter_by(reviewerId=id).all())
+    data_dict['reviews'] = get_reviews_data(reviews)
 
     return data_dict
 
 def get_review_count(id):
-    count = models.Review.query.filter_by(reviewer_id=id).count()
+    count = models.Review.query.filter_by(reviewerId=id).count()
     return count
 
 def get_grade(count):
@@ -84,21 +84,6 @@ def get_grade(count):
 def get_upvotes_count(id):
     count = models.Review.query.filter(models.Review.upvoter.any(id=id)).count()
     return count
-
-def list_to_dict(list):
-    res = []
-    for e in list:
-        res.append(row_to_dict(e))
-    return res
-
-def row_to_dict(obj):
-    if not (obj is None):
-        d = dict(obj.__dict__)
-        try:
-            d.pop('_sa_instance_state')
-        except:
-            pass
-        return d
 
 def get_search_results(query):
     books = models.Book.query.filter(models.Book.title.contains(query))
@@ -116,16 +101,21 @@ def get_search_results(query):
 def get_title_data(id):
     data = row_to_dict(models.Book.query.filter_by(id=id).first())
     data['authors'] = list_to_dict(models.Author.query.filter(models.Author.books.any(id=id)).all())
-    reviews = list_to_dict(models.Review.query.filter_by(book_id=id).all())
+    reviews = list_to_dict(models.Review.query.filter_by(bookId=id).all())
     data['reviews'] = get_reviews_data(reviews)
 
     return data
 
 def get_reviews_data(reviews):
     for review in reviews:
-        id = review['reviewer_id']
-        review['reviewer'] = row_to_dict(models.User.query.filter_by(id=id).first())['userName']
+        id = review['reviewerId']
+        reviewer = row_to_dict(models.User.query.filter_by(id=id).first())
+        review['reviewer'] = reviewer['userName']
+        review['reviewerId'] = reviewer['id']
         review['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=id)).count()
+        book = row_to_dict(models.Book.query.filter_by(id=review['bookId']).first())
+        review['bookTitle'] = book['title']
+        review['year'] = book['year']
     return reviews
 
 def get_author_data(id):
@@ -133,6 +123,21 @@ def get_author_data(id):
     books = models.Book.query.filter_by(id=models.Author.books)
     data['books'] = list_to_dict(books)
     return data
+
+def list_to_dict(list):
+    res = []
+    for e in list:
+        res.append(row_to_dict(e))
+    return res
+
+def row_to_dict(obj):
+    if not (obj is None):
+        d = dict(obj.__dict__)
+        try:
+            d.pop('_sa_instance_state')
+        except:
+            pass
+        return d
 
 # ----- Init function -----
 

@@ -1,15 +1,12 @@
-myApp.controller('profileCtrl', ['$scope', 'userData', function($scope, userData) {
-    $scope.userName = '';
-    $scope.email = '';
-    $scope.noOfReviews = '';
-    $scope.grade = '';
-    $scope.upvotes = '';
-    $scope.joinedDate = '';
-    $scope.country = '';
-    $scope.presentation = '';
-    $scope.reviews = [];
+myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function($scope, $routeParams, userData) {
+    $scope.userId = $routeParams.userId;
 
+    setUserId();
     loadRemoteData();
+
+    function setUserId() {
+        userData.setUserId($scope.userId);
+    };
 
     function applyRemoteData(userData) {
 
@@ -35,4 +32,18 @@ myApp.controller('profileCtrl', ['$scope', 'userData', function($scope, userData
         )
 
     }
+
+    /*
+    $scope.userName = '';
+    $scope.email = '';
+    $scope.noOfReviews = '';
+    $scope.grade = '';
+    $scope.upvotes = '';
+    $scope.joinedDate = '';
+    $scope.country = '';
+    $scope.presentation = '';
+    $scope.reviews = [];
+
+
+     */
 }]);

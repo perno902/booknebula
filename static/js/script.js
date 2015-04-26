@@ -31,7 +31,7 @@ myApp.config(['$routeProvider',
             controller: 'toplistCtrl'
         })
     // Profile page
-        .when('/profile', {
+        .when('/profile/:userId', {
             templateUrl: '../static/pages/profile.html',
             controller: 'profileCtrl'
         })

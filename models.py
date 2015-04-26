@@ -55,8 +55,8 @@ class Review(db.Model):
     score = db.Column(db.Integer)
     language = db.Column(db.String(50))
     date = db.Column(db.String(20))
-    reviewer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    reviewerId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    bookId = db.Column(db.Integer, db.ForeignKey('book.id'))
     upvoters = db.relationship('User', secondary=upvotes, backref=db.backref('upvoted_review', lazy='dynamic'))
 
 
@@ -66,8 +66,8 @@ class Review(db.Model):
         self.score = score
         self.language = language
         self.date = date
-        self.reviewer_id = reviewer.id
-        self.book_id = book.id
+        self.reviewerId = reviewer.id
+        self.bookId = book.id
 
 
 
