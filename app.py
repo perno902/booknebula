@@ -114,8 +114,14 @@ def get_search_results():
 def get_title_data():
     id = request.args.get('id')
     data = database_helper.get_title_data(id)
-    print "Getting title..."
     return json.dumps({'status': 200, 'data': data})
+
+@app.route('/author', methods=["GET"])
+def get_author_data():
+    id = request.args.get('id')
+    data = database_helper.get_author_data(id)
+    return json.dumps({'status': 200, 'data': data})
+
 
 def add_valid_state(state):
     valid_states.add(state)

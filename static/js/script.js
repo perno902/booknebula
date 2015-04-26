@@ -51,7 +51,7 @@ myApp.config(['$routeProvider',
             controller: 'titleCtrl'
         })
     // Author page
-        .when('/author', {
+        .when('/author/:authorId', {
             templateUrl: '../static/pages/author.html',
             controller: 'authorCtrl'
         })

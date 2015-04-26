@@ -13,7 +13,7 @@
 <div ng-hide="isEmpty(authors())">
     <h4>Authors:</h4>
     <div ng-repeat="a in authors()">
-        <a href="/#/author">
+        <a href="/#/author/{{a.id}}">
             <button type="button" class="btn btn-link">{{a.name}}</button>
         </a>
     </div>

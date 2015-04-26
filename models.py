@@ -85,7 +85,7 @@ class Book(db.Model):
     plot = db.Column(db.Text)
     language = db.Column(db.String(50))
     reviews = db.relationship('Review', backref='book', lazy='dynamic')
-    has_written = db.relationship('Author', secondary=has_written, backref=db.backref('books', lazy='dynamic'))
+    written_by = db.relationship('Author', secondary=has_written, backref=db.backref('books', lazy='dynamic'))
 
     def __init__(self, title, year, plot, language):
         self.title = title

@@ -23,7 +23,7 @@ def test():
     author = models.Author('Vladimir Nabokov')
 
     book = models.Book('Lolita', '1955', 'A man marries his landlady so he can take advantage of her daughter.', 'English')
-    book.has_written.append(author)
+    book.written_by.append(author)
     models.db.session.add(author)
     models.db.session.commit()
 
@@ -118,8 +118,6 @@ def get_title_data(id):
     data['authors'] = list_to_dict(models.Author.query.filter(models.Author.books.any(id=id)).all())
     reviews = list_to_dict(models.Review.query.filter_by(book_id=id).all())
     data['reviews'] = get_reviews_data(reviews)
-    print "data:"
-    print data
 
     return data
 
@@ -129,6 +127,12 @@ def get_reviews_data(reviews):
         review['reviewer'] = row_to_dict(models.User.query.filter_by(id=id).first())['userName']
         review['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=id)).count()
     return reviews
+
+def get_author_data(id):
+    data = row_to_dict(models.Author.query.filter_by(id=id).first())
+    books = models.Book.query.filter_by(id=models.Author.books)
+    data['books'] = list_to_dict(books)
+    return data
 
 # ----- Init function -----
 
