@@ -23,7 +23,6 @@ myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function(
     }
 
     function loadRemoteData() {
-        console.log('loading remote data')
         userData.getUserData()
             .then(
                 function(userData) {
@@ -32,18 +31,5 @@ myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function(
         )
 
     }
-
-    /*
-    $scope.userName = '';
-    $scope.email = '';
-    $scope.noOfReviews = '';
-    $scope.grade = '';
-    $scope.upvotes = '';
-    $scope.joinedDate = '';
-    $scope.country = '';
-    $scope.presentation = '';
-    $scope.reviews = [];
-
-
-     */
+    
 }]);

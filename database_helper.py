@@ -19,19 +19,18 @@ def get_user_data(id):
     profile_data = models.User.query.filter_by(id=id).first()
     data_dict = row_to_dict(profile_data)
 
-    noOfReviews = get_review_count(id)
-    data_dict['noOfReviews'] = noOfReviews
-    data_dict['grade'] = get_grade(noOfReviews)
-    data_dict['upvotes'] = get_upvotes_count(id)
-
     reviews = list_to_dict(models.Review.query.filter_by(reviewerId=id).all())
     data_dict['reviews'] = get_reviews_data(reviews)
 
+    noOfReviews = get_review_count(reviews)
+    data_dict['noOfReviews'] = noOfReviews
+    data_dict['grade'] = get_grade(noOfReviews)
+    data_dict['upvotes'] = get_upvotes_count(reviews)
+
     return data_dict
 
-def get_review_count(id):
-    count = models.Review.query.filter_by(reviewerId=id).count()
-    return count
+def get_review_count(reviews):
+    return len(reviews)
 
 def get_grade(count):
     if (count <= 10):
@@ -43,8 +42,10 @@ def get_grade(count):
     else:
         return "Senior bookworm"
 
-def get_upvotes_count(id):
-    count = models.Review.query.filter(models.Review.upvoter.any(id=id)).count()
+def get_upvotes_count(reviews):
+    count = 0
+    for review in reviews:
+        count += review['upvotes']
     return count
 
 def get_search_results(query):
