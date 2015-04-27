@@ -1,4 +1,4 @@
-<h3>{{title}}  <small>({{year}})</small></h3><br>
+<h3>{{title()}}  <small>({{year()}})</small></h3><br>
 
 <div class="row">
     <div>
@@ -6,20 +6,20 @@
             <div class="panel-body">
                 <p ng-hide="multipleAuthors">Author:</p>
                 <p ng-show="multipleAuthors">Authors:</p>
-                    <a href="/#/author/{{a.id}}" ng-repeat="a in authors">
+                    <a href="/#/author/{{a.id}}" ng-repeat="a in authors()">
                         <p><button type="button" class="btn btn-link">{{a.name}}</button>
                     </a></p>
 
 
-                <p>Original language: {{language}}</p>
+                <p>Original language: {{language()}}</p>
                 <br>
-                <p>Average score: {{avgScore}}</p>
+                <p>Average score: {{avgScore()}}</p>
             </div>
         </div>
     </div>
 
     <div class="panel panel-default col-sm-6 pull-right">
-            <div class="panel-body">{{plot}}</div>
+            <div class="panel-body">{{plot()}}</div>
     </div>
 </div><br>
 
@@ -40,7 +40,7 @@
                 </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="r in reviews">
+            <tr ng-repeat="r in reviews()">
                 <td>{{r.upvotes}}</td>
                 <td><a href="/#/profile/{{r.reviewerId}}">
                     <button type="button" class="btn btn-link">{{r.reviewer}}</button>
