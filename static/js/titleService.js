@@ -46,6 +46,7 @@ myApp.factory('title', [ '$http', function($http) {
     return {
         setBookId: setBookId,
         getBookData: getBookData,
+        bookId: function() {return bookId},
         title: function() {return title},
         year: function() {return year},
         authors: function() {return authors},

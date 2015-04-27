@@ -122,10 +122,25 @@ def get_author_data():
     return json.dumps({'data': data})
 
 @app.route('/review', methods=["GET"])
-def get_review_data():
-    id = request.args.get('id')
-    data = database_helper.get_review_data(id)
-    return json.dumps({'data': data})
+def get_review():
+    if request.method == "GET":
+        id = request.args.get('id')
+        data = database_helper.get_review_data(id)
+        return json.dumps({'data': data})
+
+@app.route('/review', methods=["POST"])
+@login_required
+def submit_review():
+    if request.method == "POST":
+        try:
+            user_id = current_user.id
+        except:
+            abort(403)
+        data = json.loads(request.data)
+        database_helper.submit_review(data, user_id)
+        return ''
+
+
 
 def add_valid_state(state):
     valid_states.add(state)

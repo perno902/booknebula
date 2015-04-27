@@ -1,5 +1,5 @@
 import models
-
+import datetime
 
 # ----- Help functions -----
 
@@ -91,10 +91,16 @@ def get_review_data(id):
 
 def get_author_data(id):
     data = row_to_dict(models.Author.query.filter_by(id=id).first())
-
-    # Denna rad buggar:
     data['books'] = list_to_dict(models.Book.query.filter(models.Book.author.any(id=id)).all())
     return data
+
+
+def submit_review(data, user_id):
+    user = models.User.query.filter_by(id=user_id).first()
+    book = models.Book.query.filter_by(id=data['bookId']).first()
+    review = models.Review(data['revTitle'], data['content'], data['score'], data['language'], str(datetime.date.today()), user, book)
+    models.db.session.add(review)
+    models.db.session.commit()
 
 def list_to_dict(list):
     res = []

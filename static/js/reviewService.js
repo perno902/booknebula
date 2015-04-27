@@ -17,6 +17,22 @@ myApp.factory('review', [ '$http', function($http) {
         return (request.then(handleSuccess, handleError));
     }
 
+    function submitReview(data) {
+        console.log('submitting in service')
+        var request = $http({
+            method: "post",
+            url: "/review",
+            data: {
+                bookId: data.bookId,
+                revTitle: data.revTitle,
+                score: data.score,
+                content: data.content,
+                language: data.language
+            }
+        });
+        return (request.then(handleSuccess, handleError));
+    };
+
     function handleError(response) {
         console.log('error');
     }
@@ -28,7 +44,8 @@ myApp.factory('review', [ '$http', function($http) {
 
     return {
         setReviewId: setReviewId,
-        getReviewData: getReviewData
+        getReviewData: getReviewData,
+        submitReview: submitReview
     };
 
 }]);
