@@ -140,7 +140,17 @@ def submit_review():
         database_helper.submit_review(data, user_id)
         return ''
 
-
+@app.route('/upvote', methods=["POST"])
+@login_required
+def upvote():
+    if request.method == "POST":
+        try:
+            user_id = current_user.id
+        except:
+            abort(403)
+        review_id = json.loads(request.data)['id']
+        data = database_helper.upvote(user_id, review_id)
+        return json.dumps({'data': data})
 
 def add_valid_state(state):
     valid_states.add(state)

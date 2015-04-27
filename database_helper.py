@@ -74,11 +74,10 @@ def get_reviews_data(reviews):
     return reviews
 
 def add_review_data(review):
-    id = review['reviewerId']
-    reviewer = row_to_dict(models.User.query.filter_by(id=id).first())
+    reviewer = row_to_dict(models.User.query.filter_by(id=review['reviewerId']).first())
     review['reviewer'] = reviewer['userName']
     review['reviewerId'] = reviewer['id']
-    review['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=id)).count()
+    review['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=review['id'])).count()
     book = row_to_dict(models.Book.query.filter_by(id=review['bookId']).first())
     review['bookTitle'] = book['title']
     review['year'] = book['year']
@@ -101,6 +100,13 @@ def submit_review(data, user_id):
     review = models.Review(data['revTitle'], data['content'], data['score'], data['language'], str(datetime.date.today()), user, book)
     models.db.session.add(review)
     models.db.session.commit()
+
+def upvote(user_id, review_id):
+    user = models.User.query.filter_by(id=user_id).first()
+    review = models.Review.query.filter_by(id=review_id).first()
+    review.upvoters.append(user)
+    models.db.session.commit()
+    return models.User.query.filter(models.User.upvoted_review.any(id=review_id)).count()
 
 def list_to_dict(list):
     res = []

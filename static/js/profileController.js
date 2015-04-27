@@ -27,7 +27,6 @@ myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function(
         userData.getUserData()
             .then(
                 function(userData) {
-                    console.log(userData)
                     applyRemoteData(userData)
                 }
         )

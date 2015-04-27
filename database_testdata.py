@@ -25,7 +25,7 @@ def test():
     models.db.session.add(user1)
     models.db.session.commit()
 
-    user2 = models.User('mrsLovett', 'lovett@mail.com', 'England', '''A great fan of fiction. Lorem ipsum dolor sit
+    user2 = models.User('missusLovett', 'lovett@mail.com', 'England', '''A great fan of fiction. Lorem ipsum dolor sit
                         amet, consectetur adipiscing elit, sed do eiusmod tempor  incididunt ut labore et dolore magna aliqua. ''',
                         str(datetime.date.today()))
 

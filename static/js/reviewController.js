@@ -26,14 +26,18 @@ myApp.controller('reviewCtrl', ['$scope', '$routeParams', 'review', function($sc
         review.getReviewData()
             .then(
                 function(reviewData) {
-                    console.log(reviewData);
                     applyRemoteData(reviewData);
                 }
         )
     }
 
     $scope.upvote = function() {
-        $scope.upvotes = $scope.upvotes + 1;
+        review.upvote()
+            .then(
+                function(upvotes) {
+                    $scope.upvotes = upvotes;
+                }
+        )
     };
 
 }]);
