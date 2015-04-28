@@ -121,6 +121,15 @@ def has_reviewed(user_id, book_id):
     count = models.Review.query.filter_by(bookId=book_id, reviewerId=user_id).count()
     return count > 0
 
+def submit_user_data(id, name, country, email, presentation):
+    user = models.User.query.filter_by(id=id).first()
+    user.userName = name
+    user.country = country
+    user.email = email
+    user.presentation = presentation
+    models.db.session.commit()
+
+
 def list_to_dict(list):
     res = []
     for e in list:

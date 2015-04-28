@@ -102,8 +102,25 @@ def get_user_data():
             own = True
             id = current_user.id
     data = database_helper.get_user_data(id)
+    data['userId'] = id
     data['own'] = own
     return json.dumps({'data': data})
+
+@app.route('/userData', methods=["POST"])
+@login_required
+def submit_user_data():
+    if request.method == "POST":
+        data = json.loads(request.data)
+        id = data['userId']
+        name = data['userName']
+        country = data['country']
+        email = data['email']
+        presentation = data['presentation']
+        if id != current_user.id:
+            abort(403)
+
+        database_helper.submit_user_data(id, name, country, email, presentation)
+        return ''
 
 @app.route('/search', methods=["GET"])
 def get_search_results():
@@ -150,10 +167,7 @@ def get_review():
 @login_required
 def submit_review():
     if request.method == "POST":
-        try:
-            user_id = current_user.id
-        except:
-            abort(403)
+        user_id = current_user.id
         data = json.loads(request.data)
         database_helper.submit_review(data, user_id)
         return ''
@@ -162,10 +176,7 @@ def submit_review():
 @login_required
 def upvote():
     if request.method == "POST":
-        try:
-            user_id = current_user.id
-        except:
-            abort(403)
+        user_id = current_user.id
         review_id = json.loads(request.data)['id']
         data = database_helper.upvote(user_id, review_id)
         return json.dumps({'data': data})

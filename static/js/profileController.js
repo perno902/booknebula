@@ -1,36 +1,25 @@
 myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function($scope, $routeParams, userData) {
     $scope.userId = $routeParams.userId;
 
-    setUserId();
     loadRemoteData();
 
-
-    function setUserId() {
+    function loadRemoteData() {
         userData.setUserId($scope.userId);
+        userData.getUserData()
     };
 
-    function applyRemoteData(userData) {
 
-        $scope.userName = userData.userName;
-        $scope.email = userData.email;
-        $scope.noOfReviews = userData.noOfReviews;
-        $scope.grade = userData.grade;
-        $scope.noOfUpvotes = userData.upvotes;
-        $scope.joinedDate = userData.joinedDate;
-        $scope.country = userData.country;
-        $scope.presentation = userData.presentation;
-        $scope.reviews = userData.reviews;
-        $scope.own = userData.own;
-    }
+        $scope.userName = function() {return userData.userName()};
+        $scope.email = function() {return userData.email()};
+        $scope.noOfReviews = function() {return userData.noOfReviews()};
+        $scope.grade = function() {return userData.grade()};
+        $scope.noOfUpvotes = function() {return userData.upvotes()};
+        $scope.joinedDate = function() {return userData.joinedDate()};
+        $scope.country = function() {return userData.country()};
+        $scope.presentation = function() {return userData.presentation()};
+        $scope.reviews = function() {return userData.reviews()};
+        $scope.userId = function() {return userData.userId()};
+        $scope.own = function() {return userData.own()};
 
-    function loadRemoteData() {
-        userData.getUserData()
-            .then(
-                function(userData) {
-                    applyRemoteData(userData)
-                }
-        )
-
-    }
 
 }]);

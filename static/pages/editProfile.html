@@ -15,6 +15,12 @@
         </div>
     </div><br>
 
+    <div class="row">
+        <div class="col-xs-4">
+            <label for="email">Email:</label>
+            <input type="text" ng-model="email" class="form-control" id="email" required>
+        </div>
+    </div><br>
 
     <div class="row">
         <div class="col-xs-12">
@@ -25,6 +31,6 @@
 
 </form>
 
-<a href="/#/profile"><button type="button" class="btn btn-default" ng-disabled="!profileForm.$valid">Submit</button></a>
-<a href="/#/profile"><button type="button" class="btn btn-default">Cancel</button></a>
+<a href="/#/profile/signedIn"><button type="button" class="btn btn-default" ng-disabled="!profileForm.$valid" ng-click="submitUserData()">Submit</button></a>
+<a href="/#/profile/signedIn"><button type="button" class="btn btn-default">Cancel</button></a>
 

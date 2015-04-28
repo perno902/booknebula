@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-md-9"><h3>{{userName}}  <small>({{grade}})</small></h3></div>
-    <div class="col-md-2" ng-show="own">
+    <div class="col-md-9"><h3>{{userName()}}  <small>({{grade()}})</small></h3></div>
+    <div class="col-md-2" ng-show="own()">
         <a href="/#/editProfile">
             <button type="button" class="btn btn-primary">Edit profile <span class="glyphicon glyphicon-edit"></span></button>
         </a>
@@ -9,15 +9,15 @@
 <div>
     <div class="panel panel-default col-sm-5">
         <div class="panel-body">
-            <p>Number of reviews: {{noOfReviews}}</p>
-            <p>Number of upvotes: {{noOfUpvotes}}</p>
-            <p>Joined Book Nebula: {{joinedDate}}</p>
-            <p>Country: {{country}}</p>
-            <p>Email: {{email}}</p>
+            <p>Number of reviews: {{noOfReviews()}}</p>
+            <p>Number of upvotes: {{noOfUpvotes()}}</p>
+            <p>Joined Book Nebula: {{joinedDate()}}</p>
+            <p>Country: {{country()}}</p>
+            <p>Email: {{email()}}</p>
         </div>
     </div>
     <div class="panel panel-default col-sm-6 pull-right">
-        <div class="panel-body">{{presentation}}</div>
+        <div class="panel-body">{{presentation()}}</div>
     </div>
     <div class="col-sm-12">
         <h4>Reviews</h4>
@@ -32,7 +32,7 @@
                     </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="r in reviews">
+                <tr ng-repeat="r in reviews()">
                     <td><a href="/#/title/{{r.bookId}}">
                         <button type="button" class="btn btn-link">{{r.bookTitle}} ({{r.year}})</button></a>
                     </td>

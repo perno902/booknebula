@@ -38,6 +38,7 @@
                 <th>Score</th>
                 <th>Date</th>
                 <th></th>
+                <th></th>
                 </tr>
         </thead>
         <tbody>
@@ -52,7 +53,10 @@
                 <td>{{r.score}}</td>
                 <td>{{r.date}}</td>
                 <td ng-show="ownReview({{r.reviewerId}})">
-                    <button type="button" class="btn btn-primary">Edit</button>
+                    <span class="glyphicon glyphicon-edit"></span>
+                </td>
+                <td ng-show="ownReview({{r.reviewerId}})">
+                    <span class="glyphicon glyphicon-trash"></span>
                 </td>
             </tr>
         </tbody>
