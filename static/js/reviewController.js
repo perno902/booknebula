@@ -20,6 +20,9 @@ myApp.controller('reviewCtrl', ['$scope', '$routeParams', 'review', function($sc
         $scope.language = reviewData.language;
         $scope.content = reviewData.content;
         $scope.upvotes = reviewData.upvotes;
+        $scope.signedIn = reviewData.signedIn;
+        $scope.hasUpvoted = reviewData.hasUpvoted;
+        $scope.own = reviewData.own;
     }
 
     function loadRemoteData() {
@@ -30,14 +33,19 @@ myApp.controller('reviewCtrl', ['$scope', '$routeParams', 'review', function($sc
                 }
         )
     }
-
     $scope.upvote = function() {
         review.upvote()
             .then(
                 function(upvotes) {
                     $scope.upvotes = upvotes;
+                    $scope.hasUpvoted = true;
                 }
         )
     };
+
+    $scope.canUpvote = function() {
+        return $scope.signedIn & !$scope.hasUpvoted & !$scope.own;
+    }
+
 
 }]);

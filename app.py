@@ -32,8 +32,6 @@ def load_user(userid):
 def init():
     url_auth = make_authorization_url()
     signed_in = current_user.is_authenticated()
-    print "user is signed in: "
-    print signed_in
     return render_template("index.html", URL_AUTH=url_auth, SIGNED_IN=signed_in)
 
 
@@ -127,8 +125,15 @@ def get_author_data():
 @app.route('/review', methods=["GET"])
 def get_review():
     if request.method == "GET":
-        id = request.args.get('id')
-        data = database_helper.get_review_data(id)
+        review_id = request.args.get('id')
+        data = database_helper.get_review_data(review_id)
+
+        signed_in = current_user.is_authenticated()
+        data['signedIn'] = signed_in
+
+        if signed_in:
+            data['hasUpvoted'] = database_helper.has_upvoted(current_user.id, review_id)
+            data['own'] = database_helper.is_own_review(current_user.id, review_id)
         return json.dumps({'data': data})
 
 @app.route('/review', methods=["POST"])

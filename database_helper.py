@@ -109,6 +109,14 @@ def upvote(user_id, review_id):
     models.db.session.commit()
     return models.User.query.filter(models.User.upvoted_review.any(id=review_id)).count()
 
+def has_upvoted(user_id, review_id):
+    count = models.User.query.filter_by(id=user_id).filter(models.User.upvoted_review.any(id=review_id)).count()
+    return count > 0
+
+def is_own_review(user_id, review_id):
+    count = models.Review.query.filter_by(id=review_id, reviewerId=user_id).count()
+    return count > 0
+
 def list_to_dict(list):
     res = []
     for e in list:
