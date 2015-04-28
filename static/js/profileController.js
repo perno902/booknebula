@@ -20,6 +20,7 @@ myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function(
         $scope.country = userData.country;
         $scope.presentation = userData.presentation;
         $scope.reviews = userData.reviews;
+        $scope.own = userData.own;
     }
 
     function loadRemoteData() {

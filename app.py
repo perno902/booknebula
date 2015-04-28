@@ -94,12 +94,15 @@ def logout():
 @app.route('/userData', methods=["GET"])
 def get_user_data():
     id = request.args.get('id')
-    if id == "signedIn":
-        try:
+    own = False
+    if current_user.is_authenticated():
+        if str(current_user.id) == id:
+            own = True
+        elif id == "signedIn":
+            own = True
             id = current_user.id
-        except:
-            abort(403)
     data = database_helper.get_user_data(id)
+    data['own'] = own
     return json.dumps({'data': data})
 
 @app.route('/search', methods=["GET"])
