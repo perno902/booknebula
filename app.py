@@ -117,6 +117,13 @@ def get_search_results():
 def get_title_data():
     id = request.args.get('id')
     data = database_helper.get_title_data(id)
+    has_reviewed = True
+    user_id = None
+    if current_user.is_authenticated():
+        user_id = current_user.id
+        has_reviewed = database_helper.has_reviewed(user_id, id)
+    data['hasReviewed'] = has_reviewed
+    data['user'] = user_id
     return json.dumps({'data': data})
 
 @app.route('/author', methods=["GET"])

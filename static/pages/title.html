@@ -25,7 +25,7 @@
 
 <div class="row">
     <a href="/#/writeReview">
-    <div class="col-md-4"><button type="button" class="btn btn-primary">Review this book</button></div></a>
+    <div class="col-md-4" ng-hide="hasReviewed()"><button type="button" class="btn btn-primary">Review this book</button></div></a>
 </div><br><br>
 
 
@@ -37,6 +37,7 @@
                 <th>Review title</th>
                 <th>Score</th>
                 <th>Date</th>
+                <th></th>
                 </tr>
         </thead>
         <tbody>
@@ -50,6 +51,9 @@
                 </a></td>
                 <td>{{r.score}}</td>
                 <td>{{r.date}}</td>
+                <td ng-show="ownReview({{r.reviewerId}})">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                </td>
             </tr>
         </tbody>
     </table>

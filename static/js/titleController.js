@@ -16,5 +16,10 @@ myApp.controller('titleCtrl', ['$scope', '$routeParams', 'title', function($scop
     $scope.plot = function() {return title.plot()};
     $scope.reviews = function() {return title.reviews()};
     $scope.multipleAuthors = function() {return $scope.authors().length > 1};
+    $scope.hasReviewed = function() {return title.hasReviewed()};
+    $scope.user = function() {return title.user()};
 
+    $scope.ownReview = function(reviewerId) {
+        return $scope.user() == reviewerId;
+    };
 }]);

@@ -7,6 +7,8 @@ myApp.factory('title', [ '$http', function($http) {
     var avgScore = '';
     var plot = '';
     var reviews = [];
+    var hasReviewed = false;
+    var user = '';
 
     function setBookId(id) {
         bookId = id;
@@ -41,6 +43,8 @@ myApp.factory('title', [ '$http', function($http) {
         //avgScore = data.avgScore;
         plot = data.plot;
         reviews = data.reviews;
+        hasReviewed = data.hasReviewed;
+        user = data.user;
     };
 
     return {
@@ -53,8 +57,9 @@ myApp.factory('title', [ '$http', function($http) {
         language: function() {return language},
         avgScore: function() {return avgScore},
         plot: function() {return plot},
-        reviews: function() {return reviews}
-
+        reviews: function() {return reviews},
+        hasReviewed: function() {return hasReviewed},
+        user: function() {return user}
     };
 
 }]);

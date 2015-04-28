@@ -117,6 +117,10 @@ def is_own_review(user_id, review_id):
     count = models.Review.query.filter_by(id=review_id, reviewerId=user_id).count()
     return count > 0
 
+def has_reviewed(user_id, book_id):
+    count = models.Review.query.filter_by(bookId=book_id, reviewerId=user_id).count()
+    return count > 0
+
 def list_to_dict(list):
     res = []
     for e in list:
