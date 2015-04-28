@@ -31,7 +31,10 @@ def load_user(userid):
 @app.route("/")
 def init():
     url_auth = make_authorization_url()
-    return render_template("index.html", URL_AUTH=url_auth)
+    signed_in = current_user.is_authenticated()
+    print "user is signed in: "
+    print signed_in
+    return render_template("index.html", URL_AUTH=url_auth, SIGNED_IN=signed_in)
 
 
 def make_authorization_url():
@@ -67,7 +70,7 @@ def login():
         database_helper.add_user(user)
     login_user(user)
 
-    return redirect('/')
+    return redirect("/")
 
 
 def get_tokens(code):
@@ -88,7 +91,7 @@ def get_tokens(code):
 def logout():
     print current_user.email + " has signed out"
     logout_user()
-    return redirect('/')
+    return redirect("/")
 
 @app.route('/userData', methods=["GET"])
 def get_user_data():

@@ -31,5 +31,5 @@ myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function(
         )
 
     }
-    
+
 }]);

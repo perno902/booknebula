@@ -52,12 +52,15 @@
         <a href="/#/"><img class="img-responsive" src="/static/logo1.gif" alt="Book Nebula"></a>
         <img class="img-responsive" src="/static/bookshelf.gif">
         <nav class="navbar navbar-default">
-            <div class="container-fluid" ng-controller="signInCtrl">
+            <div class="container-fluid">
                 <div>
                     <ul class="nav navbar-nav">
                         <li><a href="/#/">Home</a></li>
                         <li><a href="/#/toplist">Toplists</a></li>
-                        <li ng-show="isSignedIn()"><a href="/#/profile/signedIn">Profile</a></li>
+
+                        {% if SIGNED_IN %}
+                        <li><a href="/#/profile/signedIn">Profile</a></li>
+                        {% endif %}
                     </ul>
 
                     <div class="col-sm-5" ng-controller="searchCtrl">
@@ -75,11 +78,12 @@
                         </form>
                     </div>
 
-                    <div>
-                        <!-- <a href="/login"> -->
-                            <button type="button" ng-hide="isSignedIn()" ng-click="signIn()" class="btn btn-default">Sign in</button>
-                        <!-- </a> -->
-                        <button type="button" ng-show="isSignedIn()" ng-click="signOut()" class="btn btn-default">Sign out</button>
+                    <div ng-controller="signInCtrl" class="pull-right">
+                        {% if not SIGNED_IN %}
+                            <button type="button" ng-click="signIn()" class="btn btn-default">Sign in</button>
+                        {% elif SIGNED_IN %}
+                            <button type="button" ng-click="signOut()" class="btn btn-default">Sign out</button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
