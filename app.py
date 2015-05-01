@@ -64,11 +64,13 @@ def login():
     print email
     user = database_helper.get_user(email)
     if user is None:
-        user = database_helper.User('', email, '', '', '')
-        database_helper.add_user(user)
-    login_user(user)
-
-    return redirect("/")
+        database_helper.add_user(email)
+        user = database_helper.get_user(email)
+        login_user(user)
+        return redirect ("/#/editProfile")
+    else:
+        login_user(user)
+        return redirect("/")
 
 
 def get_tokens(code):
@@ -169,7 +171,13 @@ def submit_review():
     if request.method == "POST":
         user_id = current_user.id
         data = json.loads(request.data)
-        database_helper.submit_review(data, user_id)
+        book_id = data['bookId']
+        review_title = data['revTitle']
+        content = data['content']
+        score = data['score']
+        language = data['language']
+
+        database_helper.submit_review(book_id, review_title, content, score, language, user_id)
         return ''
 
 @app.route('/upvote', methods=["POST"])
