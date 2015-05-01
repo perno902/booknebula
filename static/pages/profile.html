@@ -21,31 +21,9 @@
     </div>
     <div class="col-sm-12">
         <h4>Reviews</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Book title</th>
-                    <th>Review title</th>
-                    <th>Score</th>
-                    <th>Upvotes</th>
-                    <th>Date</th>
-                    </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="r in reviews()">
-                    <td><a href="/#/title/{{r.bookId}}">
-                        <button type="button" class="btn btn-link">{{r.bookTitle}} ({{r.year}})</button></a>
-                    </td>
-                    <td><a href="/#/review/{{r.id}}">
-                        <button type="button" class="btn btn-link">{{r.revTitle}}</button></a>
-                    </td>
-                    <td>{{r.score}}</td>
-                    <td>{{r.upvotes}}</td>
-                    <td>{{r.date}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div my-reviews reviews="reviews()"></div>
+        </div>
     </div>
-
-
 </div>
+
