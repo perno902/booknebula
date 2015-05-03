@@ -40,7 +40,7 @@ myApp.factory('title', [ '$http', function($http) {
         year = data.year;
         authors = data.authors;
         language = data.language;
-        //avgScore = data.avgScore;
+        avgScore = data.avgScore;
         plot = data.plot;
         reviews = data.reviews;
         hasReviewed = data.hasReviewed;

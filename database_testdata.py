@@ -45,6 +45,7 @@ def test():
     review = models.Review('This is filth!', 'blablabla', 2, 'English', str(datetime.date.today()), user2, book)
     models.db.session.add(review)
     models.db.session.commit()
+    database_helper.update_avg_score(book.id)
 
     # It by King
 
@@ -55,6 +56,7 @@ def test():
     book.written_by.append(author)
     models.db.session.add(author)
     models.db.session.commit()
+    database_helper.update_avg_score(book.id)
 
     # The Shining by King
 
@@ -64,6 +66,7 @@ def test():
     book.written_by.append(author)
     models.db.session.add(author)
     models.db.session.commit()
+    database_helper.update_avg_score(book.id)
 
     # Prints for checking
 

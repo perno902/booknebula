@@ -1,5 +1,6 @@
 import models
 import datetime
+from sqlalchemy import func
 
 # ----- Help functions -----
 
@@ -7,30 +8,35 @@ def get_user(email):
     user = models.User.query.filter_by(email=email).first()
     return user
 
+
 def get_user_by_id(id):
     user = models.User.query.filter_by(id=id).first()
     return user
 
-def add_user(user):
+
+def add_user(email):
+    user = models.User('', email, '', '', '')
     models.db.session.add(user)
     models.db.session.commit()
 
+
 def get_user_data(id):
-    profile_data = models.User.query.filter_by(id=id).first()
-    data_dict = row_to_dict(profile_data)
+    data = row_to_dict(models.User.query.filter_by(id=id).first())
 
     reviews = list_to_dict(models.Review.query.filter_by(reviewerId=id).all())
-    data_dict['reviews'] = get_reviews_data(reviews)
+    data['reviews'] = get_reviews_data(reviews)
 
     noOfReviews = get_review_count(reviews)
-    data_dict['noOfReviews'] = noOfReviews
-    data_dict['grade'] = get_grade(noOfReviews)
-    data_dict['upvotes'] = get_upvotes_count(reviews)
+    data['noOfReviews'] = noOfReviews
+    data['grade'] = get_grade(noOfReviews)
+    data['upvotes'] = get_upvotes_count(reviews)
 
-    return data_dict
+    return data
+
 
 def get_review_count(reviews):
     return len(reviews)
+
 
 def get_grade(count):
     if (count <= 10):
@@ -42,11 +48,13 @@ def get_grade(count):
     else:
         return "Senior bookworm"
 
+
 def get_upvotes_count(reviews):
     count = 0
     for review in reviews:
         count += review['upvotes']
     return count
+
 
 def get_search_results(query):
     books = models.Book.query.filter(models.Book.title.contains(query))
@@ -61,31 +69,53 @@ def get_search_results(query):
 
     return data
 
+
 def get_title_data(id):
     data = row_to_dict(models.Book.query.filter_by(id=id).first())
     data['authors'] = list_to_dict(models.Author.query.filter(models.Author.books.any(id=id)).all())
     reviews = list_to_dict(models.Review.query.filter_by(bookId=id).all())
     data['reviews'] = get_reviews_data(reviews)
-
     return data
+
+
+def update_avg_score(id):
+    reviews = list_to_dict(models.Review.query.filter_by(bookId=id))
+    count = 0
+    sum = 0
+    for review in reviews:
+        sum += review['score']
+        count += 1
+    if count > 0:
+        avg = float(sum)/float(count)
+    else:
+        avg = 0
+    book = models.Book.query.filter_by(id=id).first()
+    book.avgScore = avg
+    models.db.session.add(book)
+    models.db.session.commit()
+
 
 def get_reviews_data(reviews):
     for review in reviews:
-        add_review_data(review)
+        additional_review_data(review)
     return reviews
 
-def add_review_data(review):
-    reviewer = row_to_dict(models.User.query.filter_by(id=review['reviewerId']).first())
-    review['reviewer'] = reviewer['userName']
-    review['reviewerId'] = reviewer['id']
+
+def additional_review_data(review):
+    reviewer = models.User.query.filter_by(id=review['reviewerId']).first()
+    review['reviewer'] = reviewer.userName
+    review['reviewerId'] = reviewer.id
+
     review['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=review['id'])).count()
-    book = row_to_dict(models.Book.query.filter_by(id=review['bookId']).first())
-    review['bookTitle'] = book['title']
-    review['year'] = book['year']
+
+    book = models.Book.query.filter_by(id=review['bookId']).first()
+    review['bookTitle'] = book.title
+    review['year'] = book.year
+
 
 def get_review_data(id):
     review = row_to_dict(models.Review.query.filter_by(id=id).first())
-    add_review_data(review)
+    additional_review_data(review)
     return review
 
 
@@ -95,12 +125,14 @@ def get_author_data(id):
     return data
 
 
-def submit_review(data, user_id):
+def submit_review(book_id, review_title, content, score, language, user_id):
     user = models.User.query.filter_by(id=user_id).first()
-    book = models.Book.query.filter_by(id=data['bookId']).first()
-    review = models.Review(data['revTitle'], data['content'], data['score'], data['language'], str(datetime.date.today()), user, book)
+    book = models.Book.query.filter_by(id=book_id).first()
+    review = models.Review(review_title, content, score, language, str(datetime.date.today()), user, book)
     models.db.session.add(review)
     models.db.session.commit()
+    update_avg_score(book.id)
+
 
 def upvote(user_id, review_id):
     user = models.User.query.filter_by(id=user_id).first()
@@ -109,17 +141,21 @@ def upvote(user_id, review_id):
     models.db.session.commit()
     return models.User.query.filter(models.User.upvoted_review.any(id=review_id)).count()
 
+
 def has_upvoted(user_id, review_id):
     count = models.User.query.filter_by(id=user_id).filter(models.User.upvoted_review.any(id=review_id)).count()
     return count > 0
+
 
 def is_own_review(user_id, review_id):
     count = models.Review.query.filter_by(id=review_id, reviewerId=user_id).count()
     return count > 0
 
+
 def has_reviewed(user_id, book_id):
     count = models.Review.query.filter_by(bookId=book_id, reviewerId=user_id).count()
     return count > 0
+
 
 def submit_user_data(id, name, country, email, presentation):
     user = models.User.query.filter_by(id=id).first()
@@ -135,6 +171,7 @@ def list_to_dict(list):
     for e in list:
         res.append(row_to_dict(e))
     return res
+
 
 def row_to_dict(obj):
     if not (obj is None):

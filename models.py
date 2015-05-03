@@ -81,7 +81,7 @@ class Book(db.Model):
     year = db.Column(db.String(4))
     plot = db.Column(db.Text)
     language = db.Column(db.String(50))
-    avg_score = db.Column(db.Float)
+    avgScore = db.Column(db.Float)
     reviews = db.relationship('Review', backref='book', lazy='dynamic')
     written_by = db.relationship('Author', secondary=has_written, backref=db.backref('books', lazy='dynamic'))
 

@@ -8,11 +8,16 @@ myApp.controller('titleCtrl', ['$scope', '$routeParams', 'title', function($scop
         title.getBookData()
     };
 
+    $scope.deleteReview = function(id) {
+        console.log("delete review");
+
+    };
+
     $scope.title = function() {return title.title()};
     $scope.year = function() {return title.year()};
     $scope.authors = function() {return title.authors()};
     $scope.language = function() {return title.language()};
-    //$scope.avgScore =
+    $scope.avgScore = function() {return title.avgScore()}
     $scope.plot = function() {return title.plot()};
     $scope.reviews = function() {return title.reviews()};
     $scope.multipleAuthors = function() {return $scope.authors().length > 1};
