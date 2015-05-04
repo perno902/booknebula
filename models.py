@@ -19,6 +19,7 @@ class User(db.Model):
     country = db.Column(db.String(50))
     presentation = db.Column(db.Text)
     joinedDate = db.Column(db.String(20))
+    noOfUpvotes = db.Column(db.Integer)
     reviews = db.relationship('Review', backref='user', lazy='dynamic')
     upvotes = db.relationship('Review', secondary=upvotes, backref=db.backref('upvoter', lazy='dynamic'))
 
@@ -28,6 +29,7 @@ class User(db.Model):
         self.country = country
         self.presentation = presentation
         self.joinedDate = joined_date
+        self.noOfUpvotes = 0
 
     def is_authenticated(self):
         return True

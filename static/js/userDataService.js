@@ -4,7 +4,7 @@ myApp.factory('userData', [ '$http', function($http) {
     var email = '';
     var noOfReviews = '';
     var grade = '';
-    var upvotes = '';
+    var noOfUpvotes = '';
     var joinedDate = '';
     var country = '';
     var presentation = '';
@@ -67,7 +67,7 @@ myApp.factory('userData', [ '$http', function($http) {
         email = data.email;
         noOfReviews = data.noOfReviews;
         grade = data.grade;
-        upvotes = data.upvotes;
+        noOfUpvotes = data.noOfUpvotes;
         joinedDate = data.joinedDate;
         country = data.country;
         presentation = data.presentation;
@@ -85,7 +85,7 @@ myApp.factory('userData', [ '$http', function($http) {
         email: function() {return email},
         noOfReviews: function() {return noOfReviews},
         grade: function() {return grade},
-        upvotes: function() {return upvotes},
+        noOfUpvotes: function() {return noOfUpvotes},
         joinedDate: function() {return joinedDate},
         country: function() {return country},
         presentation: function() {return presentation},

@@ -1,45 +1,45 @@
 <!-- Select list to view -->
-<select ng-options="l for l in toplists"
-        ng-model="currentList" class="form-control">
-</select>
+<div class="row col-md-5">
+    <select ng-options="l for l in toplists"
+            ng-model="currentList" class="form-control">
+    </select>
+</div>
 
 <!-- Top books table -->
-<table class="table" ng-show="isCurrentList(toplists[0])">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Avg. score</th>
+<div class="col-md-8">
+    <table class="table" ng-show="isCurrentList(toplists[0])">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Avg. score</th>
+                </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="b in books">
+                <td><a href="/#/title">
+                        <button type="button" class="btn btn-link">{{b.title}} ({{b.year}})</button></a>
+                </td>
+                <td>{{b.avgScore}}</td>
             </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="b in topBooks">
-            <td><a href="/#/title">
-                    <button type="button" class="btn btn-link">{{b.title}} ({{b.year}})</button></a>
-            </td>
-            <td><a href="/#/author">
-                    <button type="button" class="btn btn-link">{{b.author}}</button></a>
-            </td>
-            <td>{{b.score}}</td>
-        </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
-<!-- Top reviewers table -->
-<table class="table" ng-show="isCurrentList(toplists[1])">
-    <thead>
-        <tr>
-            <th>Reviewer</th>
-            <th>Upvotes</th>
+    <!-- Top reviewers table -->
+    <table class="table" ng-show="isCurrentList(toplists[1])">
+        <thead>
+            <tr>
+                <th>Reviewer</th>
+                <th>Upvotes</th>
+                </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="r in reviewers">
+                <td><a href="/#/profile/{{r.id}}">
+                        <button type="button" class="btn btn-link">{{r.userName}}</button></a>
+                </td>
+                <td>{{r.noOfUpvotes}}</td>
             </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="r in topReviewers">
-            <td><a href="/#/profile">
-                    <button type="button" class="btn btn-link">{{r.name}}</button></a>
-            </td>
-            <td>{{r.upvotes}}</td>
-        </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 

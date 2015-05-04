@@ -24,13 +24,14 @@ def get_user_data(id):
     data = row_to_dict(models.User.query.filter_by(id=id).first())
 
     reviews = list_to_dict(models.Review.query.filter_by(reviewerId=id).all())
+    print reviews
     data['reviews'] = get_reviews_data(reviews)
 
     noOfReviews = get_review_count(reviews)
     data['noOfReviews'] = noOfReviews
     data['grade'] = get_grade(noOfReviews)
-    data['upvotes'] = get_upvotes_count(reviews)
-
+    #data['upvotes'] = get_upvotes_count(reviews)
+    print data
     return data
 
 
@@ -51,6 +52,7 @@ def get_grade(count):
 
 def get_upvotes_count(reviews):
     count = 0
+    print reviews
     for review in reviews:
         count += review['upvotes']
     return count
@@ -139,7 +141,22 @@ def upvote(user_id, review_id):
     review = models.Review.query.filter_by(id=review_id).first()
     review.upvoters.append(user)
     models.db.session.commit()
+
+    update_upvotes(review_id)
     return models.User.query.filter(models.User.upvoted_review.any(id=review_id)).count()
+
+
+def update_upvotes(review_id):
+    review = models.Review.query.filter_by(id=review_id).first()
+    user = models.User.query.filter_by(id=review.reviewerId).first()
+    reviews = models.Review.query.filter_by(reviewerId=user.id).all()
+    count = 0
+    for review in reviews:
+        count += models.User.query.filter(models.User.upvoted_review.any(id=review.id)).count()
+    user.noOfUpvotes = count
+    models.db.session.add(user)
+    models.db.session.commit()
+
 
 
 def has_upvoted(user_id, review_id):
@@ -165,6 +182,14 @@ def submit_user_data(id, name, country, email, presentation):
     user.presentation = presentation
     models.db.session.commit()
 
+
+def get_toplist():
+    reviewers = list_to_dict(models.User.query.order_by(models.User.noOfUpvotes.desc()).limit(5))
+    books = list_to_dict(models.Book.query.order_by(models.Book.avgScore.desc()).limit(5))
+    data = {}
+    data['reviewers'] = reviewers
+    data['books'] = books
+    return data
 
 def list_to_dict(list):
     res = []

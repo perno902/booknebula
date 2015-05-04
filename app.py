@@ -189,6 +189,12 @@ def upvote():
         data = database_helper.upvote(user_id, review_id)
         return json.dumps({'data': data})
 
+@app.route('/toplist', methods=["GET"])
+def get_toplist():
+    data = database_helper.get_toplist()
+    return json.dumps({'data': data})
+
+
 def add_valid_state(state):
     valid_states.add(state)
 
