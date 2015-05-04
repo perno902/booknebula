@@ -180,13 +180,17 @@ def submit_review():
     if request.method == "POST":
         user_id = current_user.id
         data = json.loads(request.data)
+        review_id = data['reviewId']
         book_id = data['bookId']
         review_title = data['revTitle']
         content = data['content']
         score = data['score']
         language = data['language']
 
-        database_helper.submit_review(book_id, review_title, content, score, language, user_id)
+        if review_id == "new":
+            database_helper.submit_review(book_id, review_title, content, score, language, user_id)
+        else:
+            database_helper.update_review(review_id, book_id, review_title, content, score, language)
         return ''
 
 

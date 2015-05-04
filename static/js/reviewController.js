@@ -2,53 +2,37 @@ myApp.controller('reviewCtrl', ['$scope', '$routeParams', 'review', function($sc
     $scope.reviewId = $routeParams.reviewId;
     setReviewId();
 
+    loadRemoteData();
+
+    $scope.bookTitle = function() {return review.bookTitle()};
+    $scope.bookId = function() {return review.bookId()};
+    $scope.year = function() {return review.year()};
+    $scope.reviewer = function() {return review.reviewer()};
+    $scope.revTitle = function() {return review.revTitle()};
+    $scope.score = function() {return review.score()};
+    $scope.date = function() {return review.date()};
+    $scope.language = function() {return review.language()};
+    $scope.content = function() {return review.content()};
+    $scope.upvotes = function() {return review.upvotes()};
+    $scope.signedIn = function() {return review.signedIn()};
+    $scope.hasUpvoted = function() {return review.hasUpvoted()};
+    $scope.own = function() {return review.own()};
+
+
+    function loadRemoteData() {
+        review.getReviewData()
+    }
+
     function setReviewId() {
         review.setReviewId($scope.reviewId);
     };
 
-    loadRemoteData();
-
-    function applyRemoteData(reviewData) {
-        $scope.id = reviewData.id;
-        $scope.bookTitle = reviewData.bookTitle;
-        $scope.bookId = reviewData.bookId;
-        $scope.year = reviewData.year;
-        $scope.reviewer = reviewData.reviewer;
-        $scope.revTitle = reviewData.revTitle;
-        $scope.score = reviewData.score;
-        $scope.date = reviewData.date;
-        $scope.language = reviewData.language;
-        $scope.content = reviewData.content;
-        $scope.upvotes = reviewData.upvotes;
-        $scope.signedIn = reviewData.signedIn;
-        $scope.hasUpvoted = reviewData.hasUpvoted;
-        $scope.own = reviewData.own;
-    }
-
-    function loadRemoteData() {
-        review.getReviewData()
-            .then(
-                function(reviewData) {
-                    applyRemoteData(reviewData);
-                }
-        )
-    }
     $scope.upvote = function() {
-        review.upvote()
-            .then(
-                function(upvotes) {
-                    $scope.upvotes = upvotes;
-                    $scope.hasUpvoted = true;
-                }
-        )
+        review.upvote();
     };
 
     $scope.canUpvote = function() {
-        return $scope.signedIn & !$scope.hasUpvoted & !$scope.own;
-    };
-
-    $scope.canEdit = function() {
-        return $scope.own;
+        return $scope.signedIn() & !$scope.hasUpvoted() & !$scope.own();
     };
 
     $scope.deleteReview = function() {

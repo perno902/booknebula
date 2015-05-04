@@ -46,7 +46,7 @@ myApp.config(['$routeProvider',
             controller: 'reviewCtrl'
         })
     // Review page
-        .when('/writeReview', {
+        .when('/writeReview/:reviewId', {
             templateUrl: '../static/pages/writeReview.html',
             controller: "writeReviewCtrl"
         })
