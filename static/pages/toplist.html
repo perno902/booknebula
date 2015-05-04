@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="b in books">
-                <td><a href="/#/title">
+                <td><a href="/#/title/{{b.id}}">
                         <button type="button" class="btn btn-link">{{b.title}} ({{b.year}})</button></a>
                 </td>
                 <td>{{b.avgScore}}</td>

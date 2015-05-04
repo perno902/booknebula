@@ -24,14 +24,11 @@ def get_user_data(id):
     data = row_to_dict(models.User.query.filter_by(id=id).first())
 
     reviews = list_to_dict(models.Review.query.filter_by(reviewerId=id).all())
-    print reviews
     data['reviews'] = get_reviews_data(reviews)
 
     noOfReviews = get_review_count(reviews)
     data['noOfReviews'] = noOfReviews
     data['grade'] = get_grade(noOfReviews)
-    #data['upvotes'] = get_upvotes_count(reviews)
-    print data
     return data
 
 
