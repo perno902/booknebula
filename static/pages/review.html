@@ -20,12 +20,20 @@
 
 </div>
 
+<div ng-show="canEdit()" class="pull-right">
+    <a href="/#/title/{{bookId}}">
+            <button type="button" class="btn btn-primary" ng-click="deleteReview()">Delete</span></button>
+    </a>
+    <button type="button" class="btn btn-primary">Edit</span></button>
+</div>
+
 <div>
     <a href="/#/title/{{bookId}}">
         <span class="glyphicon glyphicon-arrow-left"></span>
         <button type="button" class="btn btn-link">Go back to {{bookTitle}} ({{year}})</button>
     </a>
 </div>
+
 
 
 

@@ -45,7 +45,14 @@ myApp.controller('reviewCtrl', ['$scope', '$routeParams', 'review', function($sc
 
     $scope.canUpvote = function() {
         return $scope.signedIn & !$scope.hasUpvoted & !$scope.own;
-    }
+    };
 
+    $scope.canEdit = function() {
+        return $scope.own;
+    };
+
+    $scope.deleteReview = function() {
+        review.deleteReview()
+    };
 
 }]);

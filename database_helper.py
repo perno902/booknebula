@@ -132,6 +132,13 @@ def submit_review(book_id, review_title, content, score, language, user_id):
     models.db.session.commit()
     update_avg_score(book.id)
 
+def delete_review(review_id):
+    review = models.Review.query.filter_by(id=review_id).first()
+    book = models.Book.query.filter_by(id=review.bookId).first()
+    models.db.session.delete(review)
+    models.db.session.commit()
+    update_avg_score(book.id)
+
 
 def upvote(user_id, review_id):
     user = models.User.query.filter_by(id=user_id).first()

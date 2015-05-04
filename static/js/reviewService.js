@@ -32,6 +32,18 @@ myApp.factory('review', [ '$http', function($http) {
         return (request.then(handleSuccess, handleError));
     };
 
+    function deleteReview() {
+        var request = $http({
+            method: "post",
+            url: "/deleteReview",
+            data: {
+                id: reviewId
+            }
+        });
+        return (request.then(handleSuccess, handleError));
+    };
+
+
     function upvote() {
         var request = $http({
             method: "post",
@@ -56,6 +68,7 @@ myApp.factory('review', [ '$http', function($http) {
         setReviewId: setReviewId,
         getReviewData: getReviewData,
         submitReview: submitReview,
+        deleteReview: deleteReview,
         upvote: upvote
     };
 

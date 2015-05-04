@@ -47,6 +47,7 @@ def make_authorization_url():
     url = "https://accounts.google.com/o/oauth2/auth?" + urllib.urlencode(params)
     return url
 
+
 @app.route("/oauth2callback")
 def login():
     error = request.args.get('error, ''')
@@ -86,12 +87,14 @@ def get_tokens(code):
     padded = ascii_str + '=' * (4 - len(ascii_str) % 4)
     return json.loads(base64.urlsafe_b64decode(padded)), token_json['access_token']
 
+
 @app.route('/logout')
 @login_required
 def logout():
     print current_user.email + " has signed out"
     logout_user()
     return redirect("/")
+
 
 @app.route('/userData', methods=["GET"])
 def get_user_data():
@@ -107,6 +110,7 @@ def get_user_data():
     data['userId'] = id
     data['own'] = own
     return json.dumps({'data': data})
+
 
 @app.route('/userData', methods=["POST"])
 @login_required
@@ -124,6 +128,7 @@ def submit_user_data():
         database_helper.submit_user_data(id, name, country, email, presentation)
         return ''
 
+
 @app.route('/search', methods=["GET"])
 def get_search_results():
     query = request.args.get('query')
@@ -131,6 +136,7 @@ def get_search_results():
         abort(400)
     data = database_helper.get_search_results(query)
     return json.dumps({'data': data})
+
 
 @app.route('/title', methods=["GET"])
 def get_title_data():
@@ -145,11 +151,13 @@ def get_title_data():
     data['user'] = user_id
     return json.dumps({'data': data})
 
+
 @app.route('/author', methods=["GET"])
 def get_author_data():
     id = request.args.get('id')
     data = database_helper.get_author_data(id)
     return json.dumps({'data': data})
+
 
 @app.route('/review', methods=["GET"])
 def get_review():
@@ -164,6 +172,7 @@ def get_review():
             data['hasUpvoted'] = database_helper.has_upvoted(current_user.id, review_id)
             data['own'] = database_helper.is_own_review(current_user.id, review_id)
         return json.dumps({'data': data})
+
 
 @app.route('/review', methods=["POST"])
 @login_required
@@ -180,6 +189,21 @@ def submit_review():
         database_helper.submit_review(book_id, review_title, content, score, language, user_id)
         return ''
 
+
+@app.route('/deleteReview', methods=["POST"])
+@login_required
+def delete_review():
+    if request.method == "POST":
+        data = json.loads(request.data)
+        review_id = data['id']
+        user_id = current_user.id
+        if database_helper.is_own_review(user_id, review_id):
+            database_helper.delete_review(review_id)
+            return ''
+        else:
+            abort(403)
+
+
 @app.route('/upvote', methods=["POST"])
 @login_required
 def upvote():
@@ -188,6 +212,7 @@ def upvote():
         review_id = json.loads(request.data)['id']
         data = database_helper.upvote(user_id, review_id)
         return json.dumps({'data': data})
+
 
 @app.route('/toplist', methods=["GET"])
 def get_toplist():
