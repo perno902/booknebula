@@ -19,7 +19,5 @@ myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function(
         $scope.presentation = function() {return userData.presentation()};
         $scope.reviews = function() {return userData.reviews()};
         $scope.userId = function() {return userData.userId()};
-        $scope.own = function() {return userData.own()};
-
 
 }]);

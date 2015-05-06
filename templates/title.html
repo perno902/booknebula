@@ -1,3 +1,4 @@
+{% raw %}
 <h3>{{title()}}  <small>({{year()}})</small></h3><br>
 
 <div class="row">
@@ -23,11 +24,14 @@
     </div>
 </div><br>
 
+{% endraw %}
+{% if SIGNED_IN %}
 <div class="row">
     <a href="/#/writeReview/new">
     <div class="col-md-4" ng-hide="hasReviewed()"><button type="button" class="btn btn-primary">Review this book</button></div></a>
 </div><br><br>
-
+{% endif %}
+{% raw %}
 
     <table class="table">
         <thead>
@@ -55,3 +59,4 @@
             </tr>
         </tbody>
     </table>
+{% endraw %}

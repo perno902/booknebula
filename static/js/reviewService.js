@@ -10,9 +10,7 @@ myApp.factory('review', [ '$http', function($http) {
     var language = '';
     var content = '';
     var upvotes = '';
-    var signedIn = '';
     var hasUpvoted = '';
-    var own = '';
 
     function setReviewId(id) {
         reviewId = id;
@@ -81,7 +79,7 @@ myApp.factory('review', [ '$http', function($http) {
     };
 
 
-    function handleError(response) {
+    function handleError() {
         console.log('error');
     };
 
@@ -114,9 +112,7 @@ myApp.factory('review', [ '$http', function($http) {
         language = reviewData.language;
         content = reviewData.content;
         upvotes = reviewData.upvotes;
-        signedIn = reviewData.signedIn;
         hasUpvoted = reviewData.hasUpvoted;
-        own = reviewData.own;
     };
 
     return ({
@@ -137,9 +133,7 @@ myApp.factory('review', [ '$http', function($http) {
         language: function() {return language},
         content: function() {return content},
         upvotes: function() {return upvotes},
-        signedIn: function() {return signedIn},
         hasUpvoted: function() {return hasUpvoted},
-        own : function() {return own}
     })
 
 }]);

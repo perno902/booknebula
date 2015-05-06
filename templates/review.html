@@ -1,3 +1,5 @@
+{% raw %}
+
 <h3>Review of {{bookTitle()}} ({{year()}}) <small>by {{reviewer()}}</small></h3><br>
 
 <div class="panel panel-default">
@@ -12,23 +14,34 @@
         <div class="row">
             <div class="col-md-5">Score: {{score()}}/10</div>
             <div class="col-md-5"><p>Read in: {{language()}}</p></div>
+
+            {% endraw %}
+            {% if (not OWN_REVIEW) and SIGNED_IN %}
             <div class="col-md-1">
-                <button type="button" ng-click="upvote()" ng-show="canUpvote()" class="btn btn-default btn-xs pull-right">Upvote</button>
-                <button type="button" ng-click="unUpvote()" ng-show="canUnUpvote()" class="btn btn-default btn-xs pull-right">Un-upvote</button>
+                <button type="button" ng-click="upvote()" ng-show="!hasUpvoted()" class="btn btn-default btn-xs pull-right">Upvote</button>
+                <button type="button" ng-click="unUpvote()" ng-show="hasUpvoted()" class="btn btn-default btn-xs pull-right">Un-upvote</button>
             </div>
+            {% endif %}
+            {% raw %}
+
+
             <div class="col-md-1"><span class="glyphicon glyphicon-thumbs-up pull-right">{{upvotes()}}</span></div>
         </div>
     </div>
 
 </div>
-
-<div ng-show="own()" class="pull-right">
+{% endraw %}
+{% if OWN_REVIEW %}
+{% raw %}
+<div class="pull-right">
     <a href="/#/title/{{bookId()}}">
             <button type="button" class="btn btn-primary" ng-click="deleteReview()">Delete</span></button></a>
      <a href="/#/writeReview/{{reviewId}}">
             <button type="button" class="btn btn-primary">Edit</span></button></a>
-
 </div>
+{% endraw %}
+{% endif %}
+{% raw %}
 
 <div>
     <a href="/#/title/{{bookId()}}">
@@ -39,5 +52,4 @@
 
 
 
-
-<h4></h4>
+{% endraw %}

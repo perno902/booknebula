@@ -9,7 +9,6 @@ myApp.factory('userData', [ '$http', function($http) {
     var country = '';
     var presentation = '';
     var reviews = [];
-    var own = false;
 
     function setUserId(id) {
         userId = id;
@@ -72,7 +71,6 @@ myApp.factory('userData', [ '$http', function($http) {
         country = data.country;
         presentation = data.presentation;
         reviews = data.reviews;
-        own = data.own;
     };
 
     return ({

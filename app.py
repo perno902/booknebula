@@ -1,6 +1,5 @@
 from flask import Flask, render_template, redirect, request, session, abort
 from flask_login import UserMixin, login_user, logout_user, current_user, LoginManager, login_required
-from flask_sqlalchemy import SQLAlchemy
 import urllib
 from uuid import uuid4
 import requests
@@ -13,7 +12,6 @@ import database_testdata
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = "Vverysecret8238923787"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DATABASE.db'
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -30,9 +28,36 @@ def load_user(userid):
 
 @app.route("/")
 def init():
-    url_auth = make_authorization_url()
+    doc = request.args.get('doc')
     signed_in = current_user.is_authenticated()
-    return render_template("index.html", URL_AUTH=url_auth, SIGNED_IN=signed_in)
+    if doc is None:
+        url_auth = make_authorization_url()
+        return render_template("index.html", URL_AUTH=url_auth, SIGNED_IN=signed_in)
+
+    id_arg = request.args.get('id')
+    try:
+        id_arg = int(id_arg)
+    except:
+        pass
+
+    if doc == "profile":
+        if signed_in:
+            own = ((id_arg == 'signedIn') or (id_arg == current_user.id))
+        else:
+            own = False
+        return render_template("profile.html", SIGNED_IN=signed_in, OWN_PROFILE=own)
+
+    elif doc == "review":
+        if signed_in:
+            own = database_helper.is_own_review(current_user.id, id_arg)
+        else:
+            own = False
+        return render_template("review.html", SIGNED_IN=signed_in, OWN_REVIEW=own)
+
+    elif doc == "title":
+        return render_template("title.html", SIGNED_IN=signed_in)
+    else:
+        abort(404)
 
 
 def make_authorization_url():
@@ -99,16 +124,11 @@ def logout():
 @app.route('/userData', methods=["GET"])
 def get_user_data():
     id = request.args.get('id')
-    own = False
-    if current_user.is_authenticated():
-        if str(current_user.id) == id:
-            own = True
-        elif id == "signedIn":
-            own = True
+
+    if id == "signedIn":
             id = current_user.id
     data = database_helper.get_user_data(id)
     data['userId'] = id
-    data['own'] = own
     return json.dumps({'data': data})
 
 

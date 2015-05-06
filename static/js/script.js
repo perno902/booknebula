@@ -17,7 +17,8 @@ myApp.config(['$routeProvider',
         })
     // Profile page
         .when('/profile/:userId', {
-            templateUrl: '../static/pages/profile.html',
+            //templateUrl: '../static/pages/profile.html',
+            templateUrl: function(params){ return '/?doc=profile&id=' + params.userId;},
             controller: 'profileCtrl'
         })
     // Profile editing page
@@ -32,7 +33,8 @@ myApp.config(['$routeProvider',
         })
     // Title page
         .when('/title/:titleId', {
-            templateUrl: '../static/pages/title.html',
+            //templateUrl: '../static/pages/title.html'
+            templateUrl: function(params){ return '/?doc=title&id=' + params.titleId;},
             controller: 'titleCtrl'
         })
     // Author page
@@ -42,7 +44,8 @@ myApp.config(['$routeProvider',
         })
     // Review page
         .when('/review/:reviewId', {
-            templateUrl: '../static/pages/review.html',
+            //templateUrl: '../static/pages/review.html',
+            templateUrl: function(params){ return '/?doc=review&id=' + params.reviewId;},
             controller: 'reviewCtrl'
         })
     // Review page
