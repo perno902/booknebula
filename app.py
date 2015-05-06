@@ -218,6 +218,16 @@ def upvote():
         return json.dumps({'data': data})
 
 
+@app.route('/unUpvote', methods=["POST"])
+@login_required
+def un_upvote():
+    if request.method == "POST":
+        user_id = current_user.id
+        review_id = json.loads(request.data)['id']
+        data = database_helper.un_upvote(user_id, review_id)
+        return json.dumps({'data': data})
+
+
 @app.route('/toplist', methods=["GET"])
 def get_toplist():
     data = database_helper.get_toplist()

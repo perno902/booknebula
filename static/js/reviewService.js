@@ -69,6 +69,18 @@ myApp.factory('review', [ '$http', function($http) {
         return (request.then(handleUpvoteSuccess, handleError));
     };
 
+    function unUpvote() {
+        var request = $http({
+            method: "post",
+            url: "/unUpvote",
+            data: {
+                id: reviewId
+            }
+        });
+        return (request.then(handleUpvoteSuccess, handleError));
+    };
+
+
     function handleError(response) {
         console.log('error');
     };
@@ -80,8 +92,8 @@ myApp.factory('review', [ '$http', function($http) {
 
     function handleUpvoteSuccess(response) {
         console.log('success');
-        upvotes = response.data.data;
-        hasUpvoted = true;
+        upvotes = response.data.data.upvotes;
+        hasUpvoted = response.data.data.hasUpvoted;
     };
 
     function handleSubmitSuccess(response) {
@@ -113,6 +125,7 @@ myApp.factory('review', [ '$http', function($http) {
         submitReview: submitReview,
         deleteReview: deleteReview,
         upvote: upvote,
+        unUpvote: unUpvote,
         reviewId: function() {return reviewId},
         bookTitle: function() {return bookTitle},
         bookId: function() {return bookId},

@@ -1,5 +1,5 @@
 
-myApp.factory('search', [ '$http', function($http, $rootScope) {
+myApp.factory('search', [ '$http', function($http) {
     var query = '';
     var books = [];
     var authors = [];
@@ -31,10 +31,6 @@ myApp.factory('search', [ '$http', function($http, $rootScope) {
 
     function handleError(response) {
         console.log('error')
-        if (!angular.isObject(response.data) || !angular.response.data.message) {
-            return($q.reject("Unknown error."));
-        }
-        return ($q.reject(response.data.message));
     };
 
     function handleSuccess(response) {

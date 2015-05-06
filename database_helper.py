@@ -162,7 +162,23 @@ def upvote(user_id, review_id):
     models.db.session.commit()
 
     update_upvotes(review_id)
-    return models.User.query.filter(models.User.upvoted_review.any(id=review_id)).count()
+    data = {}
+    data['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=review_id)).count()
+    data['hasUpvoted'] = True
+    return data
+
+
+def un_upvote(user_id, review_id):
+    user = models.User.query.filter_by(id=user_id).first()
+    review = models.Review.query.filter_by(id=review_id).first()
+    review.upvoters.remove(user)
+    models.db.session.commit()
+
+    update_upvotes(review_id)
+    data = {}
+    data['upvotes'] = models.User.query.filter(models.User.upvoted_review.any(id=review_id)).count()
+    data['hasUpvoted'] = False
+    return data
 
 
 def update_upvotes(review_id):
