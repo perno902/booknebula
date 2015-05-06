@@ -1,4 +1,4 @@
-myApp.factory('review', [ '$http', function($http) {
+myApp.factory('review', [ '$http', '$location', function($http, $location) {
     var reviewId = '';
     var bookTitle = '';
     var bookId = '';
@@ -96,6 +96,7 @@ myApp.factory('review', [ '$http', function($http) {
 
     function handleSubmitSuccess(response) {
         console.log('success');
+        $location.path('/title/' + bookId)
     };
 
 

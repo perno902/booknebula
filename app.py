@@ -137,13 +137,11 @@ def get_user_data():
 def submit_user_data():
     if request.method == "POST":
         data = json.loads(request.data)
-        id = data['userId']
         name = data['userName']
         country = data['country']
         email = data['email']
         presentation = data['presentation']
-        if id != current_user.id:
-            abort(403)
+        id = current_user.id
 
         database_helper.submit_user_data(id, name, country, email, presentation)
         return ''

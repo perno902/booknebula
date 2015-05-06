@@ -7,13 +7,9 @@
             <div class="panel-body">
                 <p ng-hide="multipleAuthors">Author:</p>
                 <p ng-show="multipleAuthors">Authors:</p>
-                    <a href="/#/author/{{a.id}}" ng-repeat="a in authors()">
-                        <p><button type="button" class="btn btn-link">{{a.name}}</button>
-                    </a></p>
+                <a href="/#/author/{{a.id}}" ng-repeat="a in authors()"class="btn btn-link">{{a.name}}</a>
 
-
-                <p>Original language: {{language()}}</p>
-                <br>
+                <p>Original language: {{language()}}</p><br>
                 <p>Average score: {{avgScore() | number:2}}</p>
             </div>
         </div>
@@ -26,9 +22,8 @@
 
 {% endraw %}
 {% if SIGNED_IN %}
-<div class="row">
-    <a href="/#/writeReview/new">
-    <div class="col-md-4" ng-hide="hasReviewed()"><button type="button" class="btn btn-primary">Review this book</button></div></a>
+<div class="row" ng-hide="hasReviewed()">
+    <a href="/#/writeReview/new" class="btn btn-primary">Review this book</button></a>
 </div><br><br>
 {% endif %}
 {% raw %}
@@ -48,12 +43,8 @@
         <tbody>
             <tr ng-repeat="r in reviews()">
                 <td>{{r.upvotes}}</td>
-                <td><a href="/#/profile/{{r.reviewerId}}">
-                    <button type="button" class="btn btn-link">{{r.reviewer}}</button>
-                </a></td>
-                <td><a href="/#/review/{{r.id}}">
-                    <button type="button" class="btn btn-link">{{r.revTitle}}</button>
-                </a></td>
+                <td><a href="/#/profile/{{r.reviewerId}}" class="btn btn-link">{{r.reviewer}}</a></td>
+                <td><a href="/#/review/{{r.id}}" class="btn btn-link">{{r.revTitle}}</a></td>
                 <td>{{r.score}}</td>
                 <td>{{r.date}}</td>
             </tr>

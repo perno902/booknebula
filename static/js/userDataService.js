@@ -1,4 +1,4 @@
-myApp.factory('userData', [ '$http', function($http) {
+myApp.factory('userData', [ '$http', '$location', function($http, $location) {
     var userId = '';
     var userName = '';
     var email = '';
@@ -37,7 +37,6 @@ myApp.factory('userData', [ '$http', function($http) {
             method: "post",
             url: "/userData",
             data: {
-                userId: userId,
                 userName: userName,
                 country: country,
                 email: email,
@@ -54,10 +53,12 @@ myApp.factory('userData', [ '$http', function($http) {
     function handleSuccess(response) {
         console.log('success');
         applyRemoteData(response.data.data);
+        $location.path('/profile/' + userId);
     }
 
     function handleSubmitSuccess() {
         console.log('success');
+        $location.path('/profile/signedIn');
     }
 
     function applyRemoteData(data) {
@@ -87,8 +88,7 @@ myApp.factory('userData', [ '$http', function($http) {
         joinedDate: function() {return joinedDate},
         country: function() {return country},
         presentation: function() {return presentation},
-        reviews: function() {return reviews},
-        own: function() {return own}
+        reviews: function() {return reviews}
     });
 
 }]);

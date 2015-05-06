@@ -17,7 +17,6 @@ myApp.config(['$routeProvider',
         })
     // Profile page
         .when('/profile/:userId', {
-            //templateUrl: '../static/pages/profile.html',
             templateUrl: function(params){ return '/?doc=profile&id=' + params.userId;},
             controller: 'profileCtrl'
         })
@@ -33,7 +32,6 @@ myApp.config(['$routeProvider',
         })
     // Title page
         .when('/title/:titleId', {
-            //templateUrl: '../static/pages/title.html'
             templateUrl: function(params){ return '/?doc=title&id=' + params.titleId;},
             controller: 'titleCtrl'
         })
@@ -44,7 +42,6 @@ myApp.config(['$routeProvider',
         })
     // Review page
         .when('/review/:reviewId', {
-            //templateUrl: '../static/pages/review.html',
             templateUrl: function(params){ return '/?doc=review&id=' + params.reviewId;},
             controller: 'reviewCtrl'
         })

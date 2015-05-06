@@ -28,7 +28,5 @@
     </div>
 </form>
 
-<a href="/#/title/{{bookId()}}">
-    <button type="button" class="btn btn-default" ng-disabled="!reviewForm.$valid" ng-click="submitReview()">Submit</button>
-</a>
-<a href="/#/title"><button type="button" class="btn btn-default">Cancel</button></a>
+<button type="button" class="btn btn-default" ng-disabled="!reviewForm.$valid" ng-click="submitReview()">Submit</button>
+<a href="/#/title/{{bookId()}}" class="btn btn-default">Cancel</a>

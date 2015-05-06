@@ -1,5 +1,5 @@
 
-myApp.factory('search', [ '$http', function($http) {
+myApp.factory('search', [ '$http', '$location', function($http, $location) {
     var query = '';
     var books = [];
     var authors = [];
@@ -29,13 +29,14 @@ myApp.factory('search', [ '$http', function($http) {
         return (request.then(handleSuccess, handleError));
     };
 
-    function handleError(response) {
+    function handleError() {
         console.log('error')
     };
 
     function handleSuccess(response) {
         console.log('success');
         applyRemoteData(response.data.data);
+        $location.path('/searchResults');
     };
 
     function applyRemoteData(data) {
