@@ -6,15 +6,24 @@ import requests
 import requests.auth
 import json
 import base64
-import database_helper
-import database_testdata
+#import os
+
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = "Vverysecret8238923787"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DATABASE.db'
 
+# Openshift:
+#app.config['PROPAGATE_EXCEPTIONS'] = True
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.environ["OPENSHIFT_DATA_DIR"], 'database.db')
+#app.config['SQLALCHEMY_ECHO'] = True
+
+
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+import database_helper
+import database_testdata
 
 CLIENT_ID = "205573445883-9dl8ahcka67d4m7e21anb692do487odk.apps.googleusercontent.com"
 CLIENT_SECRET = "uaidYPHuy99kGHDwoz_CNd63"
@@ -87,13 +96,12 @@ def login():
     id_token, access_token = get_tokens(code)
 
     email = id_token['email']
-    print email
     user = database_helper.get_user(email)
     if user is None:
         database_helper.add_user(email)
         user = database_helper.get_user(email)
         login_user(user)
-        return redirect ("/#/editProfile")
+        return redirect("/#/profile/signedIn")
     else:
         login_user(user)
         return redirect("/")
@@ -116,7 +124,6 @@ def get_tokens(code):
 @app.route('/logout')
 @login_required
 def logout():
-    print current_user.email + " has signed out"
     logout_user()
     return redirect("/")
 
@@ -124,11 +131,9 @@ def logout():
 @app.route('/userData', methods=["GET"])
 def get_user_data():
     id = request.args.get('id')
-
     if id == "signedIn":
             id = current_user.id
     data = database_helper.get_user_data(id)
-    data['userId'] = id
     return json.dumps({'data': data})
 
 
@@ -209,7 +214,7 @@ def submit_review():
             database_helper.submit_review(book_id, review_title, content, score, language, user_id)
         else:
             database_helper.update_review(review_id, book_id, review_title, content, score, language)
-        return ''
+        return json.dumps({'bookId': book_id})
 
 
 @app.route('/deleteReview', methods=["POST"])
@@ -220,8 +225,8 @@ def delete_review():
         review_id = data['id']
         user_id = current_user.id
         if database_helper.is_own_review(user_id, review_id):
-            database_helper.delete_review(review_id)
-            return ''
+            book_id = database_helper.delete_review(review_id)
+            return json.dumps({'bookId': book_id})
         else:
             abort(403)
 

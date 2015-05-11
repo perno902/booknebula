@@ -15,12 +15,14 @@
             <p>Number of reviews: {{noOfReviews()}}</p>
             <p>Number of upvotes: {{noOfUpvotes()}}</p>
             <p>Joined Book Nebula: {{joinedDate()}}</p>
-            <p>Country: {{country()}}</p>
+            <p ng-hide="emptyCountry()">Country: {{country()}}</p>
+            <p ng-show="emptyCountry()">Country: -</p>
             <p>Email: {{email()}}</p>
         </div>
     </div>
     <div class="panel panel-default col-sm-6 pull-right">
-        <div class="panel-body">{{presentation()}}</div>
+        <div class="panel-body" ng-hide="emptyPresentation()">{{presentation()}}</div>
+        <div class="panel-body" ng-show="emptyPresentation()"><em>{{userName()}} hasn't written a personal presentation yet.</em></div>
     </div>
     <div class="col-sm-12">
         <h4>Reviews</h4>

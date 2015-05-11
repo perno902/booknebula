@@ -96,7 +96,7 @@ myApp.factory('review', [ '$http', '$location', function($http, $location) {
 
     function handleSubmitSuccess(response) {
         console.log('success');
-        $location.path('/title/' + bookId)
+        $location.path('/title/' + response.data.bookId)
     };
 
 

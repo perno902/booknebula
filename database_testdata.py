@@ -21,13 +21,13 @@ def test():
 
     # Users
 
-    user1 = models.User('n0rp3r_the_critic', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', str(datetime.date.today()))
+    user1 = models.User('n0rp3r_the_critic', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', str(datetime.date.today()), True)
     models.db.session.add(user1)
     models.db.session.commit()
 
     user2 = models.User('missusLovett', 'lovett@mail.com', 'England', '''A great fan of fiction. Lorem ipsum dolor sit
                         amet, consectetur adipiscing elit, sed do eiusmod tempor  incididunt ut labore et dolore magna aliqua. ''',
-                        str(datetime.date.today()))
+                        str(datetime.date.today()), False)
 
     models.db.session.add(user2)
     models.db.session.commit()

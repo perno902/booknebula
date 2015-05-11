@@ -1,3 +1,4 @@
+#import os
 import app
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy import declarative_base
@@ -20,16 +21,19 @@ class User(db.Model):
     presentation = db.Column(db.Text)
     joinedDate = db.Column(db.String(20))
     noOfUpvotes = db.Column(db.Integer)
+    isAdmin = db.Column(db.Boolean)
     reviews = db.relationship('Review', backref='user', lazy='dynamic')
     upvotes = db.relationship('Review', secondary=upvotes, backref=db.backref('upvoter', lazy='dynamic'))
 
-    def __init__(self, username, email, country, presentation, joined_date):
+
+    def __init__(self, username, email, country, presentation, joined_date, is_admin):
         self.userName = username
         self.email = email
         self.country = country
         self.presentation = presentation
         self.joinedDate = joined_date
         self.noOfUpvotes = 0
+        self.isAdmin = is_admin
 
     def is_authenticated(self):
         return True

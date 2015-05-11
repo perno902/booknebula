@@ -15,14 +15,13 @@ def get_user_by_id(id):
 
 
 def add_user(email):
-    user = models.User('', email, '', '', '')
+    user = models.User(email, email, '', '', str(datetime.date.today()), False)
     models.db.session.add(user)
     models.db.session.commit()
 
 
 def get_user_data(id):
     data = row_to_dict(models.User.query.filter_by(id=id).first())
-
     reviews = list_to_dict(models.Review.query.filter_by(reviewerId=id).all())
     data['reviews'] = get_reviews_data(reviews)
 
@@ -150,9 +149,11 @@ def update_review(review_id, book_id, review_title, content, score, language):
 def delete_review(review_id):
     review = models.Review.query.filter_by(id=review_id).first()
     book = models.Book.query.filter_by(id=review.bookId).first()
+    book_id = book.id
     models.db.session.delete(review)
     models.db.session.commit()
     update_avg_score(book.id)
+    return book_id
 
 
 def upvote(user_id, review_id):

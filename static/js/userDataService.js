@@ -1,5 +1,4 @@
 myApp.factory('userData', [ '$http', '$location', function($http, $location) {
-    var userId = '';
     var userName = '';
     var email = '';
     var noOfReviews = '';
@@ -10,50 +9,43 @@ myApp.factory('userData', [ '$http', '$location', function($http, $location) {
     var presentation = '';
     var reviews = [];
 
-    function setUserId(id) {
-        userId = id;
-    };
 
-    function getUserData() {
+    // Gets user data for a profile from the server
+    function getUserData(id) {
         var request = $http({
             method: "get",
             url: "/userData",
             params: {
-                id: userId
+                id: id
             }
         });
         return (request.then(handleSuccess, handleError));
     };
 
-    function setUserData(newName, newCountry, newEmail, newPresentation) {
-        userName = newName;
-        country = newCountry;
-        email = newEmail;
-        presentation = newPresentation;
-    };
-
-    function submitUserData() {
+    // Submits user data after editing a profile
+    function submitUserData(newUserName, newCountry, newEmail, newPresentation) {
         var request = $http({
             method: "post",
             url: "/userData",
             data: {
-                userName: userName,
-                country: country,
-                email: email,
-                presentation: presentation
+                userName: newUserName,
+                country: newCountry,
+                email: newEmail,
+                presentation: newPresentation
             }
         });
         return (request.then(handleSubmitSuccess, handleError));
     };
 
-    function handleError(response) {
+
+    //Functions for handling error and success
+    function handleError() {
         console.log('error')
     }
 
     function handleSuccess(response) {
         console.log('success');
         applyRemoteData(response.data.data);
-        $location.path('/profile/' + userId);
     }
 
     function handleSubmitSuccess() {
@@ -61,8 +53,9 @@ myApp.factory('userData', [ '$http', '$location', function($http, $location) {
         $location.path('/profile/signedIn');
     }
 
+
+    // Applies data to the variables in the service
     function applyRemoteData(data) {
-        userId = data.userId;
         userName = data.userName;
         email = data.email;
         noOfReviews = data.noOfReviews;
@@ -74,12 +67,10 @@ myApp.factory('userData', [ '$http', '$location', function($http, $location) {
         reviews = data.reviews;
     };
 
+    // Service functions used by controllers
     return ({
         getUserData: getUserData,
-        setUserId: setUserId,
-        setUserData: setUserData,
         submitUserData: submitUserData,
-        userId: function() {return userId},
         userName: function() {return userName},
         email: function() {return email},
         noOfReviews: function() {return noOfReviews},

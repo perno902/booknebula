@@ -7,8 +7,8 @@ myApp.controller('editProfileCtrl', ['$scope', 'userData', function($scope, user
     ];
     $scope.presentation = userData.presentation();
 
+    // Calls the submit function in the service
     $scope.submitUserData = function() {
-        userData.setUserData($scope.userName, $scope.country, $scope.email, $scope.presentation);
-        userData.submitUserData();
+        userData.submitUserData($scope.userName, $scope.country, $scope.email, $scope.presentation);
     };
 }]);
