@@ -31,7 +31,7 @@
 
 </div>
 {% endraw %}
-{% if OWN_REVIEW %}
+{% if OWN_REVIEW or ADMIN %}
 {% raw %}
 <div class="pull-right">
     <a href="/#/title/{{bookId()}}" class="btn btn-primary" ng-click="deleteReview()">Delete</a>

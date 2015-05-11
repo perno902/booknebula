@@ -1,6 +1,14 @@
 {% raw %}
-<h3>{{title()}}  <small>({{year()}})</small></h3><br>
+<div class="col-md-8"><h3>{{title()}}  <small>({{year()}})</small></h3><br></div>
+{% endraw %}
 
+{% if ADMIN %}
+    {% raw %}
+    <div class="col-sm-3 pull-right"><a href="/#/editTitle/{{bookId}}" class="btn btn-primary">Edit book <span class="glyphicon glyphicon-edit"></span></a></div>
+    {% endraw %}
+{% endif %}
+
+{% raw %}
 <div class="row">
     <div>
         <div class="panel panel-default col-sm-5">
@@ -22,10 +30,12 @@
 
 {% endraw %}
 {% if SIGNED_IN %}
-<div class="row" ng-hide="hasReviewed()">
-    <a href="/#/writeReview/new" class="btn btn-primary">Review this book</button></a>
+<div class="row">
+    <div class="col-sm-3" ng-hide="hasReviewed()"><a href="/#/writeReview/new" class="btn btn-primary">Review this book</a></div>
 </div><br><br>
 {% endif %}
+
+
 {% raw %}
 
     <table class="table">

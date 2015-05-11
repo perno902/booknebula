@@ -37,7 +37,7 @@ myApp.config(['$routeProvider',
         })
     // Author page
         .when('/author/:authorId', {
-            templateUrl: '../static/pages/author.html',
+            templateUrl: function(params){ return '/?doc=author&id=' + params.authorId;},
             controller: 'authorCtrl'
         })
     // Review page

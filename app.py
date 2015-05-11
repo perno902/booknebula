@@ -66,10 +66,12 @@ def init():
             own = database_helper.is_own_review(current_user.id, id_arg)
         else:
             own = False
-        return render_template("review.html", SIGNED_IN=signed_in, OWN_REVIEW=own)
+        return render_template("review.html", SIGNED_IN=signed_in, OWN_REVIEW=own, ADMIN=admin)
 
     elif doc == "title":
-        return render_template("title.html", SIGNED_IN=signed_in)
+        return render_template("title.html", SIGNED_IN=signed_in, ADMIN=admin)
+    elif doc == "author":
+        return render_template("author.html", ADMIN=admin)
     else:
         abort(404)
 
@@ -109,10 +111,6 @@ def login():
         return redirect("/#/profile/signedIn")
     else:
         login_user(user)
-        # testing admin
-        if database_helper.is_admin(user.id):
-            print "welcome, admin!"
-
         return redirect("/")
 
 
@@ -222,7 +220,10 @@ def submit_review():
         if review_id == "new":
             database_helper.submit_review(book_id, review_title, content, score, language, user_id)
         else:
-            database_helper.update_review(review_id, book_id, review_title, content, score, language)
+            if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
+                database_helper.update_review(review_id, book_id, review_title, content, score, language)
+            else:
+                abort(403)
         return json.dumps({'bookId': book_id})
 
 
@@ -233,7 +234,7 @@ def delete_review():
         data = json.loads(request.data)
         review_id = data['id']
         user_id = current_user.id
-        if database_helper.is_own_review(user_id, review_id):
+        if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
             book_id = database_helper.delete_review(review_id)
             return json.dumps({'bookId': book_id})
         else:

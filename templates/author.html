@@ -1,0 +1,31 @@
+{% raw %}
+<div class="col-md-8"><h3>{{name}} <small>(Author)</small></h3><br></div>
+{% endraw %}
+
+{% if ADMIN %}
+    {% raw %}
+    <div class="col-sm-3 pull-right"><a href="/#/editAuthor/{{authorId}}" class="btn btn-primary">Edit author <span class="glyphicon glyphicon-edit"></span></a></div>
+    {% endraw %}
+{% endif %}
+<br><br>
+{% raw %}
+<div class="col-sm-12">
+    <h4>Works:</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Average score</th>
+                </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="b in books">
+                <td><a href="/#/title/{{b.id}}" class="btn btn-link">{{b.title}}</a></td>
+                <td>{{b.year}}</td>
+                <td>{{b.avgScore}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endraw %}
