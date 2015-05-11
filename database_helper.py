@@ -19,6 +19,9 @@ def add_user(email):
     models.db.session.add(user)
     models.db.session.commit()
 
+def is_admin(id):
+    user = models.User.query.filter_by(id=id).first()
+    return user.isAdmin
 
 def get_user_data(id):
     data = row_to_dict(models.User.query.filter_by(id=id).first())

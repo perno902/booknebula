@@ -39,9 +39,14 @@ def load_user(userid):
 def init():
     doc = request.args.get('doc')
     signed_in = current_user.is_authenticated()
+    if signed_in:
+        admin = database_helper.is_admin(current_user.id)
+    else:
+        admin = False
+
     if doc is None:
         url_auth = make_authorization_url()
-        return render_template("index.html", URL_AUTH=url_auth, SIGNED_IN=signed_in)
+        return render_template("index.html", URL_AUTH=url_auth, SIGNED_IN=signed_in, ADMIN=admin)
 
     id_arg = request.args.get('id')
     try:
@@ -104,6 +109,10 @@ def login():
         return redirect("/#/profile/signedIn")
     else:
         login_user(user)
+        # testing admin
+        if database_helper.is_admin(user.id):
+            print "welcome, admin!"
+
         return redirect("/")
 
 
