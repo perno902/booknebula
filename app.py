@@ -182,6 +182,26 @@ def get_title_data():
     return json.dumps({'data': data})
 
 
+@app.route('/title', methods=["POST"])
+@login_required
+def submit_title_data():
+    if database_helper.is_admin(current_user.id):
+        data = json.loads(request.data)
+        book_id = data['bookId']
+        title = data['title']
+        year = data['year']
+        plot = data['plot']
+        language = data['language']
+
+        if book_id == 'new':
+            book_id = database_helper.add_book(title, year, plot, language)
+        else:
+            database_helper.update_book(book_id, title, year, plot, language)
+        return json.dumps({'bookId': book_id})
+    else:
+        abort(403)
+
+
 @app.route('/author', methods=["GET"])
 def get_author_data():
     id = request.args.get('id')

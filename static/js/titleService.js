@@ -1,4 +1,4 @@
-myApp.factory('title', [ '$http', function($http) {
+myApp.factory('title', [ '$http', '$location', function($http, $location) {
     var bookId = '';
     var title = '';
     var year = '';
@@ -26,6 +26,21 @@ myApp.factory('title', [ '$http', function($http) {
         return (request.then(handleSuccess, handleError));
     };
 
+    function submitBookData(id, newTitle, newYear, newLanguage, newPlot) {
+        var request = $http({
+            method: "post",
+            url: "/title",
+            data: {
+                bookId: id,
+                title: newTitle,
+                year: newYear,
+                language: newLanguage,
+                plot: newPlot
+            }
+        });
+        return (request.then(handleSubmitSuccess, handleError));
+    };
+
     function handleError(response) {
         console.log('error');
     };
@@ -34,6 +49,11 @@ myApp.factory('title', [ '$http', function($http) {
         console.log('success');
         applyRemoteData(response.data.data);
     };
+
+    function handleSubmitSuccess(response) {
+        console.log('success');
+        $location.path('/title/' + response.data.bookId)
+    }
 
     function applyRemoteData(data) {
         title = data.title;
@@ -50,6 +70,7 @@ myApp.factory('title', [ '$http', function($http) {
     return {
         setBookId: setBookId,
         getBookData: getBookData,
+        submitBookData: submitBookData,
         bookId: function() {return bookId},
         title: function() {return title},
         year: function() {return year},
