@@ -126,6 +126,22 @@ def get_author_data(id):
     return data
 
 
+def add_author(name, country, birth_year):
+    author = models.Author(name, country, birth_year)
+    models.db.session.add(author)
+    models.db.session.commit()
+    return author.id
+
+
+def update_author(author_id, name, country, birth_year):
+    author = models.Author.query.filter_by(id=author_id).first()
+    author.name = name
+    author.country = country
+    author.birthYear = birth_year
+    models.db.session.commit()
+
+
+
 def submit_review(book_id, review_title, content, score, language, user_id):
     user = models.User.query.filter_by(id=user_id).first()
     book = models.Book.query.filter_by(id=book_id).first()

@@ -102,9 +102,13 @@ class Book(db.Model):
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
+    country = db.Column(db.String(50))
+    birthYear= db.Column(db.String(4))
     wrote = db.relationship('Book', secondary=has_written, backref=db.backref('author', lazy='dynamic'))
 
 
 
-    def __init__(self, name):
+    def __init__(self, name, country, birth_year):
         self.name = name
+        self.country = country
+        self.birthYear = birth_year

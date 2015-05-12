@@ -1,5 +1,5 @@
 {% raw %}
-<div class="col-md-8"><h3>{{name}} <small>(Author)</small></h3><br></div>
+<div class="col-md-8"><h3>{{name()}} <small>(Author)</small></h3><br></div>
 {% endraw %}
 
 {% if ADMIN %}
@@ -20,7 +20,7 @@
                 </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="b in books">
+            <tr ng-repeat="b in books()">
                 <td><a href="/#/title/{{b.id}}" class="btn btn-link">{{b.title}}</a></td>
                 <td>{{b.year}}</td>
                 <td>{{b.avgScore}}</td>

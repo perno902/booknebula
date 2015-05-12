@@ -50,4 +50,14 @@ myApp.config(['$routeProvider',
             templateUrl: '../static/pages/writeReview.html',
             controller: "writeReviewCtrl"
         })
+    // Edit author page
+        .when('/editAuthor/:authorId', {
+            templateUrl: '../static/pages/editAuthor.html',
+            controller: "editAuthorCtrl"
+        })
+    // Edit book page
+        .when('/editBook/:bookId', {
+            templateUrl: '../static/pages/editBook.html',
+            controller: "editBookCtrl"
+        })
 }]);

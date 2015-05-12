@@ -1,6 +1,11 @@
-
 myApp.controller('authorCtrl', ['$scope', '$routeParams', 'author', function($scope, $routeParams, author) {
     $scope.authorId = $routeParams.authorId;
+
+    $scope.name = function() {return author.name()};
+    $scope.country = function() {return author.country()};
+    $scope.birthYear = function() {return author.birthYear()}
+    $scope.books = function() {return author.books()};
+
     setAuthorId();
 
     function setAuthorId() {
@@ -9,17 +14,7 @@ myApp.controller('authorCtrl', ['$scope', '$routeParams', 'author', function($sc
 
     loadRemoteData();
 
-    function applyRemoteData(authorData) {
-        $scope.name = authorData.name;
-        $scope.books = authorData.books;
-    }
-
     function loadRemoteData() {
         author.getAuthorData()
-            .then(
-                function(authorData) {
-                    applyRemoteData(authorData);
-                }
-        )
     }
 }]);

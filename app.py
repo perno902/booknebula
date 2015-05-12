@@ -189,6 +189,25 @@ def get_author_data():
     return json.dumps({'data': data})
 
 
+@app.route('/author', methods=["POST"])
+@login_required
+def submit_author_data():
+    if database_helper.is_admin(current_user.id):
+        data = json.loads(request.data)
+        author_id = data['authorId']
+        name = data['name']
+        country = data['country']
+        birth_year = data['birthYear']
+        if author_id == 'new':
+            author_id = database_helper.add_author(name, country, birth_year)
+        else:
+            database_helper.update_author(author_id, name, country, birth_year)
+        return json.dumps({'authorId': author_id})
+    else:
+        abort(403)
+
+
+
 @app.route('/review', methods=["GET"])
 def get_review():
     if request.method == "GET":

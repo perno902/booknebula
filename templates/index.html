@@ -39,6 +39,7 @@
     <script src="static/js/authorController.js"></script>
     <script src="static/js/authorService.js"></script>
     <script src="static/js/writeReviewController.js"></script>
+    <script src="static/js/editAuthorController.js"></script>
     <script src="static/js/directives/reviewsDirective.js"></script>
 
     <!--- URL for authorization -->
@@ -64,7 +65,8 @@
                         {% endif %}
 
                         {% if ADMIN %}
-                        <li><a href="/#/add">Add</a></li>
+                        <li><a href="/#/editBook/new">Add book</a></li>
+                        <li><a href="/#/editAuthor/new">Add author</a></li>
                         {% endif %}
                     </ul>
 
