@@ -192,11 +192,12 @@ def submit_title_data():
         year = data['year']
         plot = data['plot']
         language = data['language']
+        authors = data['authors']
 
         if book_id == 'new':
-            book_id = database_helper.add_book(title, year, plot, language)
+            book_id = database_helper.add_book(title, year, plot, language, authors)
         else:
-            database_helper.update_book(book_id, title, year, plot, language)
+            database_helper.update_book(book_id, title, year, plot, language, authors)
         return json.dumps({'bookId': book_id})
     else:
         abort(403)
@@ -225,6 +226,12 @@ def submit_author_data():
         return json.dumps({'authorId': author_id})
     else:
         abort(403)
+
+
+@app.route('/authorList', methods=["GET"])
+def get_author_list():
+    data = database_helper.get_author_list()
+    return json.dumps({'data': data})
 
 
 

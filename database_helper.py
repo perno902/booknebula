@@ -141,18 +141,33 @@ def update_author(author_id, name, country, birth_year):
     models.db.session.commit()
 
 
-def add_book(title, year, plot, language):
+def add_book(title, year, plot, language, authors):
     book = models.Book(title, year, plot, language)
+
+    for author_id in authors:
+        author = models.Author.query.filter_by(id=author_id).first()
+        book.written_by.append(author)
+
     models.db.session.add(book)
     models.db.session.commit()
     return book.id
 
-def update_book(book_id, title, year, plot, language):
+
+def update_book(book_id, title, year, plot, language, authors):
     book = models.Book.query.filter_by(id=book_id).first()
     book.title = title
     book.year = year
     book.plot = plot
     book.language = language
+
+    old_authors = models.Author.query.filter(models.Author.books.any(id=book_id)).all()
+    for a in old_authors:
+        book.written_by.remove(a)
+
+    for author_id in authors:
+        author = models.Author.query.filter_by(id=author_id).first()
+        book.written_by.append(author)
+
     models.db.session.commit()
 
 
@@ -259,6 +274,9 @@ def get_toplist():
     data['reviewers'] = reviewers
     data['books'] = books
     return data
+
+def get_author_list():
+    return list_to_dict(models.Author.query.all())
 
 def list_to_dict(list):
     res = []

@@ -8,6 +8,27 @@
         </div>
     </div><br>
 
+    <div class="row col-sm-12">
+        <label for="author">Authors:</label>
+        <div>
+            <p ng-repeat="a in authors">
+                {{a.name}} (born {{a.birthYear}})
+                <span class="glyphicon glyphicon-remove" ng-click="removeAuthor(a)"></span>
+            </p>
+        </div>
+
+            <div class="row">
+                <div class="col-xs-5">
+                    <select ng-options="(a.name+' (born '+a.birthYear+')') for a in authorList()" ng-model="author" class="form-control" id="author"></select>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-default" ng-click="addAuthor()">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+            </div>
+    </div><br>
+
     <div class="row">
         <div class="col-xs-3">
             <label for="year">Year of publication:</label>

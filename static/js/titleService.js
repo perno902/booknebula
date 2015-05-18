@@ -9,6 +9,7 @@ myApp.factory('title', [ '$http', '$location', function($http, $location) {
     var reviews = [];
     var hasReviewed = false;
     var user = '';
+    var authorList = [];
 
     function setBookId(id) {
         bookId = id;
@@ -26,7 +27,7 @@ myApp.factory('title', [ '$http', '$location', function($http, $location) {
         return (request.then(handleSuccess, handleError));
     };
 
-    function submitBookData(id, newTitle, newYear, newLanguage, newPlot) {
+    function submitBookData(id, newTitle, newYear, newLanguage, newPlot, newAuthors) {
         var request = $http({
             method: "post",
             url: "/title",
@@ -35,13 +36,22 @@ myApp.factory('title', [ '$http', '$location', function($http, $location) {
                 title: newTitle,
                 year: newYear,
                 language: newLanguage,
-                plot: newPlot
+                plot: newPlot,
+                authors: newAuthors
             }
         });
         return (request.then(handleSubmitSuccess, handleError));
     };
 
-    function handleError(response) {
+    function getAuthorList() {
+        var request = $http({
+            method: "get",
+            url: "/authorList"
+        });
+        return (request.then(handleAuthorListSuccess, handleError));
+    };
+
+    function handleError() {
         console.log('error');
     };
 
@@ -53,7 +63,12 @@ myApp.factory('title', [ '$http', '$location', function($http, $location) {
     function handleSubmitSuccess(response) {
         console.log('success');
         $location.path('/title/' + response.data.bookId)
-    }
+    };
+
+    function handleAuthorListSuccess(response) {
+        console.log('success');
+        authorList = response.data.data;
+    };
 
     function applyRemoteData(data) {
         title = data.title;
@@ -71,6 +86,7 @@ myApp.factory('title', [ '$http', '$location', function($http, $location) {
         setBookId: setBookId,
         getBookData: getBookData,
         submitBookData: submitBookData,
+        getAuthorList: getAuthorList,
         bookId: function() {return bookId},
         title: function() {return title},
         year: function() {return year},
@@ -80,7 +96,8 @@ myApp.factory('title', [ '$http', '$location', function($http, $location) {
         plot: function() {return plot},
         reviews: function() {return reviews},
         hasReviewed: function() {return hasReviewed},
-        user: function() {return user}
+        user: function() {return user},
+        authorList: function() {return authorList}
     };
 
 }]);
