@@ -1,5 +1,5 @@
 {% raw %}
-<div class="col-md-8"><h3>{{userName()}}  <small>({{grade()}})</small></h3></div>
+<div class="col-md-9"><h3>{{userName()}}  <small>({{grade()}})</small></h3></div>
 {% endraw %}
 
 {% if OWN_PROFILE %}
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="panel panel-default col-sm-6 pull-right">
-        <div class="panel-body" ng-hide="emptyPresentation()">{{presentation()}}</div>
+        <div class="panel-body" ng-hide="emptyPresentation()" style="word-wrap:break-word;">{{presentation()}}</div>
         <div class="panel-body" ng-show="emptyPresentation()"><em>{{userName()}} hasn't written a personal presentation yet.</em></div>
     </div>
     <div class="col-sm-12">

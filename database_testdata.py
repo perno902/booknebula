@@ -34,8 +34,8 @@ def test():
 
     # Lolita by Nabokov
 
-    author = models.Author('Vladimir Nabokov', 'Russia', '1899')
-    book = models.Book('Lolita', '1955', 'A man marries his landlady so he can take advantage of her daughter.', 'English')
+    author = models.Author('Vladimir Nabokov', 'Russia', 1899)
+    book = models.Book('Lolita', 1955, 'A man marries his landlady so he can take advantage of her daughter.', 'English')
     book.written_by.append(author)
     models.db.session.add(author)
     models.db.session.commit()
@@ -49,8 +49,8 @@ def test():
 
     # It by King
 
-    author = models.Author('Stephen King', 'USA', '1947')
-    book = models.Book('It', '1986',
+    author = models.Author('Stephen King', 'USA', 1947)
+    book = models.Book('It', 1986,
                        'In 1960, seven outcast kids known as "The Loser Club" fight an evil demon.',
                        'English')
     book.written_by.append(author)
@@ -60,7 +60,7 @@ def test():
 
     # The Shining by King
 
-    book = models.Book('The Shining', '1977',
+    book = models.Book('The Shining', 1977,
                        'A recovering alcoholic and his family move into a haunted hotel as caretakers.',
                        'English')
     book.written_by.append(author)

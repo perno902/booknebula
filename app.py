@@ -31,6 +31,13 @@ REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
 
 valid_states = set()
 
+# Code to avoid caching
+@app.after_request
+def add_header(response):
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'public, max-age=0'
+    return response
+
 @login_manager.user_loader
 def load_user(userid):
     return database_helper.get_user_by_id(userid)

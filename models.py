@@ -84,7 +84,7 @@ has_written = db.Table('has_written',
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String(80))
-    year = db.Column(db.String(4))
+    year = db.Column(db.Integer)
     plot = db.Column(db.Text)
     language = db.Column(db.String(50))
     avgScore = db.Column(db.Float)
@@ -103,7 +103,7 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     country = db.Column(db.String(50))
-    birthYear= db.Column(db.String(4))
+    birthYear= db.Column(db.Integer)
     wrote = db.relationship('Book', secondary=has_written, backref=db.backref('author', lazy='dynamic'))
 
 

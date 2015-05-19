@@ -1,32 +1,49 @@
 <h3>Review of {{bookTitle()}} ({{year()}})</h3><br>
 
 <form name="reviewForm">
+    <label for="language">Reading language:</label><br>
+    <div class="row">
+        <div class="col-xs-4">
+            <select ng-options="l for l in languages" ng-model="language" class="form-control" id="language" name="language" required>
+                <option value=''>- Select a language -</option>
+            </select>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!reviewForm.language.$valid><small>Mandatory field</small></em>
+        </div>
+    </div><br>
+
+
+    <label for="revTitle">Review title:</label><br>
+    <div class="row">
+        <div class="col-xs-5">
+            <input type="text" ng-model="revTitle" class="form-control" id="revTitle" name="revTitle" ng-minlength="4" ng-maxlength="80" placeholder="Enter review title" required>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!reviewForm.revTitle.$valid><small>Must be 4-80 characters long</small></em>
+        </div>
+    </div><br>
+
+    <label for="score">Score:</label><br>
     <div class="row">
         <div class="col-xs-3">
-            <label for="language">Language:</label>
-            <select ng-options="l for l in languages" ng-model="language" class="form-control" id="language" required></select>
+            <select ng-options="l for l in points" ng-model="score" class="form-control" id="score" name="score" required>
+                <option value=''>- Select -</option>
+            </select>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!reviewForm.score.$valid><small>Mandatory field</small></em>
         </div>
     </div><br>
 
-
-    <div class="form-group row">
-        <div class="col-xs-5">
-            <label for="revTitle">Review title:</label>
-            <input type="text" ng-model="revTitle" class="form-control" id="revTitle" required>
+    <div class="row col-xs-8"><label for="content">Review content:</label></div>
+    <div class="col-xs-4"><em ng-show=!reviewForm.content.$valid><small>Must be 20-3000 characters long</small></em></div>
+    <div class="row">
+        <div class="col-xs-12">
+            <textarea rows="5" ng-model="content" class="form-control" id="content" name="content" ng-minlength="20" ng-maxlength="3000" required placeholder="Enter review content"></textarea>
         </div>
-        <div class="col-xs-3"></div>
-        <div class="col-xs-2">
-            <label for="score">Score:</label>
-            <select ng-options="l for l in points" ng-model="score" class="form-control" id="score" required></select>
-        </div>
-
     </div><br>
-
-    <div class="form-group row">
-            <label for="content">Review content:</label>
-            <textarea rows="5" ng-model="content" class="form-control" id="content" required></textarea>
-    </div>
 </form>
 
 <button type="button" class="btn btn-default" ng-disabled="!reviewForm.$valid" ng-click="submitReview()">Submit</button>
-<a href="/#/title/{{bookId()}}" class="btn btn-default">Cancel</a>
+<a href="/#/title/{{bookId()}}" class="btn btn-default">Cancel</a><br>

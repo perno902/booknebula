@@ -39,7 +39,7 @@ myApp.controller('editBookCtrl', ['$scope', '$routeParams', 'title', function($s
     };
 
     $scope.addAuthor = function () {
-        if ($scope.authors.indexOf($scope.author) == -1) {
+        if (($scope.authors.indexOf($scope.author) == -1) && $scope.author != '') {
             $scope.authors.push($scope.author);
         }
         $scope.author = '';

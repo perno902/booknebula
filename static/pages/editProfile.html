@@ -1,31 +1,46 @@
 <h3>Editing profile</h3><br>
 
 <form name="profileForm">
+    <label for="userName">Name:</label>
     <div class="row">
         <div class="col-xs-4">
-            <label for="userName">Username:</label>
-            <input type="text" ng-model="userName" class="form-control" id="userName" required>
+            <input type="text" ng-model="userName" class="form-control" id="userName" name="userName" ng-minlength="4" ng-maxlength="50" placeholder="Enter name" required>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!profileForm.userName.$valid><small>Must be 4-50 characters long</small></em>
         </div>
     </div><br>
 
-    <div class="row">
-        <div class="col-xs-3">
-            <label for="country">Country:</label>
-            <select ng-options="c for c in countries" ng-model="country" class="form-control" id="country" required></select>
-        </div>
-    </div><br>
-
+    <label for="country">Country:</label>
     <div class="row">
         <div class="col-xs-4">
-            <label for="email">Email:</label>
-            <input type="text" ng-model="email" class="form-control" id="email" required>
+            <select ng-options="c for c in countries" ng-model="country" name="country" class="form-control" id="country" required>
+                <option value=''>- Select a country -</option>
+            </select>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!profileForm.country.$valid><small>Mandatory field</small></em>
         </div>
     </div><br>
 
+    <label for="email">Email:</label>
     <div class="row">
-        <div class="col-xs-12">
-            <label for="presentation">Presentation:</label>
-            <textarea rows="8" ng-model="presentation" class="form-control" id="presentation" required></textarea>
+        <div class="col-xs-4">
+            <input type="email" ng-model="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!profileForm.email.$valid><small>Must be a valid email</small></em>
+        </div>
+    </div><br>
+
+
+    <div class="row col-xs-6"><label for="presentation">Presentation:</label></div>
+    <div class="col-xs-6">
+            <em ng-show=!profileForm.presentation.$valid><small>Must not be more than 1000 characters long</small></em>
+    </div>
+    <div class="row">
+        <div class="col-xs-10">
+            <textarea rows="4" ng-model="presentation" class="form-control" id="presentation" name="presentation" ng-maxlength="1000" placeholder="Write something about yourself"></textarea>
         </div>
     </div><br>
 

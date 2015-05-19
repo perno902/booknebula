@@ -1,24 +1,36 @@
 <h3>Editing author</h3><br>
 
 <form name="authorForm">
+    <label for="name">Name:</label>
     <div class="row">
         <div class="col-xs-4">
-            <label for="name">Name:</label>
-            <input type="text" ng-model="name" class="form-control" id="name" required>
+            <input type="text" ng-model="name" class="form-control" id="name" name="name"" ng-maxlength="80" placeholder="Enter name" required>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!authorForm.name.$valid><small>Must be 1-80 characters long</small></em>
         </div>
     </div><br>
 
+    <label for="country">Born in:</label>
     <div class="row">
-        <div class="col-xs-3">
-            <label for="country">Born in:</label>
-            <select ng-options="c for c in countries" ng-model="country" class="form-control" id="country" required></select>
+        <div class="col-xs-4">
+            <select ng-options="c for c in countries" ng-model="country" class="form-control" id="country" name="country" required>
+                <option value=''>- Select a country -</option>
+            </select>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!authorForm.country.$valid><small>Mandatory field</small></em>
         </div>
     </div><br>
 
+    <label for="birthYear">Birthyear:</label>
     <div class="row">
         <div class="col-xs-3">
-            <label for="birthYear">Birthyear:</label>
-            <input type="text" ng-model="birthYear" class="form-control" id="birthYear" required>
+            <input type="number" ng-model="birthYear" class="form-control" id="birthYear" name="birthYear" ng-maxlength="4" required>
+        </div>
+        <div class="col-xs-1"></div>
+        <div class="col-xs-4">
+            <em ng-show=!authorForm.birthYear.$valid><small>Mandatory field</small></em>
         </div>
     </div><br>
 
