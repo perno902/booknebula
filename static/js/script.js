@@ -26,7 +26,7 @@ myApp.config(['$routeProvider',
             controller: 'editProfileCtrl'
         })
     // Search results page
-        .when('/searchResults', {
+        .when('/searchResults/:query', {
             templateUrl: '../static/pages/searchResults.html',
             controller: 'searchResultsCtrl'
         })
@@ -46,7 +46,7 @@ myApp.config(['$routeProvider',
             controller: 'reviewCtrl'
         })
     // Review page
-        .when('/writeReview/:reviewId', {
+        .when('/writeReview/:reviewId/title/:bookId', {
             templateUrl: '../static/pages/writeReview.html',
             controller: "writeReviewCtrl"
         })

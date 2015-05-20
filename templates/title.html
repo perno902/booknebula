@@ -1,5 +1,5 @@
 {% raw %}
-<div class="col-md-8"><h3>{{title()}}  <small>({{year()}})</small></h3><br></div>
+<div class="col-md-8"><h3>{{title}}  <small>({{year}})</small></h3><br></div>
 {% endraw %}
 
 {% if ADMIN %}
@@ -15,24 +15,26 @@
             <div class="panel-body">
                 <p ng-hide="multipleAuthors">Author:</p>
                 <p ng-show="multipleAuthors">Authors:</p>
-                <a href="/#/author/{{a.id}}" ng-repeat="a in authors()"class="btn btn-link">{{a.name}}</a>
+                <a href="/#/author/{{a.id}}" ng-repeat="a in authors"class="btn btn-link">{{a.name}}</a>
 
-                <p>Original language: {{language()}}</p><br>
-                <p>Average score: {{avgScore() | number:2}}</p>
+                <p>Original language: {{language}}</p><br>
+                <p>Average score: {{avgScore | number:2}}</p>
             </div>
         </div>
     </div>
 
     <div class="panel panel-default col-sm-6 pull-right">
-            <div class="panel-body" style="word-wrap:break-word;">{{plot()}}</div>
+            <div class="panel-body" style="word-wrap:break-word;">{{plot}}</div>
     </div>
 </div><br>
 
 {% endraw %}
 {% if SIGNED_IN %}
+{% raw %}
 <div class="row">
-    <div class="col-sm-3" ng-hide="hasReviewed()"><a href="/#/writeReview/new" class="btn btn-primary">Review this book</a></div>
+    <div class="col-sm-3" ng-hide="hasReviewed"><a href="/#/writeReview/new/title/{{bookId}}" class="btn btn-primary">Review this book</a></div>
 </div><br><br>
+{% endraw %}
 {% endif %}
 
 
@@ -51,7 +53,7 @@
                 </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="r in reviews()">
+            <tr ng-repeat="r in reviews">
                 <td>{{r.upvotes}}</td>
                 <td><a href="/#/profile/{{r.reviewerId}}" class="btn btn-link">{{r.reviewer}}</a></td>
                 <td><a href="/#/review/{{r.id}}" class="btn btn-link">{{r.revTitle}}</a></td>

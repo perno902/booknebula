@@ -8,11 +8,18 @@ myApp.controller('editAuthorCtrl', ['$scope', '$routeParams', 'author', function
         $scope.country = '';
         $scope.birthYear = '';
     } else {
-        $scope.name = author.name();
-        $scope.country = author.country();
-        $scope.birthYear = author.birthYear();
+        loadRemoteData();
     };
 
+    function loadRemoteData() {
+        author.getAuthorData($scope.authorId)
+            .then(function(data) {
+                $scope.name = data.name,
+                $scope.country = data.country,
+                $scope.birthYear = data.birthYear
+                }
+        )
+    }
 
     $scope.submitAuthorData = function() {
         author.submitAuthorData($scope.authorId, $scope.name, $scope.country, $scope.birthYear);

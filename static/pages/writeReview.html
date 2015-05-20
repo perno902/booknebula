@@ -1,4 +1,4 @@
-<h3>Review of {{bookTitle()}} ({{year()}})</h3><br>
+<h3>Review of {{bookTitle}} ({{year}})</h3><br>
 
 <form name="reviewForm">
     <label for="language">Reading language:</label><br>
@@ -46,4 +46,4 @@
 </form>
 
 <button type="button" class="btn btn-default" ng-disabled="!reviewForm.$valid" ng-click="submitReview()">Submit</button>
-<a href="/#/title/{{bookId()}}" class="btn btn-default">Cancel</a><br>
+<a href="/#/title/{{bookId}}" class="btn btn-default">Cancel</a><br>

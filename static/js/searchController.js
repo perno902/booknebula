@@ -1,11 +1,7 @@
-myApp.controller('searchCtrl', ['$scope', 'search', function($scope, search) {
+myApp.controller('searchCtrl', ['$scope', '$location', 'search', function($scope, $location) {
     $scope.query = '';
 
-    $scope.loadRemoteData = function() {
-        if ($scope.query != '') {
-            search.setQuery($scope.query);
-            search.getSearchResults();
-        }
+    $scope.search = function() {
+        $location.path('/searchResults/' + $scope.query)
     };
-
 }]);

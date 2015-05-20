@@ -1,15 +1,6 @@
 myApp.factory('author', [ '$http', '$location', function($http, $location) {
-    var authorId = '';
-    var name = '';
-    var country = '';
-    var birthYear = '';
-    var books = [];
 
-    function setAuthorId(id) {
-        authorId = id;
-    };
-
-    function getAuthorData() {
+    function getAuthorData(authorId) {
         var request = $http({
             method: "get",
             url: "/author",
@@ -39,29 +30,16 @@ myApp.factory('author', [ '$http', '$location', function($http, $location) {
     }
 
     function handleSuccess(response) {
-        return applyRemoteData(response.data.data);
+        return response.data.data;
     }
 
     function handleSubmitSuccess(response) {
         $location.path('/author/' + response.data.authorId)
     }
 
-    function applyRemoteData(authorData) {
-        name = authorData.name;
-        country = authorData.country;
-        birthYear = authorData.birthYear;
-        books = authorData.books;
-    }
-
     return {
-        setAuthorId: setAuthorId,
         getAuthorData: getAuthorData,
-        submitAuthorData: submitAuthorData,
-        authorId: function() {return authorId},
-        name: function() {return name},
-        country: function() {return country},
-        birthYear: function() {return birthYear},
-        books: function() {return books}
+        submitAuthorData: submitAuthorData
     };
 
 }]);

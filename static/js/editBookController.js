@@ -1,8 +1,8 @@
 myApp.controller('editBookCtrl', ['$scope', '$routeParams', 'title', function($scope, $routeParams, title) {
     $scope.bookId = $routeParams.bookId;
     $scope.languages = ['English', 'French', 'German', 'Russian', 'Spanish', 'Swedish'];
-    $scope.author = '';
 
+    loadAuthorList();
 
     if ($scope.bookId == 'new') {
         $scope.title = '';
@@ -11,27 +11,28 @@ myApp.controller('editBookCtrl', ['$scope', '$routeParams', 'title', function($s
         $scope.plot = '';
         $scope.authors = [];
     } else {
-        $scope.title = title.title();
-        $scope.year = title.year();
-        $scope.language = title.language();
-        $scope.plot = title.plot();
-        $scope.authors = title.authors();
-
+        loadRemoteData()
     };
 
-    getAuthorList();
-
-    function getAuthorList() {
-        title.getAuthorList();
-        $scope.authorList = function() {return title.authorList()};
+    function loadRemoteData() {
+        title.getBookData($scope.bookId)
+            .then(function(data) {
+                $scope.title = data.title;
+                $scope.year = data.year;
+                $scope.language = data.language;
+                $scope.plot = data.plot;
+                $scope.authors = data.authors;
+            }
+        )
     };
 
-    function authorIdList() {
-        l = [];
-        for(i = 0; i < $scope.authors.length; i++) {
-            l.push($scope.authors[i].id);
-        }
-        return l;
+
+    function loadAuthorList() {
+        title.getAuthorList()
+            .then(function(data) {
+                $scope.authorList = data;
+            }
+        )
     };
 
     $scope.submitBookData = function() {
@@ -52,5 +53,11 @@ myApp.controller('editBookCtrl', ['$scope', '$routeParams', 'title', function($s
         }
     };
 
-
+    function authorIdList() {
+        l = [];
+        for(i = 0; i < $scope.authors.length; i++) {
+            l.push($scope.authors[i].id);
+        }
+        return l;
+    };
 }]);

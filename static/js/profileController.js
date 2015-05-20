@@ -4,25 +4,20 @@ myApp.controller('profileCtrl', ['$scope', '$routeParams', 'userData', function(
     loadRemoteData();
 
     function loadRemoteData() {
-        userData.getUserData($scope.userId);
+        userData.getUserData($scope.userId)
+            .then(function(data) {
+                $scope.userName = data.userName;
+                $scope.email = data.email;
+                $scope.noOfReviews = data.noOfReviews;
+                $scope.grade = data.grade;
+                $scope.noOfUpvotes = data.noOfUpvotes;
+                $scope.joinedDate = data.joinedDate;
+                $scope.country = data.country;
+                $scope.presentation = data.presentation;
+                $scope.reviews = data.reviews;
+                $scope.emptyPresentation = ($scope.presentation == '');
+                $scope.emptyCountry = ($scope.country =='')
+            })
     };
 
-    // Functions getting the data from the service
-    $scope.userName = function() {return userData.userName()};
-    $scope.email = function() {return userData.email()};
-    $scope.noOfReviews = function() {return userData.noOfReviews()};
-    $scope.grade = function() {return userData.grade()};
-    $scope.noOfUpvotes = function() {return userData.noOfUpvotes()};
-    $scope.joinedDate = function() {return userData.joinedDate()};
-    $scope.country = function() {return userData.country()};
-    $scope.presentation = function() {return userData.presentation()};
-    $scope.reviews = function() {return userData.reviews()};
-
-    $scope.emptyPresentation = function() {
-        return ($scope.presentation() == '');
-    };
-
-    $scope.emptyCountry = function() {
-        return ($scope.country() == '');
-    };
 }]);

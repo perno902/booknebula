@@ -9,16 +9,12 @@ myApp.controller('toplistCtrl', ['$scope', 'toplist', function($scope, toplist) 
 
     loadRemoteData();
 
-    function applyRemoteData(toplistData) {
-        $scope.books = toplistData.books;
-        $scope.reviewers = toplistData.reviewers;
-    }
-
     function loadRemoteData() {
         toplist.getToplistData()
             .then(
                 function(toplistData) {
-                    applyRemoteData(toplistData);
+                    $scope.books = toplistData.books;
+                    $scope.reviewers = toplistData.reviewers;
                 }
         )
     }

@@ -1,40 +1,43 @@
 myApp.controller('reviewCtrl', ['$scope', '$routeParams', 'review', function($scope, $routeParams, review) {
     $scope.reviewId = $routeParams.reviewId;
-    setReviewId();
 
     loadRemoteData();
 
-    $scope.bookTitle = function() {return review.bookTitle()};
-    $scope.bookId = function() {return review.bookId()};
-    $scope.year = function() {return review.year()};
-    $scope.reviewer = function() {return review.reviewer()};
-    $scope.revTitle = function() {return review.revTitle()};
-    $scope.score = function() {return review.score()};
-    $scope.date = function() {return review.date()};
-    $scope.language = function() {return review.language()};
-    $scope.content = function() {return review.content()};
-    $scope.upvotes = function() {return review.upvotes()};
-    $scope.hasUpvoted = function() {return review.hasUpvoted()};
-
-
     function loadRemoteData() {
-        review.getReviewData()
+        review.getReviewData($scope.reviewId)
+            .then(function(data) {
+                $scope.bookTitle = data.bookTitle;
+                $scope.bookId = data.bookId;
+                $scope.year = data.year;
+                $scope.reviewer = data.reviewer;
+                $scope.revTitle = data.revTitle;
+                $scope.score = data.score;
+                $scope.date = data.date;
+                $scope.language = data.language;
+                $scope.content = data.content;
+                $scope.upvotes = data.upvotes;
+                $scope.hasUpvoted = data.hasUpvoted;
+            })
     }
 
-    function setReviewId() {
-        review.setReviewId($scope.reviewId);
-    };
-
     $scope.upvote = function() {
-        review.upvote();
+        review.upvote($scope.reviewId)
+            .then(function(data) {
+                $scope.upvotes = data.upvotes;
+                $scope.hasUpvoted = data.hasUpvoted;
+            })
     };
 
     $scope.unUpvote = function() {
-        review.unUpvote();
+        review.unUpvote($scope.reviewId)
+            .then(function(data) {
+                $scope.upvotes = data.upvotes;
+                $scope.hasUpvoted = data.hasUpvoted;
+            })
     };
 
     $scope.deleteReview = function() {
-        review.deleteReview()
+        review.deleteReview($scope.reviewId)
     };
 
 }]);

@@ -1,42 +1,56 @@
 myApp.controller('writeReviewCtrl', ['$scope', '$routeParams', 'title', 'review', function($scope, $routeParams, title, review) {
+    $scope.bookId = $routeParams.bookId;
     $scope.reviewId = $routeParams.reviewId;
+
 
     $scope.languages = ['English', 'French', 'German', 'Russian', 'Spanish', 'Swedish'];
     $scope.points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     if ($scope.reviewId == "new") {
-        $scope.bookId = function() {return title.bookId()};
-        $scope.bookTitle = function() { return title.title()};
-        $scope.year = function() {return title.year()};
+        loadBookData();
 
         $scope.revTitle = '';
         $scope.score = 0;
         $scope.content = '';
         $scope.language = '';
     } else {
-        review.setReviewId($scope.reviewId);
-        review.getReviewData();
-
-        $scope.bookId = function() {return review.bookId()};
-        $scope.bookTitle = function() {return review.bookTitle()};
-        $scope.year = function() {return review.year()};
-
-        $scope.revTitle = review.revTitle();
-        $scope.score = review.score();
-        $scope.content = review.content();
-        $scope.language = review.language();
+        loadReviewData()
     }
 
     $scope.submitReview = function() {
         data = {
             reviewId: $scope.reviewId,
-            bookId: $scope.bookId(),
+            bookId: $scope.bookId,
             revTitle: $scope.revTitle,
             score: $scope.score,
             content: $scope.content,
             language: $scope.language
         }
         review.submitReview(data);
+    };
+
+    function loadReviewData() {
+        review.getReviewData($scope.reviewId)
+            .then(function(data) {
+                $scope.bookId = data.bookId;
+                $scope.bookTitle = data.bookTitle;
+                $scope.year = data.year;
+                $scope.revTitle = data.revTitle;
+                $scope.score = data.score;
+                $scope.content = data.content;
+                $scope.language = data.language;
+
+            }
+        )
+    };
+
+    function loadBookData() {
+        title.getBookData($scope.bookId)
+            .then(function(data) {
+                $scope.bookTitle = data.title;
+                $scope.year = data.year;
+            }
+        )
     };
 
 }]);

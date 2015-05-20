@@ -1,12 +1,22 @@
 
-myApp.controller('searchResultsCtrl', ['$scope', 'search', function($scope, search) {
-    $scope.query = function() {return search.query()}
-    $scope.books = function() {return search.books()};
-    $scope.authors = function() {return search.authors()};
-    $scope.reviewers = function() {return search.reviewers()};
+myApp.controller('searchResultsCtrl', ['$scope', '$routeParams', 'search', function($scope, $routeParams, search) {
+    $scope.query = $routeParams.query;
+
+    loadRemoteData();
+
+    function loadRemoteData() {
+        search.getSearchResults($scope.query)
+            .then(function(data) {
+                $scope.query = data.query
+                $scope.books = data.books;
+                $scope.authors = data.authors;
+                $scope.reviewers = data.reviewers;
+            })
+    };
+
 
     $scope.isEmpty = function(list) {
-        if (list.length < 1) {
+        if (list === undefined || list.length < 1) {
             return true;
         } else {
             return false;

@@ -1,14 +1,4 @@
 myApp.factory('userData', [ '$http', '$location', function($http, $location) {
-    var userName = '';
-    var email = '';
-    var noOfReviews = '';
-    var grade = '';
-    var noOfUpvotes = '';
-    var joinedDate = '';
-    var country = '';
-    var presentation = '';
-    var reviews = [];
-
 
     // Gets user data for a profile from the server
     function getUserData(id) {
@@ -44,40 +34,17 @@ myApp.factory('userData', [ '$http', '$location', function($http, $location) {
     }
 
     function handleSuccess(response) {
-        applyRemoteData(response.data.data);
+        return response.data.data;
     }
 
     function handleSubmitSuccess() {
         $location.path('/profile/signedIn');
     }
 
-
-    // Applies data to the variables in the service
-    function applyRemoteData(data) {
-        userName = data.userName;
-        email = data.email;
-        noOfReviews = data.noOfReviews;
-        grade = data.grade;
-        noOfUpvotes = data.noOfUpvotes;
-        joinedDate = data.joinedDate;
-        country = data.country;
-        presentation = data.presentation;
-        reviews = data.reviews;
-    };
-
     // Service functions used by controllers
     return ({
         getUserData: getUserData,
-        submitUserData: submitUserData,
-        userName: function() {return userName},
-        email: function() {return email},
-        noOfReviews: function() {return noOfReviews},
-        grade: function() {return grade},
-        noOfUpvotes: function() {return noOfUpvotes},
-        joinedDate: function() {return joinedDate},
-        country: function() {return country},
-        presentation: function() {return presentation},
-        reviews: function() {return reviews}
+        submitUserData: submitUserData
     });
 
 }]);

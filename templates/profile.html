@@ -1,5 +1,5 @@
 {% raw %}
-<div class="col-md-9"><h3>{{userName()}}  <small>({{grade()}})</small></h3></div>
+<div class="col-md-9"><h3>{{userName}}  <small>({{grade}})</small></h3></div>
 {% endraw %}
 
 {% if OWN_PROFILE %}
@@ -12,22 +12,22 @@
 <div>
     <div class="panel panel-default col-sm-5">
         <div class="panel-body">
-            <p>Number of reviews: {{noOfReviews()}}</p>
-            <p>Number of upvotes: {{noOfUpvotes()}}</p>
-            <p>Joined Book Nebula: {{joinedDate()}}</p>
-            <p ng-hide="emptyCountry()">Country: {{country()}}</p>
-            <p ng-show="emptyCountry()">Country: -</p>
-            <p>Email: {{email()}}</p>
+            <p>Number of reviews: {{noOfReviews}}</p>
+            <p>Number of upvotes: {{noOfUpvotes}}</p>
+            <p>Joined Book Nebula: {{joinedDate}}</p>
+            <p ng-hide="emptyCountry">Country: {{country}}</p>
+            <p ng-show="emptyCountry">Country: -</p>
+            <p>Email: {{email}}</p>
         </div>
     </div>
     <div class="panel panel-default col-sm-6 pull-right">
-        <div class="panel-body" ng-hide="emptyPresentation()" style="word-wrap:break-word;">{{presentation()}}</div>
-        <div class="panel-body" ng-show="emptyPresentation()"><em>{{userName()}} hasn't written a personal presentation yet.</em></div>
+        <div class="panel-body" ng-hide="emptyPresentation" style="word-wrap:break-word;">{{presentation}}</div>
+        <div class="panel-body" ng-show="emptyPresentation"><em>{{userName}} hasn't written a personal presentation yet.</em></div>
     </div>
     <div class="col-sm-12">
         <h4>Reviews</h4>
         <div class="row">
-            <div my-reviews reviews="reviews()"></div>
+            <div my-reviews reviews="reviews"></div>
         </div>
     </div>
 </div>
