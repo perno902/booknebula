@@ -11,7 +11,7 @@
     <tbody>
         <tr ng-repeat="r in reviews">
             <td><a href="/#/title/{{r.bookId}}" class="btn btn-link">{{r.bookTitle}} ({{r.year}})</a></td>
-            <td><a href="/#/review/{{r.id}}"class="btn btn-link">{{r.revTitle}}</a></td>
+            <td><a href="/#/review/{{r.id}}/origin/profile"class="btn btn-link">{{r.revTitle}}</a></td>
             <td>{{r.score}}</td>
             <td>{{r.upvotes}}</td>
             <td>{{r.date}}</td>

@@ -56,7 +56,7 @@
             <tr ng-repeat="r in reviews">
                 <td>{{r.upvotes}}</td>
                 <td><a href="/#/profile/{{r.reviewerId}}" class="btn btn-link">{{r.reviewer}}</a></td>
-                <td><a href="/#/review/{{r.id}}" class="btn btn-link">{{r.revTitle}}</a></td>
+                <td><a href="/#/review/{{r.id}}/origin/title" class="btn btn-link">{{r.revTitle}}</a></td>
                 <td>{{r.score}}</td>
                 <td>{{r.date}}</td>
             </tr>

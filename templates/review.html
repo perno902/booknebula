@@ -42,9 +42,10 @@
 {% raw %}
 
 <div>
-    <a href="/#/title/{{bookId}}" class="btn btn-link">
+    <a href="/#/{{backLink}}" class="btn btn-link">
         <span class="glyphicon glyphicon-arrow-left"></span>
-        Go back to {{bookTitle}} ({{year}})
+        <span ng-show="origin=='title'">Go back to {{bookTitle}} ({{year}})</span>
+        <span ng-show="origin=='profile'">Go back to {{reviewer}}'s profile</span>
     </a>
 </div>
 
