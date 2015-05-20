@@ -80,16 +80,14 @@ myApp.factory('review', [ '$http', '$location', function($http, $location) {
 
 
     function handleError() {
-        console.log('error');
+        $location.path('/error');
     };
 
     function handleSuccess(response) {
-        console.log('success');
         applyRemoteData(response.data.data);
     };
 
     function handleUpvoteSuccess(response) {
-        console.log('success');
         upvotes = response.data.data.upvotes;
         hasUpvoted = response.data.data.hasUpvoted;
     };

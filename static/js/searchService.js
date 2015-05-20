@@ -30,11 +30,10 @@ myApp.factory('search', [ '$http', '$location', function($http, $location) {
     };
 
     function handleError() {
-        console.log('error')
+        $location.path('/error');
     };
 
     function handleSuccess(response) {
-        console.log('success');
         applyRemoteData(response.data.data);
         $location.path('/searchResults');
     };

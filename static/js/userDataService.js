@@ -40,16 +40,14 @@ myApp.factory('userData', [ '$http', '$location', function($http, $location) {
 
     //Functions for handling error and success
     function handleError() {
-        console.log('error')
+        $location.path('/error');
     }
 
     function handleSuccess(response) {
-        console.log('success');
         applyRemoteData(response.data.data);
     }
 
     function handleSubmitSuccess() {
-        console.log('success');
         $location.path('/profile/signedIn');
     }
 

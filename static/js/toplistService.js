@@ -1,4 +1,4 @@
-myApp.factory('toplist', [ '$http', function($http) {
+myApp.factory('toplist', [ '$http', '$location', function($http, $location) {
 
     return {
         getToplistData: getToplistData
@@ -14,13 +14,12 @@ myApp.factory('toplist', [ '$http', function($http) {
     };
 
 
-    function handleError(response) {
-        console.log('error');
+    function handleError() {
+        $location.path('/error');
     };
 
 
     function handleSuccess(response) {
-        console.log('success');
         return response.data.data;
     };
 }]);

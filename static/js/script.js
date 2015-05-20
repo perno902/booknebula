@@ -60,4 +60,9 @@ myApp.config(['$routeProvider',
             templateUrl: '../static/pages/editBook.html',
             controller: "editBookCtrl"
         })
+    // Error page
+        .when('/error', {
+            template: '<html><h2> Oops! </h2><br> \
+                        <p> Something went wrong! </p><br> </html>'
+        })
 }]);

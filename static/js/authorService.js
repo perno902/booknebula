@@ -35,16 +35,14 @@ myApp.factory('author', [ '$http', '$location', function($http, $location) {
     };
 
     function handleError() {
-        console.log('error');
+        $location.path('/error');
     }
 
     function handleSuccess(response) {
-        console.log('success');
         return applyRemoteData(response.data.data);
     }
 
     function handleSubmitSuccess(response) {
-        console.log('success');
         $location.path('/author/' + response.data.authorId)
     }
 
