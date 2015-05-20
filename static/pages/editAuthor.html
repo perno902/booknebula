@@ -11,18 +11,6 @@
         </div>
     </div><br>
 
-    <label for="country">Born in:</label>
-    <div class="row">
-        <div class="col-xs-4">
-            <select ng-options="c for c in countries" ng-model="country" class="form-control" id="country" name="country" required>
-                <option value=''>- Select a country -</option>
-            </select>
-        </div>
-        <div class="col-xs-4">
-            <em ng-show=!authorForm.country.$valid><small>Mandatory field</small></em>
-        </div>
-    </div><br>
-
     <label for="birthYear">Birthyear:</label>
     <div class="row">
         <div class="col-xs-3">
@@ -34,6 +22,17 @@
         </div>
     </div><br>
 
+    <label for="country">Country:</label>
+    <div class="row">
+        <div class="col-xs-4">
+            <select ng-options="c for c in countries" ng-model="country" class="form-control" id="country" name="country" required>
+                <option value=''>- Select a country -</option>
+            </select>
+        </div>
+        <div class="col-xs-4">
+            <em ng-show=!authorForm.country.$valid><small>Mandatory field</small></em>
+        </div>
+    </div><br>
 
 
 </form>

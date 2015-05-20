@@ -64,7 +64,6 @@ myApp.factory('title', [ '$http', '$location', function($http, $location) {
     };
 
     function handleAuthorListSuccess(response) {
-        console.log('success');
         authorList = response.data.data;
     };
 
