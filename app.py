@@ -104,7 +104,7 @@ def login():
 
     state = request.args.get('state', '')
     if not is_valid_state(state):
-        abort(403)
+        abort(401)
     delete_state(state)
     code = request.args.get('code', '')
     id_token, access_token = get_tokens(code)
@@ -145,10 +145,15 @@ def logout():
 @app.route('/userData', methods=["GET"])
 def get_user_data():
     id = request.args.get('id')
+
     if id == "signedIn":
             id = current_user.id
     data = database_helper.get_user_data(id)
-    return json.dumps({'data': data})
+    if data is None:
+        abort(404)
+    else:
+        return json.dumps({'data': data})
+
 
 
 @app.route('/userData', methods=["POST"])
@@ -156,14 +161,18 @@ def get_user_data():
 def submit_user_data():
     if request.method == "POST":
         data = json.loads(request.data)
-        name = data['userName']
-        country = data['country']
-        email = data['email']
-        presentation = data['presentation']
-        id = current_user.id
 
-        database_helper.submit_user_data(id, name, country, email, presentation)
-        return ''
+        if is_valid_data(data):
+            name = data['userName']
+            country = data['country']
+            email = data['email']
+            presentation = data['presentation']
+            id = current_user.id
+
+            database_helper.submit_user_data(id, name, country, email, presentation)
+            return ''
+        else:
+            abort(400)
 
 
 @app.route('/search', methods=["GET"])
@@ -179,6 +188,9 @@ def get_search_results():
 def get_title_data():
     id = request.args.get('id')
     data = database_helper.get_title_data(id)
+    if data is None:
+        abort(404)
+
     has_reviewed = True
     user_id = None
     if current_user.is_authenticated():
@@ -194,27 +206,34 @@ def get_title_data():
 def submit_title_data():
     if database_helper.is_admin(current_user.id):
         data = json.loads(request.data)
-        book_id = data['bookId']
-        title = data['title']
-        year = data['year']
-        plot = data['plot']
-        language = data['language']
-        authors = data['authors']
 
-        if book_id == 'new':
-            book_id = database_helper.add_book(title, year, plot, language, authors)
+        if is_valid_data(data):
+            book_id = data['bookId']
+            title = data['title']
+            year = data['year']
+            plot = data['plot']
+            language = data['language']
+            authors = data['authors']
+
+            if book_id == 'new':
+                book_id = database_helper.add_book(title, year, plot, language, authors)
+            else:
+                database_helper.update_book(book_id, title, year, plot, language, authors)
+            return json.dumps({'bookId': book_id})
         else:
-            database_helper.update_book(book_id, title, year, plot, language, authors)
-        return json.dumps({'bookId': book_id})
+            abort(400)
     else:
-        abort(403)
+        abort(401)
 
 
 @app.route('/author', methods=["GET"])
 def get_author_data():
     id = request.args.get('id')
     data = database_helper.get_author_data(id)
-    return json.dumps({'data': data})
+    if data is None:
+        abort(404)
+    else:
+        return json.dumps({'data': data})
 
 
 @app.route('/author', methods=["POST"])
@@ -222,17 +241,21 @@ def get_author_data():
 def submit_author_data():
     if database_helper.is_admin(current_user.id):
         data = json.loads(request.data)
-        author_id = data['authorId']
-        name = data['name']
-        country = data['country']
-        birth_year = data['birthYear']
-        if author_id == 'new':
-            author_id = database_helper.add_author(name, country, birth_year)
+
+        if is_valid_data(data):
+            author_id = data['authorId']
+            name = data['name']
+            country = data['country']
+            birth_year = data['birthYear']
+            if author_id == 'new':
+                author_id = database_helper.add_author(name, country, birth_year)
+            else:
+                database_helper.update_author(author_id, name, country, birth_year)
+            return json.dumps({'authorId': author_id})
         else:
-            database_helper.update_author(author_id, name, country, birth_year)
-        return json.dumps({'authorId': author_id})
+            abort(400)
     else:
-        abort(403)
+        abort(401)
 
 
 @app.route('/authorList', methods=["GET"])
@@ -241,12 +264,14 @@ def get_author_list():
     return json.dumps({'data': data})
 
 
-
 @app.route('/review', methods=["GET"])
 def get_review():
     if request.method == "GET":
         review_id = request.args.get('id')
         data = database_helper.get_review_data(review_id)
+
+        if data is None:
+            abort(404)
 
         signed_in = current_user.is_authenticated()
         data['signedIn'] = signed_in
@@ -261,23 +286,28 @@ def get_review():
 @login_required
 def submit_review():
     if request.method == "POST":
-        user_id = current_user.id
         data = json.loads(request.data)
-        review_id = data['reviewId']
-        book_id = data['bookId']
-        review_title = data['revTitle']
-        content = data['content']
-        score = data['score']
-        language = data['language']
 
-        if review_id == "new":
-            database_helper.submit_review(book_id, review_title, content, score, language, user_id)
-        else:
-            if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
-                database_helper.update_review(review_id, book_id, review_title, content, score, language)
+        if is_valid_data(data):
+            review_id = data['reviewId']
+            book_id = data['bookId']
+            review_title = data['revTitle']
+            content = data['content']
+            score = data['score']
+            language = data['language']
+
+            user_id = current_user.id
+
+            if review_id == "new":
+                database_helper.submit_review(book_id, review_title, content, score, language, user_id)
             else:
-                abort(403)
-        return json.dumps({'bookId': book_id})
+                if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
+                    database_helper.update_review(review_id, book_id, review_title, content, score, language)
+                else:
+                    abort(401)
+            return json.dumps({'bookId': book_id})
+        else:
+            abort(400)
 
 
 @app.route('/deleteReview', methods=["POST"])
@@ -285,13 +315,18 @@ def submit_review():
 def delete_review():
     if request.method == "POST":
         data = json.loads(request.data)
-        review_id = data['id']
-        user_id = current_user.id
-        if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
-            book_id = database_helper.delete_review(review_id)
-            return json.dumps({'bookId': book_id})
+
+        if is_valid_data(data):
+            review_id = data['reviewId']
+            user_id = current_user.id
+            if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
+                book_id = database_helper.delete_review(review_id)
+                return json.dumps({'bookId': book_id})
+            else:
+                abort(401)
         else:
-            abort(403)
+            abort(400)
+
 
 
 @app.route('/upvote', methods=["POST"])
@@ -299,9 +334,13 @@ def delete_review():
 def upvote():
     if request.method == "POST":
         user_id = current_user.id
-        review_id = json.loads(request.data)['id']
-        data = database_helper.upvote(user_id, review_id)
-        return json.dumps({'data': data})
+        data = json.loads(request.data)
+        if is_valid_data(data):
+            review_id = data['reviewId']
+            data = database_helper.upvote(user_id, review_id)
+            return json.dumps({'data': data})
+        else:
+            abort(400)
 
 
 @app.route('/unUpvote', methods=["POST"])
@@ -309,9 +348,13 @@ def upvote():
 def un_upvote():
     if request.method == "POST":
         user_id = current_user.id
-        review_id = json.loads(request.data)['id']
-        data = database_helper.un_upvote(user_id, review_id)
-        return json.dumps({'data': data})
+        data = json.loads(request.data)
+        if is_valid_data(data):
+            review_id = data['reviewId']
+            data = database_helper.un_upvote(user_id, review_id)
+            return json.dumps({'data': data})
+        else:
+            abort(400)
 
 
 @app.route('/toplist', methods=["GET"])
@@ -333,6 +376,64 @@ def is_valid_state(state):
 def delete_state(state):
     valid_states.remove(state)
 
+
+def is_valid_data(data):
+    keys = data.keys()
+    for key in keys:
+        value = data[key]
+        if key == 'revTitle' and not (type(value) is unicode and len(value) <= 50):
+            return False
+        elif key == 'content' and not (type(value) is unicode and len(value) <= 3000):
+            return False
+        elif key == 'bookId' and not (type(value) is unicode or type(value) is int):
+            return False
+        elif key == 'reviewId' and not (type(value) is unicode):
+            return False
+        elif key == 'score' and not (type(value) is int and 0 < value <= 10):
+            return False
+        elif key == 'language' and not (type(value) is unicode and 0 < len(value) <= 50):
+            return False
+        elif key == 'name' and not (type(value) is unicode and 0 < len(value) <= 50):
+            return False
+        elif key == 'country' and not (type(value) is unicode and 0 < len(value) <= 50):
+            return False
+        elif key == 'email' and not (type(value) is unicode and 0 < len(value) <= 50):
+            return False
+        elif key == 'presentation' and not (type(value) is unicode and len(value) <= 1000):
+            return False
+        elif key == 'plot' and not (type(value) is unicode and len(value) <= 500):
+            return False
+        elif key == 'title' and not (type(value) is unicode and 0 < len(value) <= 80):
+            return False
+        elif key == 'year' and not (type(value) is int):
+            return False
+        elif key == 'authors':
+            if type(value) is list:
+                for author_id in value:
+                    if not type(author_id) is int:
+                        return False
+            else:
+                return False
+        elif key == 'authorId' and not (type(value) is unicode):
+            return False
+        elif key == 'birthYear' and not (type(value) is int):
+            return False
+    return True
+
+
+@app.errorhandler(400)
+def page_not_found(error):
+    return render_template('error.html'), 400
+
+@app.errorhandler(401)
+def page_not_found(error):
+    return render_template('error.html'), 401
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error.html'), 404
+
+
     # ---- Test routes ----
 
 @app.route("/dbinit")
@@ -343,5 +444,4 @@ def dbinit():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 

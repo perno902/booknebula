@@ -26,11 +26,12 @@ def is_admin(id):
 def get_user_data(id):
     data = row_to_dict(models.User.query.filter_by(id=id).first())
     reviews = list_to_dict(models.Review.query.filter_by(reviewerId=id).all())
-    data['reviews'] = get_reviews_data(reviews)
+    if data is not None:
+        data['reviews'] = get_reviews_data(reviews)
 
-    noOfReviews = get_review_count(reviews)
-    data['noOfReviews'] = noOfReviews
-    data['grade'] = get_grade(noOfReviews)
+        noOfReviews = get_review_count(reviews)
+        data['noOfReviews'] = noOfReviews
+        data['grade'] = get_grade(noOfReviews)
     return data
 
 
@@ -73,9 +74,10 @@ def get_search_results(query):
 
 def get_title_data(id):
     data = row_to_dict(models.Book.query.filter_by(id=id).first())
-    data['authors'] = list_to_dict(models.Author.query.filter(models.Author.books.any(id=id)).all())
-    reviews = list_to_dict(models.Review.query.filter_by(bookId=id).all())
-    data['reviews'] = get_reviews_data(reviews)
+    if data is not None:
+        data['authors'] = list_to_dict(models.Author.query.filter(models.Author.books.any(id=id)).all())
+        reviews = list_to_dict(models.Review.query.filter_by(bookId=id).all())
+        data['reviews'] = get_reviews_data(reviews)
     return data
 
 
@@ -116,13 +118,15 @@ def additional_review_data(review):
 
 def get_review_data(id):
     review = row_to_dict(models.Review.query.filter_by(id=id).first())
-    additional_review_data(review)
+    if review is not None:
+        additional_review_data(review)
     return review
 
 
 def get_author_data(id):
     data = row_to_dict(models.Author.query.filter_by(id=id).first())
-    data['books'] = list_to_dict(models.Book.query.filter(models.Book.author.any(id=id)).all())
+    if data is not None:
+        data['books'] = list_to_dict(models.Book.query.filter(models.Book.author.any(id=id)).all())
     return data
 
 
@@ -198,11 +202,6 @@ def delete_review(review_id):
     review = models.Review.query.filter_by(id=review_id).first()
     book = models.Book.query.filter_by(id=review.bookId).first()
     book_id = book.id
-
-    #deleting upvotes
-    #users = models.User.query.filter(models.User.upvoted_review.any(id=review_id)).all()
-    #for user in users:
-    #    review.upvoters.remove(user)
 
     models.db.session.delete(review)
     models.db.session.commit()

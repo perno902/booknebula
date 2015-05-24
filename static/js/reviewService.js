@@ -32,7 +32,7 @@ myApp.factory('review', [ '$http', '$location', function($http, $location) {
             method: "post",
             url: "/deleteReview",
             data: {
-                id: reviewId
+                reviewId: reviewId
             }
         });
         return (request.then(handleSubmitSuccess, handleError));
@@ -44,7 +44,7 @@ myApp.factory('review', [ '$http', '$location', function($http, $location) {
             method: "post",
             url: "/upvote",
             data: {
-                id: reviewId
+                reviewId: reviewId
             }
         });
         return (request.then(handleUpvoteSuccess, handleError));
@@ -55,7 +55,7 @@ myApp.factory('review', [ '$http', '$location', function($http, $location) {
             method: "post",
             url: "/unUpvote",
             data: {
-                id: reviewId
+                reviewId: reviewId
             }
         });
         return (request.then(handleUpvoteSuccess, handleError));

@@ -16,7 +16,7 @@ class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     userName = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(80))
+    email = db.Column(db.String(50))
     country = db.Column(db.String(50))
     presentation = db.Column(db.Text)
     joinedDate = db.Column(db.String(20))
@@ -53,7 +53,7 @@ class User(db.Model):
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    revTitle = db.Column(db.String(80))
+    revTitle = db.Column(db.String(50))
     content = db.Column(db.Text)
     score = db.Column(db.Integer)
     language = db.Column(db.String(50))
@@ -83,7 +83,7 @@ has_written = db.Table('has_written',
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    title = db.Column(db.String(80))
+    title = db.Column(db.String(50))
     year = db.Column(db.Integer)
     plot = db.Column(db.Text)
     language = db.Column(db.String(50))
@@ -101,7 +101,7 @@ class Book(db.Model):
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
+    name = db.Column(db.String(50))
     country = db.Column(db.String(50))
     birthYear= db.Column(db.Integer)
     wrote = db.relationship('Book', secondary=has_written, backref=db.backref('author', lazy='dynamic'))
