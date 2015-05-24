@@ -8,8 +8,8 @@ db = SQLAlchemy(app.app)
 Base = declarative_base()
 
 upvotes = db.Table('upvotes',
-                   db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                   db.Column('review_id', db.Integer, db.ForeignKey('review.id')))
+                   db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete="CASCADE") ),
+                   db.Column('review_id', db.Integer, db.ForeignKey('review.id', ondelete="CASCADE")))
 
 
 class User(db.Model):

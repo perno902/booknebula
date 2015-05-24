@@ -198,6 +198,12 @@ def delete_review(review_id):
     review = models.Review.query.filter_by(id=review_id).first()
     book = models.Book.query.filter_by(id=review.bookId).first()
     book_id = book.id
+
+    #deleting upvotes
+    #users = models.User.query.filter(models.User.upvoted_review.any(id=review_id)).all()
+    #for user in users:
+    #    review.upvoters.remove(user)
+
     models.db.session.delete(review)
     models.db.session.commit()
     update_avg_score(book.id)
