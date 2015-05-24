@@ -1,12 +1,17 @@
 <!-- Select list to view -->
-<div class="row col-md-5">
-    <select ng-options="l for l in toplists"
-            ng-model="currentList" class="form-control">
-    </select>
-</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label for="selectedList">Select a toplist:</label>
+    </div>
+    <div class="col-sm-4">
+        <select ng-options="l for l in toplists"
+                ng-model="currentList" class="form-control" id="selectedList">
+        </select>
+    </div>
+</div><br>
 
 <!-- Top books table -->
-<div class="col-md-8">
+<div class="col-sm-8">
     <table class="table" ng-show="isCurrentList(toplists[0])">
         <thead>
             <tr>

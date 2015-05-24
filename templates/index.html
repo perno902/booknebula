@@ -78,7 +78,7 @@
                     <div class="col-sm-5" ng-controller="searchCtrl">
                         <form class="navbar-form">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Find book, author or critic", id="navSearch" ng-model="query">
+                                <input type="text" class="form-control" placeholder="Search...", id="navSearch" ng-model="query">
                                     <div class="input-group-btn">
 
                                             <button class="btn btn default" ng-click="search()">
@@ -90,11 +90,11 @@
                         </form>
                     </div>
 
-                    <div ng-controller="signInCtrl" class="pull-right">
+                    <div ng-controller="signInCtrl" class="col-sm-2 pull-right">
                         {% if not SIGNED_IN %}
-                            <button type="button" ng-click="signIn()" class="btn btn-default">Sign in</button>
+                            <button type="button" ng-click="signIn()" class="btn btn-default sign-in-btn">Sign in</button>
                         {% elif SIGNED_IN %}
-                            <button type="button" ng-click="signOut()" class="btn btn-default">Sign out</button>
+                            <button type="button" ng-click="signOut()" class="btn btn-default sign-in-btn">Sign out</button>
                         {% endif %}
                     </div>
                 </div>

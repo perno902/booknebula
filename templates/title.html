@@ -1,5 +1,6 @@
 {% raw %}
-<div class="col-md-8"><h3>{{title}}  <small>({{year}})</small></h3><br></div>
+<div class="row">
+    <div class="col-md-8"><h3>{{title}}  <small>({{year}})</small></h3><br></div>
 {% endraw %}
 
 {% if ADMIN %}
@@ -7,39 +8,38 @@
     <div class="col-sm-3 pull-right"><a href="/#/editBook/{{bookId}}" class="btn btn-primary">Edit book <span class="glyphicon glyphicon-edit"></span></a></div>
     {% endraw %}
 {% endif %}
-
 {% raw %}
-<div class="row">
-    <div>
-        <div class="panel panel-default col-sm-5">
-            <div class="panel-body">
-                <p ng-hide="multipleAuthors">Author:</p>
-                <p ng-show="multipleAuthors">Authors:</p>
-                <a href="/#/author/{{a.id}}" ng-repeat="a in authors"class="btn btn-link">{{a.name}}</a>
+</div>
 
-                <p>Original language: {{language}}</p><br>
-                <p>Average score: {{avgScore | number:2}}</p>
-            </div>
+<div>
+    <div class="panel panel-default col-sm-5">
+        <div class="panel-body">
+            <p ng-hide="multipleAuthors">Author:</p>
+            <p ng-show="multipleAuthors">Authors:</p>
+            <a href="/#/author/{{a.id}}" ng-repeat="a in authors"class="btn btn-link">{{a.name}}</a>
+
+            <p>Original language: {{language}}</p><br>
+            <p>Average score: {{avgScore | number:2}}</p>
         </div>
     </div>
-
-    <div class="panel panel-default col-sm-6 pull-right">
-            <div class="panel-body" style="word-wrap:break-word;">{{plot}}</div>
+    <div class="col-sm-1"></div>
+    <div class="panel panel-default col-sm-5">
+        <div class="panel-body" style="word-wrap:break-word;">{{plot}}</div>
     </div>
 </div><br>
 
 {% endraw %}
 {% if SIGNED_IN %}
 {% raw %}
-<div class="row">
-    <div class="col-sm-3" ng-hide="hasReviewed"><a href="/#/writeReview/new/title/{{bookId}}" class="btn btn-primary">Review this book</a></div>
-</div><br><br>
+<div class="row col-sm-10">
+    <div class="row col-sm-3" ng-hide="hasReviewed"><a href="/#/writeReview/new/title/{{bookId}}" class="btn btn-primary">Review this book</a></div><br>
+</div>
 {% endraw %}
 {% endif %}
 
 
 {% raw %}
-
+<div>
     <table class="table">
         <thead>
             <tr>
@@ -48,8 +48,6 @@
                 <th>Review title</th>
                 <th>Score</th>
                 <th>Date</th>
-                <th></th>
-                <th></th>
                 </tr>
         </thead>
         <tbody>
@@ -62,4 +60,5 @@
             </tr>
         </tbody>
     </table>
+</div>
 {% endraw %}
