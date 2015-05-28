@@ -23,8 +23,10 @@
         </div>
     </div>
     <div class="col-md-1"></div>
-    <div class="panel panel-default col-md-6">
-        <div class="panel-body" ng-hide="emptyPresentation" style="word-wrap:break-word;">{{presentation}}</div>
+    <div class="panel panel-default col-md-4">
+        <div class="panel-body" ng-hide="emptyPresentation" style="word-wrap:break-word;">
+            <p style="white-space: pre-wrap;">{{presentation}}</p>
+        </div>
         <div class="panel-body" ng-show="emptyPresentation"><em>{{userName}} hasn't written a personal presentation yet.</em></div>
     </div>
 </div>

@@ -2,53 +2,59 @@
 
 <h3>Review of {{bookTitle}} ({{year}}) <small>by {{reviewer}}</small></h3><br>
 
-<div class="panel panel-default">
+<div class="panel panel-default col-md-8">
     <div class="panel-heading">
         <div class="row">
-            <div class="col-md-6"><strong>{{revTitle}}</strong></div>
-            <div class="col-md-6"><span class="pull-right">{{date}}</span></div>
+            <div class="col-md-9"><strong>{{revTitle}}</strong></div>
+            <div class="col-md-2"><span class="pull-right">{{date}}</span></div>
         </div>
     </div>
-    <div class="panel-body" style="word-wrap:break-word;">{{content}}</div>
+    <div class="panel-body" style="word-wrap:break-word;">
+        <p style="white-space: pre-wrap;">{{content}}</p>
+    </div>
     <div class="panel-footer">
         <div class="row">
             <div class="col-md-5">Score: {{score}}/10</div>
             <div class="col-md-5"><p>Read in: {{language}}</p></div>
 
+            <div class="col-md-1">
             {% endraw %}
             {% if (not OWN_REVIEW) and SIGNED_IN %}
-            <div class="col-md-1">
                 <button type="button" ng-click="upvote()" ng-show="!hasUpvoted" class="btn btn-default btn-xs pull-right">Upvote</button>
                 <button type="button" ng-click="unUpvote()" ng-show="hasUpvoted" class="btn btn-default btn-xs pull-right">Un-upvote</button>
-            </div>
             {% endif %}
             {% raw %}
-
+            </div>
 
             <div class="col-md-1"><span class="glyphicon glyphicon-thumbs-up pull-right">{{upvotes}}</span></div>
         </div>
     </div>
 
 </div>
-{% endraw %}
-{% if OWN_REVIEW or ADMIN %}
-{% raw %}
-<div class="pull-right">
-    <a href="/#/title/{{bookId}}" class="btn btn-primary" ng-click="deleteReview()">Delete</a>
-     <a href="/#/writeReview/{{reviewId}}/title/{{bookId}}"class="btn btn-primary">Edit</a>
-</div>
-{% endraw %}
-{% endif %}
-{% raw %}
 
-<div>
-    <a href="/#/{{backLink}}" class="btn btn-link">
-        <span class="glyphicon glyphicon-arrow-left"></span>
-        <span ng-show="origin=='title'">Go back to {{bookTitle}} ({{year}})</span>
-        <span ng-show="origin=='profile'">Go back to {{reviewer}}'s profile</span>
-    </a>
-</div>
 
+<div class="row">
+
+    <div class="col-md-6">
+        <a href="/#/{{backLink}}" class="btn btn-link">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+            <span ng-show="origin=='title'">Go back to {{bookTitle}} ({{year}})</span>
+            <span ng-show="origin=='profile'">Go back to {{reviewer}}'s profile</span>
+        </a>
+    </div>
+
+    {% endraw %}
+    {% if OWN_REVIEW or ADMIN %}
+    {% raw %}
+    <div class="col-md-2">
+        <a href="/#/title/{{bookId}}" class="btn btn-primary" ng-click="deleteReview()">Delete</a>
+         <a href="/#/writeReview/{{reviewId}}/title/{{bookId}}"class="btn btn-primary">Edit</a>
+    </div>
+    {% endraw %}
+    {% endif %}
+    {% raw %}
+
+</div>
 
 
 {% endraw %}

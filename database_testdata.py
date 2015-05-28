@@ -21,7 +21,7 @@ def test():
 
     # Adding users
 
-    user1 = models.User('admin', 'booknebula@gmail.com', 'Sweden', '', str(datetime.date.today()), True)
+    user1 = models.User('admin', 'booknebula@gmail.com', 'Sweden', 'Send me an email if a book is missing in the database.', str(datetime.date.today()), True)
     models.db.session.add(user1)
     models.db.session.commit()
 
@@ -40,7 +40,7 @@ def test():
     models.db.session.add(user3)
     models.db.session.commit()
 
-    user4 = models.User('George Banks', 'geogrie@britishbanks.com', 'England', 'Hi! Mary Poppins in my favorite book!', str(datetime.date.today()), False)
+    user4 = models.User('George Banks', 'george@britishbanks.com', 'England', 'Hi! Mary Poppins in my favorite book!', str(datetime.date.today()), False)
     models.db.session.add(user4)
     models.db.session.commit()
 
