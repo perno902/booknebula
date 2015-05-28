@@ -13,12 +13,14 @@ myApp.controller('authorCtrl', ['$scope', '$routeParams', '$filter', 'author', f
     function loadRemoteData() {
         author.getAuthorData($scope.authorId)
             .then(function(data) {
-                $scope.name = data.name;
-                $scope.country = data.country;
-                $scope.birthYear = data.birthYear;
-                $scope.books = data.books;
-                $scope.order('-year', false);
+                if (data !== undefined) {
+                    $scope.name = data.name;
+                    $scope.country = data.country;
+                    $scope.birthYear = data.birthYear;
+                    $scope.books = data.books;
+                    $scope.order('-year', false);
                 }
+            }
         )
     };
 

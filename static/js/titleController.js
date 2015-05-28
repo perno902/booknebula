@@ -16,18 +16,20 @@ myApp.controller('titleCtrl', ['$scope', '$routeParams', '$filter', 'title', fun
     function loadRemoteData() {
         title.getBookData($scope.bookId)
             .then(function(data) {
-                $scope.title = data.title;
-                $scope.year = data.year;
-                $scope.language = data.language;
-                $scope.avgScore = data.avgScore;
-                $scope.plot = data.plot;
-                $scope.reviews = data.reviews;
-                $scope.hasReviewed = data.hasReviewed;
-                $scope.user = data.user;
-                $scope.authors = data.authors;
-                $scope.emptyReviews = $scope.reviews.length < 1;
-                setAuthorText();
-                $scope.order('-date',false);
+                if (data !== undefined) {
+                    $scope.title = data.title;
+                    $scope.year = data.year;
+                    $scope.language = data.language;
+                    $scope.avgScore = data.avgScore;
+                    $scope.plot = data.plot;
+                    $scope.reviews = data.reviews;
+                    $scope.hasReviewed = data.hasReviewed;
+                    $scope.user = data.user;
+                    $scope.authors = data.authors;
+                    $scope.emptyReviews = $scope.reviews.length < 1;
+                    setAuthorText();
+                    $scope.order('-date', false);
+                }
             }
         )
     };

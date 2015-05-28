@@ -267,13 +267,19 @@ def get_author_list():
 @app.route('/review', methods=["GET"])
 def get_review():
     if request.method == "GET":
+        edit = (request.args.get('edit') == 'edit')
         review_id = request.args.get('id')
-        data = database_helper.get_review_data(review_id)
 
+        signed_in = current_user.is_authenticated()
+        print review_id
+        if signed_in and edit:
+            if not (database_helper.is_own_review(current_user.id, review_id) or database_helper.is_admin(current_user.id)):
+                abort(404)
+
+        data = database_helper.get_review_data(review_id)
         if data is None:
             abort(404)
 
-        signed_in = current_user.is_authenticated()
         data['signedIn'] = signed_in
 
         if signed_in:
@@ -298,11 +304,11 @@ def submit_review():
 
             user_id = current_user.id
 
-            if review_id == "new":
+            if not database_helper.has_reviewed(user_id, book_id):
                 database_helper.submit_review(book_id, review_title, content, score, language, user_id)
             else:
                 if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
-                    database_helper.update_review(review_id, book_id, review_title, content, score, language)
+                    database_helper.update_review(user_id, review_id, book_id, review_title, content, score, language)
                 else:
                     abort(401)
             return json.dumps({'bookId': book_id})

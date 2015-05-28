@@ -1,11 +1,12 @@
 myApp.factory('review', [ '$http', '$location', function($http, $location) {
 
-    function getReviewData(reviewId) {
+    function getReviewData(reviewId, edit) {
         var request = $http({
             method: "get",
             url: "/review",
             params: {
-                id: reviewId
+                id: reviewId,
+                edit: edit
             }
         });
         return (request.then(handleSuccess, handleError));

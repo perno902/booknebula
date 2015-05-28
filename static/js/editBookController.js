@@ -17,11 +17,13 @@ myApp.controller('editBookCtrl', ['$scope', '$routeParams', 'title', function($s
     function loadRemoteData() {
         title.getBookData($scope.bookId)
             .then(function(data) {
-                $scope.title = data.title;
-                $scope.year = data.year;
-                $scope.language = data.language;
-                $scope.plot = data.plot;
-                $scope.authors = data.authors;
+                if (data !== undefined) {
+                    $scope.title = data.title;
+                    $scope.year = data.year;
+                    $scope.language = data.language;
+                    $scope.plot = data.plot;
+                    $scope.authors = data.authors;
+                }
             }
         )
     };
@@ -30,7 +32,9 @@ myApp.controller('editBookCtrl', ['$scope', '$routeParams', 'title', function($s
     function loadAuthorList() {
         title.getAuthorList()
             .then(function(data) {
-                $scope.authorList = data;
+                if (data !== undefined) {
+                    $scope.authorList = data;
+                }
             }
         )
     };

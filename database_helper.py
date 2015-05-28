@@ -174,7 +174,10 @@ def submit_review(book_id, review_title, content, score, language, user_id):
     update_avg_score(book.id)
 
 
-def update_review(review_id, book_id, review_title, content, score, language):
+def update_review(user_id, review_id, book_id, review_title, content, score, language):
+    if review_id == 'new':
+        review_id = models.Review.query.filter_by(bookId=book_id, reviewerId=user_id).first().id
+
     review = models.Review.query.filter_by(id=review_id).first()
     review.revTitle = review_title
     review.content = content
@@ -193,10 +196,14 @@ def delete_review(review_id):
     review = models.Review.query.filter_by(id=review_id).first()
     book = models.Book.query.filter_by(id=review.bookId).first()
     book_id = book.id
+    if review is not None:
+        upvoters = models.User.query.filter(models.User.upvoted_review.any(id=review_id)).all()
+        for user in upvoters:
+            review.upvoters.remove(user)
 
-    models.db.session.delete(review)
-    models.db.session.commit()
-    update_avg_score(book.id)
+        models.db.session.delete(review)
+        models.db.session.commit()
+        update_avg_score(book.id)
     return book_id
 
 

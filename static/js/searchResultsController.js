@@ -7,10 +7,12 @@ myApp.controller('searchResultsCtrl', ['$scope', '$routeParams', 'search', funct
     function loadRemoteData() {
         search.getSearchResults($scope.query)
             .then(function(data) {
-                $scope.query = data.query
-                $scope.books = data.books;
-                $scope.authors = data.authors;
-                $scope.reviewers = data.reviewers;
+                if (data !== undefined) {
+                    $scope.query = data.query
+                    $scope.books = data.books;
+                    $scope.authors = data.authors;
+                    $scope.reviewers = data.reviewers;
+                }
             })
     };
 

@@ -8,10 +8,12 @@ myApp.controller('editProfileCtrl', ['$scope', '$routeParams', 'userData', funct
     function loadRemoteData() {
         userData.getUserData('signedIn')
             .then(function(data) {
-                $scope.userName = data.userName;
-                $scope.country = data.country;
-                $scope.email = data.email;
-                $scope.presentation = data.presentation;
+                if (data !== undefined) {
+                    $scope.userName = data.userName;
+                    $scope.country = data.country;
+                    $scope.email = data.email;
+                    $scope.presentation = data.presentation;
+                }
             })
     };
 

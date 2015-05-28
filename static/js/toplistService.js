@@ -8,7 +8,7 @@ myApp.factory('toplist', [ '$http', '$location', function($http, $location) {
     function getToplistData() {
         var request = $http({
             method: "get",
-            url: "/toplist",
+            url: "/toplist"
         });
         return (request.then(handleSuccess, handleError));
     };

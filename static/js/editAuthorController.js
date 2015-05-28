@@ -14,10 +14,12 @@ myApp.controller('editAuthorCtrl', ['$scope', '$routeParams', 'author', function
     function loadRemoteData() {
         author.getAuthorData($scope.authorId)
             .then(function(data) {
-                $scope.name = data.name,
-                $scope.country = data.country,
-                $scope.birthYear = data.birthYear
+                if (data !== undefined) {
+                    $scope.name = data.name,
+                    $scope.country = data.country,
+                    $scope.birthYear = data.birthYear
                 }
+            }
         )
     }
 

@@ -30,15 +30,17 @@ myApp.controller('writeReviewCtrl', ['$scope', '$routeParams', 'title', 'review'
     };
 
     function loadReviewData() {
-        review.getReviewData($scope.reviewId)
+        review.getReviewData($scope.reviewId, 'edit')
             .then(function(data) {
-                $scope.bookId = data.bookId;
-                $scope.bookTitle = data.bookTitle;
-                $scope.year = data.year;
-                $scope.revTitle = data.revTitle;
-                $scope.score = data.score;
-                $scope.content = data.content;
-                $scope.language = data.language;
+                if (data !== undefined) {
+                    $scope.bookId = data.bookId;
+                    $scope.bookTitle = data.bookTitle;
+                    $scope.year = data.year;
+                    $scope.revTitle = data.revTitle;
+                    $scope.score = data.score;
+                    $scope.content = data.content;
+                    $scope.language = data.language;
+                }
 
             }
         )
@@ -47,8 +49,10 @@ myApp.controller('writeReviewCtrl', ['$scope', '$routeParams', 'title', 'review'
     function loadBookData() {
         title.getBookData($scope.bookId)
             .then(function(data) {
-                $scope.bookTitle = data.title;
-                $scope.year = data.year;
+                if (data !== undefined) {
+                    $scope.bookTitle = data.title;
+                    $scope.year = data.year;
+                }
             }
         )
     };

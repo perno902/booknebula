@@ -62,7 +62,6 @@ myApp.config(['$routeProvider',
         })
     // Error page
         .otherwise({
-            template: '<html><h2> Oops! </h2><br> \
-                        <p> Something went wrong! </p><br> </html>'
+            templateUrl: '../static/pages/error.html'
         })
 }]);

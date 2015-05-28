@@ -11,11 +11,12 @@ myApp.controller('toplistCtrl', ['$scope', 'toplist', function($scope, toplist) 
 
     function loadRemoteData() {
         toplist.getToplistData()
-            .then(
-                function(toplistData) {
-                    $scope.books = toplistData.books;
-                    $scope.reviewers = toplistData.reviewers;
+            .then(function(data) {
+                if (data !== undefined) {
+                    $scope.books = data.books;
+                    $scope.reviewers = data.reviewers;
                 }
+            }
         )
     }
 }]);
