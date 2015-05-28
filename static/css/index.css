@@ -1,4 +1,9 @@
-.sign-in-btn {
+.btn-default {
     margin-top: 3%;
 }
 
+.btn-link {
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 3px;
+}
