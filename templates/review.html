@@ -47,7 +47,7 @@
     {% if OWN_REVIEW or ADMIN %}
     {% raw %}
     <div class="col-md-2">
-        <a href="/#/title/{{bookId}}" class="btn btn-primary" ng-click="deleteReview()">Delete</a>
+        <button type="button" class="btn btn-primary" ng-click="deleteReview()">Delete</button>
          <a href="/#/writeReview/{{reviewId}}/title/{{bookId}}"class="btn btn-primary">Edit</a>
     </div>
     {% endraw %}
