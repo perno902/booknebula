@@ -1,36 +1,44 @@
 {% raw %}
-<div class="col-md-8"><h3>{{name}} <small>(Author)</small></h3><br></div>
+<div class="row">
+    <div class="col-md-9"><h3>{{name}} <small>(Author)</small></h3><br></div>
 
-
-<div class="panel panel-default col-sm-5">
-    <div class="panel-body">
-        <p>Birthyear: {{birthYear}}</p>
-        <p>Country: {{country}}</p>
-    </div>
-</div>
-{% endraw %}
-
-{% if ADMIN %}
-    {% raw %}
-    <div class="col-sm-3 pull-right"><a href="/#/editAuthor/{{authorId}}" class="btn btn-primary">Edit author <span class="glyphicon glyphicon-edit"></span></a></div>
     {% endraw %}
-{% endif %}
-<br><br>
-{% raw %}
-<div class="col-sm-12">
+
+        {% if ADMIN %}
+            {% raw %}
+            <div class="col-md-2 pull-right"><a href="/#/editAuthor/{{authorId}}" class="btn btn-primary">Edit author <span class="glyphicon glyphicon-edit"></span></a></div>
+            {% endraw %}
+        {% endif %}
+        <br><br>
+    {% raw %}
+</div>
+
+<div class="row">
+    <div class="panel panel-default col-md-4">
+        <div class="panel-body">
+            <p>Birthyear: {{birthYear}}</p>
+            <p>Country: {{country}}</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="col-md-6">
     <h4>Works:</h4>
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Year</th>
-                <th>Average score</th>
-                </tr>
+                <th ng-repeat="(key, val) in head" ng-click="order(val[0], !reverse);" class="{{val[2]}}">
+                    {{val[1]}}
+                    <span ng-show="isOrdered(val[0], false)" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="isOrdered(val[0], true)" class="glyphicon glyphicon-triangle-top"></span>
+                </th>
+            </tr>
         </thead>
         <tbody>
             <tr ng-repeat="b in books">
-                <td><a href="/#/title/{{b.id}}" class="btn btn-link">{{b.title}}</a></td>
                 <td>{{b.year}}</td>
+                <td><a href="/#/title/{{b.id}}" class="btn btn-link">{{b.title}}</a></td>
                 <td>{{b.avgScore}}</td>
             </tr>
         </tbody>

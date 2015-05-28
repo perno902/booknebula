@@ -1,16 +1,18 @@
 {% raw %}
-<div class="col-md-9"><h3>{{userName}}  <small>({{grade}})</small></h3></div>
-{% endraw %}
+<div class="row">
+    <div class="col-md-9"><h3>{{userName}}  <small>({{grade}})</small></h3></div>
+    {% endraw %}
 
-{% if OWN_PROFILE %}
-<div class="col-md-2 pull-right">
-    <a href="/#/editProfile" class="btn btn-primary">Edit profile <span class="glyphicon glyphicon-edit"></span></a>
-</div><br>
-{% endif %}
+    {% if OWN_PROFILE %}
+    <div class="col-md-2 pull-right">
+        <a href="/#/editProfile" class="btn btn-primary">Edit profile <span class="glyphicon glyphicon-edit"></span></a>
+    </div><br>
+    {% endif %}
+</div>
 
 {% raw %}
-<div>
-    <div class="panel panel-default col-sm-5">
+<div class="row">
+    <div class="panel panel-default col-md-4">
         <div class="panel-body">
             <p>Number of reviews: {{noOfReviews}}</p>
             <p>Number of upvotes: {{noOfUpvotes}}</p>
@@ -20,18 +22,40 @@
             <p>Email: {{email}}</p>
         </div>
     </div>
-    <div class="col-sm-1"></div>
-    <div class="panel panel-default col-sm-6">
+    <div class="col-md-1"></div>
+    <div class="panel panel-default col-md-6">
         <div class="panel-body" ng-hide="emptyPresentation" style="word-wrap:break-word;">{{presentation}}</div>
         <div class="panel-body" ng-show="emptyPresentation"><em>{{userName}} hasn't written a personal presentation yet.</em></div>
     </div>
-    <div class="col-sm-12">
-        <h4>Reviews</h4>
-        <div class="row">
-            <div my-reviews reviews="reviews"></div>
-        </div>
+</div>
+<div class="row">
+    <div class="col-md-12"><h4>Reviews:</h4></div>
+    <div class="col-md-12">
+        <em ng-show="emptyReviews">{{userName}} hasn't written any reviews yet.</em>
+
+        <table class="table" ng-hide="emptyReviews">
+            <thead>
+                <tr>
+                    <th ng-repeat="(key, val) in head" ng-click="order(val[0], !reverse);" class="{{val[2]}}">
+                        {{val[1]}}
+                        <span ng-show="isOrdered(val[0], false)" class="glyphicon glyphicon-triangle-bottom"></span>
+                        <span ng-show="isOrdered(val[0], true)" class="glyphicon glyphicon-triangle-top"></span>
+                    </th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr ng-repeat="r in reviews">
+                    <td><a href="/#/title/{{r.bookId}}" class="btn btn-link">{{r.bookTitle}} ({{r.year}})</a></td>
+                    <td><a href="/#/review/{{r.id}}/origin/profile"class="btn btn-link">{{r.revTitle}}</a></td>
+                    <td>{{r.score}}</td>
+                    <td>{{r.upvotes}}</td>
+                    <td>{{r.date}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-{% endraw %}
 
+{% endraw %}
 

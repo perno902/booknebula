@@ -1,31 +1,31 @@
 <h3>Editing book</h3><br>
 
+
 <form name="bookForm">
     <label for="title">Title:</label>
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-md-4">
             <input type="text" ng-model="title" class="form-control" id="title" name="title" ng-maxlength="50" placeholder="Enter title" required>
         </div>
-        <div class="col-xs-4">
+        <div class="col-md-4">
             <em ng-show=!bookForm.title.$valid><small>Must be 1-50 characters long</small></em>
         </div>
     </div><br>
 
     <label for="author">Authors:</label>
     <div class="row">
-            <p ng-repeat="a in authors" class="col-xs-10">
+            <p ng-repeat="a in authors" class="col-md-10">
                 {{a.name}} (born {{a.birthYear}})
                 <span class="glyphicon glyphicon-remove" ng-click="removeAuthor(a)"></span>
             </p>
     </div>
     <div class="row">
-        <div class="col-xs-4"><em ng-show="authors.length==0"><small>An author must be added</small></em></div>
+        <div class="col-md-4"><em ng-show="authors.length==0"><small>An author must be added</small></em></div>
         <br>
     </div>
 
-
     <div class="row">
-        <div class="col-xs-5">
+        <div class="col-md-5">
             <select ng-options="(a.name+' (born '+a.birthYear+')') for a in authorList" ng-model="author" class="form-control" id="author">
                 <option value=''>- Select an author -</option>
             </select>
@@ -35,40 +35,44 @@
         </div>
     </div><br>
 
+
     <label for="year">Year of publication:</label>
     <div class="row">
-        <div class="col-xs-3">
+        <div class="col-md-3">
             <input type="number" ng-model="year" class="form-control" id="year" name="year" ng-maxlength="4" required>
         </div>
-        <div class="col-xs-1"></div>
-        <div class="col-xs-4">
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
             <em ng-show=!bookForm.year.$valid><small>Mandatory field</small></em>
         </div>
     </div><br>
 
+
     <label for="language">Original language:</label>
     <div class="row">
-        <div class="col-xs-3">
+        <div class="col-md-3">
             <select ng-options="l for l in languages" ng-model="language" class="form-control" id="language" name="language" required></select>
         </div>
-        <div class="col-xs-1"></div>
-        <div class="col-xs-4">
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
             <em ng-show=!bookForm.language.$valid><small>Mandatory field</small></em>
         </div>
     </div><br>
 
-    <div class="row col-xs-4"><label for="plot">Plot:</label></div>
-    <div class="col-xs-8">
+
+    <div class="row col-md-4"><label for="plot">Plot:</label></div>
+    <div class="col-md-8">
         <em ng-show=!bookForm.plot.$valid><small>Must not be longer than 500 characters</small></em>
     </div>
     <div class="row">
-        <div class="col-xs-10">
+        <div class="col-md-10">
             <textarea rows="8" ng-model="plot" class="form-control" id="plot" name="plot" ng-maxlength="500" placeholder="Enter plot"></textarea>
         </div>
     </div><br>
 
 </form>
 
-<button type="button" class="btn btn-default" ng-disabled="!bookForm.$valid || authors.length==0" ng-click="submitBookData()">Submit</button>
-<a href="/#/" class="btn btn-default">Cancel</a>
-
+<div>
+    <button type="button" class="btn btn-default" ng-disabled="!bookForm.$valid || authors.length==0" ng-click="submitBookData()">Submit</button>
+    <a href="/#/" class="btn btn-default">Cancel</a>
+</div><br>

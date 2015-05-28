@@ -3,33 +3,33 @@
 <form name="authorForm">
     <label for="name">Name:</label>
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-md-4">
             <input type="text" ng-model="name" class="form-control" id="name" name="name"" ng-maxlength="50" placeholder="Enter name" required>
         </div>
-        <div class="col-xs-4">
+        <div class="col-md-4">
             <em ng-show=!authorForm.name.$valid><small>Must be 1-50 characters long</small></em>
         </div>
     </div><br>
 
     <label for="birthYear">Birthyear:</label>
     <div class="row">
-        <div class="col-xs-3">
+        <div class="col-md-3">
             <input type="number" ng-model="birthYear" class="form-control" id="birthYear" name="birthYear" ng-maxlength="4" required>
         </div>
-        <div class="col-xs-1"></div>
-        <div class="col-xs-4">
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
             <em ng-show=!authorForm.birthYear.$valid><small>Mandatory field</small></em>
         </div>
     </div><br>
 
     <label for="country">Country:</label>
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-md-4">
             <select ng-options="c for c in countries" ng-model="country" class="form-control" id="country" name="country" required>
                 <option value=''>- Select a country -</option>
             </select>
         </div>
-        <div class="col-xs-4">
+        <div class="col-md-4">
             <em ng-show=!authorForm.country.$valid><small>Mandatory field</small></em>
         </div>
     </div><br>
@@ -37,6 +37,8 @@
 
 </form>
 
-<button type="button" class="btn btn-default" ng-disabled="!authorForm.$valid" ng-click="submitAuthorData()">Submit</button>
-<a href="/#/" class="btn btn-default">Cancel</a>
+<div>
+    <button type="button" class="btn btn-default" ng-disabled="!authorForm.$valid" ng-click="submitAuthorData()">Submit</button>
+    <a href="/#/" class="btn btn-default">Cancel</a>
+</div><br><br><br><br><br><br>
 

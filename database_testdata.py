@@ -19,20 +19,36 @@ def test():
     models.Author.query.delete()
 
 
-    # Users
+    # Adding users
 
-    user1 = models.User('n0rp3r_the_critic', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', str(datetime.date.today()), True)
+    user1 = models.User('admin', 'booknebula@gmail.com', 'Sweden', '', str(datetime.date.today()), True)
     models.db.session.add(user1)
     models.db.session.commit()
 
-    user2 = models.User('missusLovett', 'lovett@mail.com', 'England', '''A great fan of fiction. Lorem ipsum dolor sit
+    user1 = models.User('Pelle Nordfors', 'pelle.nordfors@gmail.com', 'Sweden', 'hi everyone!', str(datetime.date.today()), False)
+    models.db.session.add(user1)
+    models.db.session.commit()
+
+    user2 = models.User('mrs. Lovett', 'lovett@mail.com', 'England', '''A great fan of fiction. Lorem ipsum dolor sit
                         amet, consectetur adipiscing elit, sed do eiusmod tempor  incididunt ut labore et dolore magna aliqua. ''',
                         str(datetime.date.today()), False)
 
     models.db.session.add(user2)
     models.db.session.commit()
 
-    # Lolita by Nabokov
+    user3 = models.User('Elphaba Thropp', 'elphie@student.cragehall.com', 'Oz', 'I like books. Especially The Grimmerie!', str(datetime.date.today()), False)
+    models.db.session.add(user3)
+    models.db.session.commit()
+
+    user4 = models.User('George Banks', 'geogrie@britishbanks.com', 'England', 'Hi! Mary Poppins in my favorite book!', str(datetime.date.today()), False)
+    models.db.session.add(user4)
+    models.db.session.commit()
+
+    user5 = models.User('Magda Keller', 'maggan@gmail.com', 'Hungary', 'Umm... I rarely read at all.', str(datetime.date.today()), False)
+    models.db.session.add(user5)
+    models.db.session.commit()
+
+    # Adding Lolita by Nabokov
 
     author = models.Author('Vladimir Nabokov', 'Russia', 1899)
     book = models.Book('Lolita', 1955, 'A man marries his landlady so he can take advantage of her daughter.', 'English')
@@ -47,7 +63,7 @@ def test():
     models.db.session.commit()
     database_helper.update_avg_score(book.id)
 
-    # It by King
+    # Adding It by King
 
     author = models.Author('Stephen King', 'USA', 1947)
     book = models.Book('It', 1986,
@@ -58,7 +74,7 @@ def test():
     models.db.session.commit()
     database_helper.update_avg_score(book.id)
 
-    # The Shining by King
+    # Adding The Shining by King
 
     book = models.Book('The Shining', 1977,
                        'A recovering alcoholic and his family move into a haunted hotel as caretakers.',
@@ -67,9 +83,3 @@ def test():
     models.db.session.add(author)
     models.db.session.commit()
     database_helper.update_avg_score(book.id)
-
-    # Prints for checking
-
-    print database_helper.list_to_dict(models.Book.query.all())
-
-    print "Data inserted into database"

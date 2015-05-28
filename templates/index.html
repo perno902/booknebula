@@ -41,7 +41,6 @@
     <script src="static/js/writeReviewController.js"></script>
     <script src="static/js/editAuthorController.js"></script>
     <script src="static/js/editBookController.js"></script>
-    <script src="static/js/directives/reviewsDirective.js"></script>
 
     <!--- URL for authorization -->
     <script>
@@ -55,9 +54,9 @@
 </head>
 
 <body>
-    <div id="mainSpace">
-        <a href="/#/"><img class="img-responsive" src="/static/logo1.gif" alt="Book Nebula"></a>
-        <img class="img-responsive" src="/static/bookshelf.gif">
+    <div class="container">
+        <a href="/#/"><img class="img-responsive" src="/static/img/logo1.gif" alt="Book Nebula"></a>
+        <img class="img-responsive" src="/static/img/bookshelf3.gif">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div>
@@ -75,7 +74,7 @@
                         {% endif %}
                     </ul>
 
-                    <div class="col-sm-5" ng-controller="searchCtrl">
+                    <div class="col-md-5" ng-controller="searchCtrl">
                         <form class="navbar-form">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search...", id="navSearch" ng-model="query">
@@ -90,7 +89,7 @@
                         </form>
                     </div>
 
-                    <div ng-controller="signInCtrl" class="col-sm-2 pull-right">
+                    <div ng-controller="signInCtrl" class="col-md-2 pull-right">
                         {% if not SIGNED_IN %}
                             <button type="button" ng-click="signIn()" class="btn btn-default sign-in-btn">Sign in</button>
                         {% elif SIGNED_IN %}
@@ -103,7 +102,7 @@
 
         <!--INJECTED CONTENT -->
 
-        <div ng-view class="view-frame"></div>
+        <div ng-view class="view-frame container""></div>
 
     </div>
 

@@ -1,5 +1,5 @@
-from flask import Flask, render_template, redirect, request, session, abort
-from flask_login import UserMixin, login_user, logout_user, current_user, LoginManager, login_required
+from flask import Flask, render_template, redirect, request, abort
+from flask_login import login_user, logout_user, current_user, LoginManager, login_required
 import urllib
 from uuid import uuid4
 import requests

@@ -19,9 +19,11 @@ def add_user(email):
     models.db.session.add(user)
     models.db.session.commit()
 
+
 def is_admin(id):
     user = models.User.query.filter_by(id=id).first()
     return user.isAdmin
+
 
 def get_user_data(id):
     data = row_to_dict(models.User.query.filter_by(id=id).first())
@@ -29,14 +31,10 @@ def get_user_data(id):
     if data is not None:
         data['reviews'] = get_reviews_data(reviews)
 
-        noOfReviews = get_review_count(reviews)
+        noOfReviews = len(reviews)
         data['noOfReviews'] = noOfReviews
         data['grade'] = get_grade(noOfReviews)
     return data
-
-
-def get_review_count(reviews):
-    return len(reviews)
 
 
 def get_grade(count):
@@ -48,14 +46,6 @@ def get_grade(count):
         return "Avid reader"
     else:
         return "Senior bookworm"
-
-
-def get_upvotes_count(reviews):
-    count = 0
-    print reviews
-    for review in reviews:
-        count += review['upvotes']
-    return count
 
 
 def get_search_results(query):
@@ -103,7 +93,7 @@ def get_reviews_data(reviews):
         additional_review_data(review)
     return reviews
 
-
+# Gets data related to reviews that are not in the reviews table
 def additional_review_data(review):
     reviewer = models.User.query.filter_by(id=review['reviewerId']).first()
     review['reviewer'] = reviewer.userName
@@ -182,6 +172,7 @@ def submit_review(book_id, review_title, content, score, language, user_id):
     models.db.session.add(review)
     models.db.session.commit()
     update_avg_score(book.id)
+
 
 def update_review(review_id, book_id, review_title, content, score, language):
     review = models.Review.query.filter_by(id=review_id).first()
@@ -282,6 +273,9 @@ def get_toplist():
 
 def get_author_list():
     return list_to_dict(models.Author.query.all())
+
+
+# Functions for transforming db objects into dict format:
 
 def list_to_dict(list):
     res = []
