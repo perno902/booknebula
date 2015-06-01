@@ -15,7 +15,7 @@
     <div class="panel panel-default col-md-4">
         <div class="panel-body">
             <p>{{authorText}}:
-                <a href="/#/author/{{a.id}}" ng-repeat="a in authors"class="btn btn-link">{{a.name}}</a>
+                <a href="/#/author/{{a.id}}" ng-repeat="a in authors"class="btn btn-link">{{a.name}}{{$last ? '' : ', '}}</a>
             </p>
             <p>Original language: {{language}}</p><br>
             <p>Average score: {{avgScore | number:2}}</p>

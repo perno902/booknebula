@@ -158,6 +158,8 @@ def update_book(book_id, title, year, plot, language, authors):
     for a in old_authors:
         book.written_by.remove(a)
 
+    authors = list(set(authors))
+
     for author_id in authors:
         author = models.Author.query.filter_by(id=author_id).first()
         book.written_by.append(author)

@@ -25,12 +25,12 @@
     </div>
 
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-3">
             <select ng-options="(a.name+' (born '+a.birthYear+')') for a in authorList" ng-model="author" class="form-control" id="author">
                 <option value=''>- Select an author -</option>
             </select>
         </div>
-        <div>
+        <div class="col-md-2">
             <button type="button" class="btn btn-default" ng-click="addAuthor()">Add as author</button>
         </div>
     </div><br>

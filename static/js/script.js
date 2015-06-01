@@ -8,7 +8,7 @@ myApp.config(['$routeProvider',
 
     // Home page
         .when('/', {
-            templateUrl: '../static/pages/home.html'
+            templateUrl: '/?doc=home'
         })
     // Toplist page
         .when('/toplist', {

@@ -83,3 +83,23 @@ def test():
     models.db.session.add(author)
     models.db.session.commit()
     database_helper.update_avg_score(book.id)
+
+    # Adding Carrie by King
+
+    book = models.Book('Carrie', 1974,
+                       'A classic horror tale about Carrie White, a shy girl.',
+                       'English')
+    book.written_by.append(author)
+    models.db.session.add(author)
+    models.db.session.commit()
+    database_helper.update_avg_score(book.id)
+
+        # Adding Misery by King
+
+    book = models.Book('Misery', 1987,
+                       'Paul Sheldon, a successful novelist, is rescued after a snow storm by his "Number One Fan".',
+                       'English')
+    book.written_by.append(author)
+    models.db.session.add(author)
+    models.db.session.commit()
+    database_helper.update_avg_score(book.id)

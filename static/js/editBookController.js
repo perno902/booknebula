@@ -44,7 +44,7 @@ myApp.controller('editBookCtrl', ['$scope', '$routeParams', 'title', function($s
     };
 
     $scope.addAuthor = function () {
-        if (($scope.authors.indexOf($scope.author) == -1) && $scope.author != '') {
+        if (!authorExists() && $scope.author != '') {
             $scope.authors.push($scope.author);
         }
         $scope.author = '';
@@ -55,6 +55,15 @@ myApp.controller('editBookCtrl', ['$scope', '$routeParams', 'title', function($s
         if (index > -1) {
             $scope.authors.splice(index, 1);
         }
+    };
+
+    function authorExists() {
+        for (var i = 0; i < $scope.authors.length; i++) {
+            if ($scope.authors[i].id == $scope.author.id) {
+                return true;
+            }
+        }
+        return false;
     };
 
     function authorIdList() {

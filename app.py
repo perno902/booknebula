@@ -55,6 +55,10 @@ def init():
         url_auth = make_authorization_url()
         return render_template("index.html", URL_AUTH=url_auth, SIGNED_IN=signed_in, ADMIN=admin)
 
+    if doc == "home":
+        admin_id = database_helper.get_user('booknebula@gmail.com').id
+        return render_template("home.html", ADMIN_ID=admin_id)
+
     id_arg = request.args.get('id')
     try:
         id_arg = int(id_arg)
@@ -393,9 +397,9 @@ def is_valid_data(data):
             return False
         elif key == 'content' and not (type(value) is unicode and len(value) <= 3000):
             return False
-        elif key == 'bookId' and not (type(value) is unicode or type(value) is int):
+        elif key == 'bookId' and not (type(value) is unicode and 2 < len(value) <= 10):
             return False
-        elif key == 'reviewId' and not (type(value) is unicode):
+        elif key == 'reviewId' and not (type(value) is unicode and 2 < len(value) <= 10):
             return False
         elif key == 'score' and not (type(value) is int and 0 < value <= 10):
             return False
@@ -412,17 +416,18 @@ def is_valid_data(data):
         elif key == 'plot' and not (type(value) is unicode and len(value) <= 500):
             return False
         elif key == 'title' and not (type(value) is unicode and 0 < len(value) <= 80):
+            print '1'
             return False
         elif key == 'year' and not (type(value) is int):
             return False
         elif key == 'authors':
             if type(value) is list:
                 for author_id in value:
-                    if not type(author_id) is int:
+                    if not (type(author_id) is unicode and 2 < len(author_id) <= 10):
                         return False
             else:
                 return False
-        elif key == 'authorId' and not (type(value) is unicode):
+        elif key == 'authorId' and not (type(value) is unicode and 2 < len(value) <= 10):
             return False
         elif key == 'birthYear' and not (type(value) is int):
             return False
