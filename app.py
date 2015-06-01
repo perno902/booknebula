@@ -271,7 +271,6 @@ def get_review():
         review_id = request.args.get('id')
 
         signed_in = current_user.is_authenticated()
-        print review_id
         if signed_in and edit:
             if not (database_helper.is_own_review(current_user.id, review_id) or database_helper.is_admin(current_user.id)):
                 abort(404)

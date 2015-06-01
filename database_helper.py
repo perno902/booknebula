@@ -199,8 +199,7 @@ def delete_review(review_id):
     if review is not None:
         upvoters = models.User.query.filter(models.User.upvoted_review.any(id=review_id)).all()
         for user in upvoters:
-            review.upvoters.remove(user)
-
+            un_upvote(user.id, review.id)
         models.db.session.delete(review)
         models.db.session.commit()
         update_avg_score(book.id)
