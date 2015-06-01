@@ -2,10 +2,14 @@
 import app
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy import declarative_base
+import random, string
 
 
 db = SQLAlchemy(app.app)
 Base = declarative_base()
+
+def generate_id():
+    return ''.join(random.choice(string.lowercase) for i in range(10))
 
 upvotes = db.Table('upvotes',
                    db.Column('user_id', db.Integer, db.ForeignKey('user.id') ),
@@ -14,7 +18,7 @@ upvotes = db.Table('upvotes',
 
 class User(db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    id = db.Column(db.String(10), primary_key=True, nullable=False)
     userName = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(50))
     country = db.Column(db.String(50))
@@ -27,6 +31,11 @@ class User(db.Model):
 
 
     def __init__(self, username, email, country, presentation, joined_date, is_admin):
+        id = generate_id()
+        while User.query.filter_by(id=id).first() is not None:
+            id = generate_id()
+
+        self.id = id
         self.userName = username
         self.email = email
         self.country = country
@@ -52,7 +61,7 @@ class User(db.Model):
 
 
 class Review(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(10), primary_key=True)
     revTitle = db.Column(db.String(50))
     content = db.Column(db.Text)
     score = db.Column(db.Integer)
@@ -64,6 +73,11 @@ class Review(db.Model):
 
 
     def __init__(self, title, content, score, language, date, reviewer, book):
+        id = generate_id()
+        while Review.query.filter_by(id=id).first() is not None:
+            id = generate_id()
+
+        self.id = id
         self.revTitle = title
         self.content = content
         self.score = score
@@ -82,7 +96,7 @@ has_written = db.Table('has_written',
 
 
 class Book(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    id = db.Column(db.String(10), primary_key=True, nullable=False)
     title = db.Column(db.String(50))
     year = db.Column(db.Integer)
     plot = db.Column(db.Text)
@@ -92,6 +106,12 @@ class Book(db.Model):
     written_by = db.relationship('Author', secondary=has_written, backref=db.backref('books', lazy='dynamic'))
 
     def __init__(self, title, year, plot, language):
+        id = generate_id()
+        while Book.query.filter_by(id=id).first() is not None:
+            id = generate_id()
+
+        self.id = id
+
         self.title = title
         self.year = year
         self.plot = plot
@@ -100,15 +120,18 @@ class Book(db.Model):
 
 
 class Author(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(10), primary_key=True)
     name = db.Column(db.String(50))
     country = db.Column(db.String(50))
     birthYear= db.Column(db.Integer)
     wrote = db.relationship('Book', secondary=has_written, backref=db.backref('author', lazy='dynamic'))
 
-
-
     def __init__(self, name, country, birth_year):
+        id = generate_id()
+        while Author.query.filter_by(id=id).first() is not None:
+            id = generate_id()
+
+        self.id = id
         self.name = name
         self.country = country
         self.birthYear = birth_year

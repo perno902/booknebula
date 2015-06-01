@@ -136,9 +136,9 @@ def get_tokens(code):
 
 
 @app.route('/logout')
-@login_required
 def logout():
-    logout_user()
+    if current_user.is_authenticated():
+        logout_user()
     return redirect("/")
 
 
@@ -147,7 +147,10 @@ def get_user_data():
     id = request.args.get('id')
 
     if id == "signedIn":
+        if current_user.is_authenticated():
             id = current_user.id
+        else:
+            abort(404)
     data = database_helper.get_user_data(id)
     if data is None:
         abort(404)
