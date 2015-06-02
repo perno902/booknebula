@@ -1,8 +1,8 @@
-#import os
 import app
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy import declarative_base
-import random, string
+import random
+import string
 
 
 db = SQLAlchemy(app.app)

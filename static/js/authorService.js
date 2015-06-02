@@ -30,11 +30,19 @@ myApp.factory('author', [ '$http', '$location', function($http, $location) {
     }
 
     function handleSuccess(response) {
-        return response.data.data;
+        if (response.data.data !== undefined) {
+            return response.data.data;
+        } else {
+            handleError();
+        }
     }
 
     function handleSubmitSuccess(response) {
-        $location.path('/author/' + response.data.authorId)
+        if (response.data.authorId !== undefined) {
+            $location.path('/author/' + response.data.authorId)
+        } else {
+            handleError();
+        }
     }
 
     return {

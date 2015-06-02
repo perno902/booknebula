@@ -159,10 +159,10 @@ def get_user_data():
         else:
             abort(404)
     data = database_helper.get_user_data(id)
-    if data is None:
-        abort(404)
-    else:
+    if data is not None:
         return json.dumps({'data': data})
+    else:
+        abort(404)
 
 
 
@@ -406,7 +406,6 @@ def is_valid_data(data):
         elif key == 'plot' and not (type(value) is unicode and len(value) <= 500):
             return False
         elif key == 'title' and not (type(value) is unicode and 0 < len(value) <= 80):
-            print '1'
             return False
         elif key == 'year' and not (type(value) is int):
             return False

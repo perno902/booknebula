@@ -68,18 +68,30 @@ myApp.factory('review', [ '$http', '$location', function($http, $location) {
     };
 
     function handleSuccess(response) {
-        return response.data.data;
+        if (response.data.data !== undefined) {
+            return response.data.data;
+        } else {
+            handleError();
+        }
     };
 
     function handleUpvoteSuccess(response) {
-        var data = {};
-        data.upvotes = response.data.data.upvotes;
-        data.hasUpvoted = response.data.data.hasUpvoted;
-        return data;
+        if (response.data.data !== undefined) {
+            var data = {};
+            data.upvotes = response.data.data.upvotes;
+            data.hasUpvoted = response.data.data.hasUpvoted;
+            return data;
+        } else {
+            handleError();
+        }
     };
 
     function handleSubmitSuccess(response) {
-        $location.path('/title/' + response.data.bookId)
+        if (response.data.bookId !== undefined) {
+            $location.path('/title/' + response.data.bookId)
+        } else {
+            handleError();
+        }
     };
 
 

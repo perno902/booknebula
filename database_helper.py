@@ -275,6 +275,8 @@ def has_upvoted(user_id, review_id):
 
 
 def is_own_review(user_id, review_id):
+    if review_id == "new":
+        return True
     count = models.Review.query.filter_by(id=review_id, reviewerId=user_id).count()
     return count > 0
 

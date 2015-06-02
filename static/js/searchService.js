@@ -20,7 +20,11 @@ myApp.factory('search', [ '$http', '$location', function($http, $location) {
     };
 
     function handleSuccess(response) {
-        return response.data.data;
+        if (response.data.data !== undefined) {
+            return response.data.data;
+        } else {
+            handleError();
+        }
     };
 
 }]);
