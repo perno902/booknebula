@@ -29,8 +29,6 @@ CLIENT_ID = "205573445883-9dl8ahcka67d4m7e21anb692do487odk.apps.googleuserconten
 CLIENT_SECRET = "uaidYPHuy99kGHDwoz_CNd63"
 REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
 
-valid_states = set()
-
 # Code to avoid caching
 @app.after_request
 def add_header(response):
@@ -56,7 +54,12 @@ def init():
         return render_template("index.html", URL_AUTH=url_auth, SIGNED_IN=signed_in, ADMIN=admin)
 
     if doc == "home":
-        admin_id = database_helper.get_user('booknebula@gmail.com').id
+        admin = database_helper.get_user('booknebula@gmail.com')
+        if admin is not None:
+            admin_id = admin.id
+        else:
+            admin_id = "0"
+
         return render_template("home.html", ADMIN_ID=admin_id)
 
     id_arg = request.args.get('id')
@@ -89,7 +92,7 @@ def init():
 
 def make_authorization_url():
     state = str(uuid4())
-    add_valid_state(state)
+    database_helper.add_valid_state(state)
 
     params = {"client_id": CLIENT_ID,
               "response_type": "code",
@@ -107,9 +110,9 @@ def login():
         return "Error:" + error
 
     state = request.args.get('state', '')
-    if not is_valid_state(state):
+    if not database_helper.is_valid_state(state):
         abort(401)
-    delete_state(state)
+    database_helper.delete_state(state)
     code = request.args.get('code', '')
     id_token, access_token = get_tokens(code)
 
@@ -375,19 +378,6 @@ def get_toplist():
     return json.dumps({'data': data})
 
 
-def add_valid_state(state):
-    valid_states.add(state)
-
-
-def is_valid_state(state):
-    if state in valid_states:
-        return True
-    return False
-
-
-def delete_state(state):
-    valid_states.remove(state)
-
 
 def is_valid_data(data):
     keys = data.keys()
@@ -435,16 +425,10 @@ def is_valid_data(data):
 
 
 @app.errorhandler(400)
-def page_not_found(error):
-    return render_template('error.html'), 400
-
 @app.errorhandler(401)
-def page_not_found(error):
-    return render_template('error.html'), 401
-
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('error.html'), 404
+    return redirect("/#/error")
 
 
     # ---- Test routes ----

@@ -26,7 +26,7 @@
     <label for="email">Email:</label>
     <div class="row">
         <div class="col-xs-4">
-            <input type="email" ng-model="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+            <input type="email" ng-model="email" class="form-control" id="email" name="email" ng-maxlength="50" placeholder="Enter email" required>
         </div>
         <div class="col-xs-4">
             <em ng-show=!profileForm.email.$valid><small>Must be a valid email</small></em>

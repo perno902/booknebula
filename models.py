@@ -135,3 +135,9 @@ class Author(db.Model):
         self.name = name
         self.country = country
         self.birthYear = birth_year
+
+class State(db.Model):
+    id = db.Column(db.String(50), primary_key=True)
+
+    def __init__(self, id):
+        self.id = id

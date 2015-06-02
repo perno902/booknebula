@@ -4,6 +4,22 @@ from sqlalchemy import func
 
 # ----- Help functions -----
 
+def add_valid_state(state):
+    new_state = models.State(state)
+    models.db.session.add(new_state)
+
+def delete_state(state):
+    target = models.State.query.filter_by(id=state).first()
+    if target is not None:
+        models.db.session.delete(target)
+        models.db.session.commit()
+
+def is_valid_state(state):
+    exists = models.State.query.filter_by(id=state)
+    return exists is not None
+
+
+
 def get_user(email):
     user = models.User.query.filter_by(email=email).first()
     return user
