@@ -145,25 +145,27 @@ def get_tokens(code):
 
 @app.route('/logout')
 def logout():
-    if current_user.is_authenticated():
-        logout_user()
-    return redirect("/")
+    if request.method == "GET":
+        if current_user.is_authenticated():
+            logout_user()
+        return redirect("/")
 
 
 @app.route('/userData', methods=["GET"])
 def get_user_data():
-    id = request.args.get('id')
+    if request.method == "GET":
+        id = request.args.get('id')
 
-    if id == "signedIn":
-        if current_user.is_authenticated():
-            id = current_user.id
+        if id == "signedIn":
+            if current_user.is_authenticated():
+                id = current_user.id
+            else:
+                abort(404)
+        data = database_helper.get_user_data(id)
+        if data is not None:
+            return json.dumps({'data': data})
         else:
             abort(404)
-    data = database_helper.get_user_data(id)
-    if data is not None:
-        return json.dumps({'data': data})
-    else:
-        abort(404)
 
 
 
@@ -188,91 +190,97 @@ def submit_user_data():
 
 @app.route('/search', methods=["GET"])
 def get_search_results():
-    query = request.args.get('query')
-    if query is None:
-        abort(400)
-    data = database_helper.get_search_results(query)
-    return json.dumps({'data': data})
+    if request.method == "GET":
+        query = request.args.get('query')
+        if query is None:
+            abort(400)
+        data = database_helper.get_search_results(query)
+        return json.dumps({'data': data})
 
 
 @app.route('/title', methods=["GET"])
 def get_title_data():
-    id = request.args.get('id')
-    data = database_helper.get_title_data(id)
-    if data is None:
-        abort(404)
+    if request.method == "GET":
+        id = request.args.get('id')
+        data = database_helper.get_title_data(id)
+        if data is None:
+            abort(404)
 
-    has_reviewed = True
-    user_id = None
-    if current_user.is_authenticated():
-        user_id = current_user.id
-        has_reviewed = database_helper.has_reviewed(user_id, id)
-    data['hasReviewed'] = has_reviewed
-    data['user'] = user_id
-    return json.dumps({'data': data})
+        has_reviewed = True
+        user_id = None
+        if current_user.is_authenticated():
+            user_id = current_user.id
+            has_reviewed = database_helper.has_reviewed(user_id, id)
+        data['hasReviewed'] = has_reviewed
+        data['user'] = user_id
+        return json.dumps({'data': data})
 
 
 @app.route('/title', methods=["POST"])
 @login_required
 def submit_title_data():
-    if database_helper.is_admin(current_user.id):
-        data = json.loads(request.data)
+    if request.method == "POST":
+        if database_helper.is_admin(current_user.id):
+            data = json.loads(request.data)
 
-        if is_valid_data(data):
-            book_id = data['bookId']
-            title = data['title']
-            year = data['year']
-            plot = data['plot']
-            language = data['language']
-            authors = data['authors']
+            if is_valid_data(data):
+                book_id = data['bookId']
+                title = data['title']
+                year = data['year']
+                plot = data['plot']
+                language = data['language']
+                authors = data['authors']
 
-            if book_id == 'new':
-                book_id = database_helper.add_book(title, year, plot, language, authors)
+                if book_id == 'new':
+                    book_id = database_helper.add_book(title, year, plot, language, authors)
+                else:
+                    database_helper.update_book(book_id, title, year, plot, language, authors)
+                return json.dumps({'bookId': book_id})
             else:
-                database_helper.update_book(book_id, title, year, plot, language, authors)
-            return json.dumps({'bookId': book_id})
+                abort(400)
         else:
-            abort(400)
-    else:
-        abort(401)
+            abort(401)
 
 
 @app.route('/author', methods=["GET"])
 def get_author_data():
-    id = request.args.get('id')
-    data = database_helper.get_author_data(id)
-    if data is None:
-        abort(404)
-    else:
-        return json.dumps({'data': data})
+    if request.method == "GET":
+        id = request.args.get('id')
+        data = database_helper.get_author_data(id)
+        if data is None:
+            abort(404)
+        else:
+            return json.dumps({'data': data})
 
 
 @app.route('/author', methods=["POST"])
 @login_required
 def submit_author_data():
-    if database_helper.is_admin(current_user.id):
-        data = json.loads(request.data)
+    if request.method == "POST":
+        if database_helper.is_admin(current_user.id):
+            data = json.loads(request.data)
 
-        if is_valid_data(data):
-            author_id = data['authorId']
-            name = data['name']
-            country = data['country']
-            birth_year = data['birthYear']
-            if author_id == 'new':
-                author_id = database_helper.add_author(name, country, birth_year)
+            if is_valid_data(data):
+                author_id = data['authorId']
+                name = data['name']
+                country = data['country']
+                birth_year = data['birthYear']
+                if author_id == 'new':
+                    author_id = database_helper.add_author(name, country, birth_year)
+                else:
+                    database_helper.update_author(author_id, name, country, birth_year)
+                return json.dumps({'authorId': author_id})
             else:
-                database_helper.update_author(author_id, name, country, birth_year)
-            return json.dumps({'authorId': author_id})
+                abort(400)
         else:
-            abort(400)
-    else:
-        abort(401)
+            abort(401)
 
 
 @app.route('/authorList', methods=["GET"])
 def get_author_list():
-    data = database_helper.get_author_list()
-    return json.dumps({'data': data})
+    if request.method == "GET":
+        data = database_helper.get_author_list()
+        return json.dumps({'data': data})
 
 
 @app.route('/review', methods=["GET"])
@@ -388,8 +396,9 @@ def un_upvote():
 
 @app.route('/toplist', methods=["GET"])
 def get_toplist():
-    data = database_helper.get_toplist()
-    return json.dumps({'data': data})
+    if request.method == "GET":
+        data = database_helper.get_toplist()
+        return json.dumps({'data': data})
 
 
 
@@ -444,8 +453,7 @@ def page_not_found(error):
     return redirect("/#/error")
 
 
-    # ---- Test routes ----
-
+# For testing only
 @app.route("/dbinit")
 def dbinit():
     database_testdata.init_db()
