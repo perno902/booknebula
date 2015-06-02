@@ -118,6 +118,7 @@ def login():
 
     email = id_token['email']
     user = database_helper.get_user(email)
+
     if user is None:
         database_helper.add_user(email)
         user = database_helper.get_user(email)
@@ -313,10 +314,13 @@ def submit_review():
 
             user_id = current_user.id
 
-            if not database_helper.has_reviewed(user_id, book_id):
+            if not database_helper.has_reviewed(user_id, book_id) and not database_helper.is_admin(user_id):
                 database_helper.submit_review(book_id, review_title, content, score, language, user_id)
             else:
-                if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
+                if database_helper.is_own_review(user_id, review_id):
+                    database_helper.update_review(user_id, review_id, book_id, review_title, content, score, language)
+                elif database_helper.is_admin(user_id):
+                    user_id = database_helper.get_review_writer(review_id)
                     database_helper.update_review(user_id, review_id, book_id, review_title, content, score, language)
                 else:
                     abort(401)

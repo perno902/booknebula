@@ -115,6 +115,10 @@ def get_reviews_data(reviews):
         additional_review_data(review)
     return reviews
 
+def get_review_writer(review_id):
+    review = models.Review.query.filter_by(id=review_id).first()
+    return review.reviewerId
+
 # Gets data related to reviews that are not in the reviews table
 def additional_review_data(review):
     reviewer = models.User.query.filter_by(id=review['reviewerId']).first()
