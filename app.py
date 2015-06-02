@@ -314,16 +314,26 @@ def submit_review():
 
             user_id = current_user.id
 
-            if not database_helper.has_reviewed(user_id, book_id) and not database_helper.is_admin(user_id):
-                database_helper.submit_review(book_id, review_title, content, score, language, user_id)
-            else:
+            # If admin
+            if database_helper.is_admin(user_id):
                 if database_helper.is_own_review(user_id, review_id):
-                    database_helper.update_review(user_id, review_id, book_id, review_title, content, score, language)
-                elif database_helper.is_admin(user_id):
+                    if database_helper.has_reviewed(user_id, book_id):
+                        database_helper.update_review(user_id, review_id, book_id, review_title, content, score, language)
+                    else:
+                        database_helper.submit_review(book_id, review_title, content, score, language, user_id)
+                else:
                     user_id = database_helper.get_review_writer(review_id)
                     database_helper.update_review(user_id, review_id, book_id, review_title, content, score, language)
+
+            # If not admin
+            else:
+                if not database_helper.has_reviewed(user_id, book_id):
+                    database_helper.submit_review(book_id, review_title, content, score, language, user_id)
                 else:
-                    abort(401)
+                    if database_helper.is_own_review(user_id, review_id):
+                        database_helper.update_review(user_id, review_id, book_id, review_title, content, score, language)
+                    else:
+                        abort(401)
             return json.dumps({'bookId': book_id})
         else:
             abort(400)
