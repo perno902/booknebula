@@ -1,23 +1,29 @@
 import models
 import datetime
-from sqlalchemy import func
 
 # ----- Help functions -----
 
 def add_valid_state(state):
-    new_state = models.State(state)
+    new_state = models.State(state, datetime.date.today())
     models.db.session.add(new_state)
 
 def delete_state(state):
     target = models.State.query.filter_by(id=state).first()
     if target is not None:
         models.db.session.delete(target)
+        delete_old_states()
         models.db.session.commit()
 
 def is_valid_state(state):
     exists = models.State.query.filter_by(id=state)
     return exists is not None
 
+def delete_old_states():
+    yesterday = datetime.date.today() - datetime.timedelta(days=1)
+    states = models.State.query.all()
+    for s in states:
+        if s.date < yesterday:
+            models.db.session.delete(s)
 
 
 def get_user(email):

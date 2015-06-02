@@ -138,6 +138,8 @@ class Author(db.Model):
 
 class State(db.Model):
     id = db.Column(db.String(50), primary_key=True)
+    date = db.Column(db.Date)
 
-    def __init__(self, id):
+    def __init__(self, id, date):
         self.id = id
+        self.date = date
