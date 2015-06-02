@@ -1,11 +1,11 @@
-import app
+import myapp
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy import declarative_base
 import random
 import string
 
 
-db = SQLAlchemy(app.app)
+db = SQLAlchemy(myapp.app)
 Base = declarative_base()
 
 def generate_id():
