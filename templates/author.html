@@ -39,7 +39,7 @@
             <tr ng-repeat="b in books">
                 <td>{{b.year}}</td>
                 <td><a href="/#/title/{{b.id}}" class="btn btn-link">{{b.title}}</a></td>
-                <td>{{b.avgScore}}</td>
+                <td>{{b.avgScore | number:2}}</td>
             </tr>
         </tbody>
     </table>
