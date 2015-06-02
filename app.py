@@ -6,18 +6,18 @@ import requests
 import requests.auth
 import json
 import base64
-#import os
-
+import os
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = "Vverysecret8238923787"
+
+# Local database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DATABASE.db'
 
 # Openshift:
 #app.config['PROPAGATE_EXCEPTIONS'] = True
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.environ["OPENSHIFT_DATA_DIR"], 'database.db')
 #app.config['SQLALCHEMY_ECHO'] = True
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,6 +27,10 @@ import database_testdata
 
 CLIENT_ID = "205573445883-9dl8ahcka67d4m7e21anb692do487odk.apps.googleusercontent.com"
 CLIENT_SECRET = "uaidYPHuy99kGHDwoz_CNd63"
+
+# Openshift:
+#REDIRECT_URI = "http://booknebula-perno902.openshift.ida.liu.se/oauth2callback"
+# Local:
 REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
 
 # Code to avoid caching
@@ -175,7 +179,7 @@ def submit_user_data():
     if request.method == "POST":
         data = json.loads(request.data)
 
-        if is_valid_data(data):
+        if is_valid_data(data, data.keys()):
             name = data['userName']
             country = data['country']
             email = data['email']
@@ -223,7 +227,7 @@ def submit_title_data():
         if database_helper.is_admin(current_user.id):
             data = json.loads(request.data)
 
-            if is_valid_data(data):
+            if is_valid_data(data, data.keys()):
                 book_id = data['bookId']
                 title = data['title']
                 year = data['year']
@@ -260,7 +264,7 @@ def submit_author_data():
         if database_helper.is_admin(current_user.id):
             data = json.loads(request.data)
 
-            if is_valid_data(data):
+            if is_valid_data(data, data.keys()):
                 author_id = data['authorId']
                 name = data['name']
                 country = data['country']
@@ -312,7 +316,7 @@ def submit_review():
     if request.method == "POST":
         data = json.loads(request.data)
 
-        if is_valid_data(data):
+        if is_valid_data(data, data.keys()):
             review_id = data['reviewId']
             book_id = data['bookId']
             review_title = data['revTitle']
@@ -353,7 +357,7 @@ def delete_review():
     if request.method == "POST":
         data = json.loads(request.data)
 
-        if is_valid_data(data):
+        if is_valid_data(data, data.keys()):
             review_id = data['reviewId']
             user_id = current_user.id
             if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
@@ -372,7 +376,7 @@ def upvote():
     if request.method == "POST":
         user_id = current_user.id
         data = json.loads(request.data)
-        if is_valid_data(data):
+        if is_valid_data(data, data.keys()):
             review_id = data['reviewId']
             data = database_helper.upvote(user_id, review_id)
             return json.dumps({'data': data})
@@ -386,7 +390,7 @@ def un_upvote():
     if request.method == "POST":
         user_id = current_user.id
         data = json.loads(request.data)
-        if is_valid_data(data):
+        if is_valid_data(data, data.keys()):
             review_id = data['reviewId']
             data = database_helper.un_upvote(user_id, review_id)
             return json.dumps({'data': data})
@@ -401,48 +405,53 @@ def get_toplist():
         return json.dumps({'data': data})
 
 
+def is_valid_data(data, key_list):
+    for key in key_list:
+        if not is_valid_value(data[key], key):
+            return False
+    return True
 
-def is_valid_data(data):
-    keys = data.keys()
-    for key in keys:
-        value = data[key]
-        if key == 'revTitle' and not (type(value) is unicode and len(value) <= 50):
+
+def is_valid_value(value, key):
+    if value == None:
+        return False
+    elif key == 'revTitle' and not (type(value) is unicode and len(value) <= 50):
+        return False
+    elif key == 'content' and not (type(value) is unicode and len(value) <= 3000):
+        return False
+    elif key == 'bookId' and not (type(value) is unicode and 2 < len(value) <= 10):
+        return False
+    elif key == 'reviewId' and not (type(value) is unicode and 2 < len(value) <= 10):
+        return False
+    elif key == 'score' and not (type(value) is int and 0 < value <= 10):
+        return False
+    elif key == 'language' and not (type(value) is unicode and 0 < len(value) <= 50):
+        return False
+    elif key == 'name' and not (type(value) is unicode and 0 < len(value) <= 50):
+        return False
+    elif key == 'country' and not (type(value) is unicode and 0 < len(value) <= 50):
+        return False
+    elif key == 'email' and not (type(value) is unicode and 0 < len(value) <= 50):
+        return False
+    elif key == 'presentation' and not (type(value) is unicode and len(value) <= 1000):
+        return False
+    elif key == 'plot' and not (type(value) is unicode and len(value) <= 500):
+        return False
+    elif key == 'title' and not (type(value) is unicode and 0 < len(value) <= 80):
+        return False
+    elif key == 'year' and not (type(value) is int):
+        return False
+    elif key == 'authors':
+        if type(value) is list:
+            for author_id in value:
+                if not (type(author_id) is unicode and 2 < len(author_id) <= 10):
+                    return False
+        else:
             return False
-        elif key == 'content' and not (type(value) is unicode and len(value) <= 3000):
-            return False
-        elif key == 'bookId' and not (type(value) is unicode and 2 < len(value) <= 10):
-            return False
-        elif key == 'reviewId' and not (type(value) is unicode and 2 < len(value) <= 10):
-            return False
-        elif key == 'score' and not (type(value) is int and 0 < value <= 10):
-            return False
-        elif key == 'language' and not (type(value) is unicode and 0 < len(value) <= 50):
-            return False
-        elif key == 'name' and not (type(value) is unicode and 0 < len(value) <= 50):
-            return False
-        elif key == 'country' and not (type(value) is unicode and 0 < len(value) <= 50):
-            return False
-        elif key == 'email' and not (type(value) is unicode and 0 < len(value) <= 50):
-            return False
-        elif key == 'presentation' and not (type(value) is unicode and len(value) <= 1000):
-            return False
-        elif key == 'plot' and not (type(value) is unicode and len(value) <= 500):
-            return False
-        elif key == 'title' and not (type(value) is unicode and 0 < len(value) <= 80):
-            return False
-        elif key == 'year' and not (type(value) is int):
-            return False
-        elif key == 'authors':
-            if type(value) is list:
-                for author_id in value:
-                    if not (type(author_id) is unicode and 2 < len(author_id) <= 10):
-                        return False
-            else:
-                return False
-        elif key == 'authorId' and not (type(value) is unicode and 2 < len(value) <= 10):
-            return False
-        elif key == 'birthYear' and not (type(value) is int):
-            return False
+    elif key == 'authorId' and not (type(value) is unicode and 2 < len(value) <= 10):
+        return False
+    elif key == 'birthYear' and not (type(value) is int):
+        return False
     return True
 
 
