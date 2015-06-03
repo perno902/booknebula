@@ -18,7 +18,7 @@ myApp.factory('userData', [ '$http', '$location', function($http, $location) {
             method: "post",
             url: "/userData",
             data: {
-                userName: newUserName,
+                name: newUserName,
                 country: newCountry,
                 email: newEmail,
                 presentation: newPresentation

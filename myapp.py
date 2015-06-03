@@ -179,8 +179,8 @@ def submit_user_data():
     if request.method == "POST":
         data = json.loads(request.data)
 
-        if is_valid_data(data, ['username', 'country', 'email', 'presentation']):
-            name = data['userName']
+        if is_valid_data(data, ['name', 'country', 'email', 'presentation']):
+            name = data['name']
             country = data['country']
             email = data['email']
             presentation = data['presentation']
@@ -463,11 +463,12 @@ def page_not_found(error):
 
 
 # For testing only
-@app.route("/dbinit")
-def dbinit():
-    database_testdata.init_db()
-    database_testdata.test()
-    return ''
+#@app.route("/dbinit")
+#def dbinit():
+#    database_testdata.init_db()
+#    database_testdata.test()
+#    return ''
+
 
 if __name__ == "__main__":
     app.run(debug=True)
