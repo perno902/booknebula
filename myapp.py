@@ -179,7 +179,7 @@ def submit_user_data():
     if request.method == "POST":
         data = json.loads(request.data)
 
-        if is_valid_data(data, data.keys()):
+        if is_valid_data(data, ['username', 'country', 'email', 'presentation']):
             name = data['userName']
             country = data['country']
             email = data['email']
@@ -227,7 +227,7 @@ def submit_title_data():
         if database_helper.is_admin(current_user.id):
             data = json.loads(request.data)
 
-            if is_valid_data(data, data.keys()):
+            if is_valid_data(data, ['bookId', 'title', 'year', 'plot', 'language', 'authors']):
                 book_id = data['bookId']
                 title = data['title']
                 year = data['year']
@@ -264,7 +264,7 @@ def submit_author_data():
         if database_helper.is_admin(current_user.id):
             data = json.loads(request.data)
 
-            if is_valid_data(data, data.keys()):
+            if is_valid_data(data, ['authorId', 'name', 'country', 'birthYear']):
                 author_id = data['authorId']
                 name = data['name']
                 country = data['country']
@@ -316,7 +316,7 @@ def submit_review():
     if request.method == "POST":
         data = json.loads(request.data)
 
-        if is_valid_data(data, data.keys()):
+        if is_valid_data(data, ['reviewId', 'bookId', 'revTitle', 'content', 'score', 'language']):
             review_id = data['reviewId']
             book_id = data['bookId']
             review_title = data['revTitle']
@@ -357,7 +357,7 @@ def delete_review():
     if request.method == "POST":
         data = json.loads(request.data)
 
-        if is_valid_data(data, data.keys()):
+        if is_valid_data(data, ['reviewId']):
             review_id = data['reviewId']
             user_id = current_user.id
             if database_helper.is_own_review(user_id, review_id) | database_helper.is_admin(user_id):
@@ -376,7 +376,7 @@ def upvote():
     if request.method == "POST":
         user_id = current_user.id
         data = json.loads(request.data)
-        if is_valid_data(data, data.keys()):
+        if is_valid_data(data, ['reviewId']):
             review_id = data['reviewId']
             data = database_helper.upvote(user_id, review_id)
             return json.dumps({'data': data})
@@ -390,7 +390,7 @@ def un_upvote():
     if request.method == "POST":
         user_id = current_user.id
         data = json.loads(request.data)
-        if is_valid_data(data, data.keys()):
+        if is_valid_data(data, ['reviewId']):
             review_id = data['reviewId']
             data = database_helper.un_upvote(user_id, review_id)
             return json.dumps({'data': data})
