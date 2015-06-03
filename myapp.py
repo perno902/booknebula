@@ -12,12 +12,12 @@ app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = "Vverysecret8238923787"
 
 # Local database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DATABASE.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DATABASE.db'
 
 # Openshift:
-#app.config['PROPAGATE_EXCEPTIONS'] = True
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.environ["OPENSHIFT_DATA_DIR"], 'database.db')
-#app.config['SQLALCHEMY_ECHO'] = True
+app.config['PROPAGATE_EXCEPTIONS'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.environ["OPENSHIFT_DATA_DIR"], 'database.db')
+app.config['SQLALCHEMY_ECHO'] = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -29,9 +29,9 @@ CLIENT_ID = "205573445883-9dl8ahcka67d4m7e21anb692do487odk.apps.googleuserconten
 CLIENT_SECRET = "uaidYPHuy99kGHDwoz_CNd63"
 
 # Openshift:
-#REDIRECT_URI = "http://booknebula-perno902.openshift.ida.liu.se/oauth2callback"
+REDIRECT_URI = "http://booknebula-perno902.openshift.ida.liu.se/oauth2callback"
 # Local:
-REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
+#REDIRECT_URI = "http://127.0.0.1:5000/oauth2callback"
 
 # Code to avoid caching
 @app.after_request
