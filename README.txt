@@ -1,3 +1,22 @@
+---------------------------
+
+   Links:
+---------------------------
+
+## Link to Openshift: ##
+http://booknebula-perno902.openshift.ida.liu.se
+
+
+## Link to screencast (youtube): ##
+https://www.youtube.com/watch?v=glfoTzzkNzU
+
+
+
+
+
+
+---------------------------
+
 I. Functional specification
 ---------------------------
 
