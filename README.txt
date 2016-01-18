@@ -1,2 +1,1 @@
-
-
+Web application using AngularJS as well as the Flask framework for python.
